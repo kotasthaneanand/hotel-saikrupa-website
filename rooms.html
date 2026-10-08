@@ -6,7 +6,7 @@
 <meta name="keywords" content="hotel in Shirdi, hotels near Sai Baba temple Shirdi, hotel near Shri Saibaba Samadhi Mandir, budget hotel Shirdi, family rooms Shirdi, AC rooms Shirdi, pure veg hotel Shirdi, Shirdi hotel with parking, Hotel Saikrupa Shirdi, Kankuri Road Shirdi"><meta name="geo.region" content="IN-MH"><meta name="geo.placename" content="Shirdi">
 <meta name="theme-color" content="#1F3A6E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Rozha+One&display=swap"><style>/* Layout: one calm column on ivory paper; photos carry the warmth, brand blue and red carry the voice. */
-:root{
+:root{color-scheme:light;
   --paper:#FBF7EE; --paper-2:#F3ECDD; --ink:#1E2433; --muted:#5D6170; --line:#E3D9C6;
   --blue:#1F3A6E; --red:#8B1A1A; --marigold:#C7781A; --card:#FFFDF8; --on-accent:#FFFFFF;
   --wa:#1E7F4F;
@@ -14,12 +14,6 @@
   --body:"Mukta", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --r:10px; --wrap:1120px;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#13182A; --paper-2:#1A2036; --ink:#EEE9DE; --muted:#AAB0C0; --line:#2C3450;
-  --blue:#9DB6EA; --red:#E7867A; --marigold:#E9A54A; --card:#1B2238; --on-accent:#13182A; --wa:#58C08A; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --paper:#13182A; --paper-2:#1A2036; --ink:#EEE9DE; --muted:#AAB0C0; --line:#2C3450;
-  --blue:#9DB6EA; --red:#E7867A; --marigold:#E9A54A; --card:#1B2238; --on-accent:#13182A; --wa:#58C08A; color-scheme:dark }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -163,12 +157,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 /* rooms page */
 .rp{display:grid;gap:26px}
 .rp article{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.rp article img{width:100%;height:100%;object-fit:cover;min-height:240px}
+.rp article>img{width:100%;height:100%;object-fit:cover;min-height:240px;align-self:stretch}
 .rp .body{padding:22px 22px 22px 0;display:grid;gap:12px;align-content:start}
 .rp table{border-collapse:collapse;width:100%;font-size:.95rem}
 .rp td,.rp th{padding:6px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .rp th{width:40%;font-weight:600}
-@media (max-width:760px){.rp article{grid-template-columns:1fr}.rp .body{padding:0 18px 20px}}
+@media (max-width:760px){.rp article{grid-template-columns:1fr}.rp article>img{height:auto;min-height:0;aspect-ratio:3/2}.rp .body{padding:0 18px 20px}}
 .sticky-wa{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 @media (min-width:821px){.sticky-wa{display:none}}
 @media (max-width:820px){.sticky-wa{width:58px;height:58px;padding:0;border-radius:50%}.sticky-wa span{display:none}.sticky-wa svg{width:28px;height:28px}main{padding-bottom:70px}}
@@ -191,6 +185,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 .faq details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px}
 .faq summary{cursor:pointer;font-weight:600;font-size:1.05rem}
 .faq details p{margin-top:8px;color:var(--muted)}
+
+.rv-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 </style></head>
 <body><header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>
