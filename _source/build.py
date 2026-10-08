@@ -45,33 +45,72 @@ def room_card(r):
 FEATURED = ["deluxe-double", "deluxe-triple", "deluxe-family", "suite-ac", "standard-triple", "standard-double"]
 
 def booking_box():
-    opts = "".join(f'<option>{E(r[1])} ({r[2]})</option>' for r in ROOMS)
-    return f'''<div class="enquire" id="book">
+    opts = "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
+    return f"""<div class="enquire" id="book">
 <h2>Check availability</h2>
 <form class="form" id="enq" onsubmit="return false">
+<label for="f-name">Your name<input id="f-name" type="text" autocomplete="name" placeholder="Name"></label>
+<label for="f-city">Coming from<input id="f-city" type="text" placeholder="City"></label>
 <label for="f-in">Check-in<input id="f-in" type="date" required></label>
 <label for="f-n">Nights<select id="f-n"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
-<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option><option>More than 10</option></select></label>
+<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option><option>15</option><option>20</option></select></label>
 <label for="f-c">Children<select id="f-c"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
-<label for="f-r">Room<select id="f-r"><option>Any suitable room</option>{opts}</select></label>
+<label for="f-rn">Rooms<select id="f-rn"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></label>
+<label for="f-r" class="wide">Room type<select id="f-r"><option value="">Any suitable room</option>{opts}</select></label>
+<p class="est" id="f-est" aria-live="polite"></p>
 <a class="btn btn-wa" id="f-go" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}Ask on WhatsApp</a>
 </form>
 <p class="note">Best price guaranteed: our direct prices are always below booking sites. We reply on WhatsApp with availability for your dates. Or call {PHONE_DISPLAY}.</p>
-</div>'''
+</div>"""
+
+def room_js():
+    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "wd": PRICES[r[0]], "we": WEEKEND[r[0]]} for r in ROOMS}
+    return json.dumps(d, ensure_ascii=False)
 
 JS = """<script>
 (function(){
-  var f={d:document.getElementById('f-in'),n:document.getElementById('f-n'),a:document.getElementById('f-a'),c:document.getElementById('f-c'),r:document.getElementById('f-r'),go:document.getElementById('f-go')};
+  var R=__ROOMS__, PHONE='__PHONE__';
+  var $=function(i){return document.getElementById(i)};
+  var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),c:$('f-c'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est')};
   if(!f.go)return;
+  var pad=function(x){return (x<10?'0':'')+x};
+  var iso=function(x){return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate())};
   var t=new Date(); t.setDate(t.getDate()+1);
-  var iso=function(x){return x.toISOString().slice(0,10)};
   f.d.min=iso(new Date()); if(!f.d.value)f.d.value=iso(t);
-  function nice(v){if(!v)return'__';var p=v.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+  var ref='WEB-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function nice(d){return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+  function inr(x){return '\\u20b9'+x.toLocaleString('en-IN');}
   function upd(){
-    var msg='Namaste, I would like to book at Hotel Saikrupa, Shirdi.\\nCheck-in: '+nice(f.d.value)+'\\nNights: '+f.n.value+'\\nAdults: '+f.a.value+', Children: '+f.c.value+'\\nRoom: '+f.r.value+'\\nPlease share availability and your best price.';
-    f.go.href='https://wa.me/""" + PHONE_INTL + """?text='+encodeURIComponent(msg);
+    var nights=+f.n.value, adults=+f.a.value, kids=+f.c.value, rooms=parseInt(f.rn.value,10);
+    var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
+    if(f.name.value.trim())lines.push('Name: '+f.name.value.trim());
+    if(f.city.value.trim())lines.push('Coming from: '+f.city.value.trim());
+    var est='';
+    if(f.d.value){
+      var ci=parse(f.d.value), co=new Date(ci); co.setDate(co.getDate()+nights);
+      lines.push('Check-in: '+nice(ci)+', 12 noon');
+      lines.push('Check-out: '+nice(co)+', 11 am');
+      lines.push('Nights: '+nights);
+      lines.push('Guests: '+adults+' adult'+(adults>1?'s':'')+(kids?', '+kids+' child'+(kids>1?'ren':''):''));
+      lines.push('Rooms: '+f.rn.value);
+      var room=R[f.r.value];
+      if(room){
+        lines.push('Room type: '+room.n);
+        var total=0, wk=0, we=0, d=new Date(ci);
+        for(var i=0;i<nights;i++){var day=d.getDay(); if(day===5||day===6||day===0){total+=room.we;we++;}else{total+=room.wd;wk++;} d.setDate(d.getDate()+1);}
+        total*=rooms;
+        var extra=Math.max(0,adults-room.b*rooms); total+=extra*250*nights;
+        var gst=Math.round(total*0.05);
+        est='Estimated: '+inr(total)+' + '+inr(gst)+' GST for '+nights+' night'+(nights>1?'s':'')+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':'')+'. Festival dates may differ; we confirm on WhatsApp.';
+        lines.push('Website estimate: '+inr(total)+' + GST'+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':''));
+      } else lines.push('Room type: Any suitable room');
+    }
+    lines.push('','Please confirm availability and the best price.');
+    f.est.textContent=est; f.est.hidden=!est;
+    f.go.href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(lines.join('\\n'));
   }
-  ['d','n','a','c','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
+  ['name','city','d','n','a','c','rn','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
   upd();
 })();
 </script>"""
@@ -208,7 +247,7 @@ def index_body():
 </div></section>
 </main>
 {footer()}
-{JS}'''
+{JS.replace("__ROOMS__", room_js()).replace("__PHONE__", PHONE_INTL)}'''
 
 def rooms_body():
     arts = ""
