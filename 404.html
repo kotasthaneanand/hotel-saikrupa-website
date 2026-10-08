@@ -76,12 +76,13 @@ section{padding-block:56px}
 /* enquiry */
 .enquire{background:var(--blue);color:var(--on-accent);border-radius:var(--r);padding:22px;display:grid;gap:14px}
 .enquire h2{color:var(--on-accent);font-size:1.5rem}
-.form{display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr 1.7fr auto;gap:12px;align-items:end}
+.form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
 .form label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
 .form input,.form select{font:inherit;font-size:1rem;text-transform:none;letter-spacing:0;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:var(--card);color:var(--ink);min-width:0;width:100%}
 .form .btn-wa{height:46px;white-space:nowrap}
 .enquire .note{font-size:.88rem;opacity:.85}
-@media (max-width:900px){.form{grid-template-columns:1fr 1fr}.form .btn-wa,.form label[for="f-r"]{grid-column:1/-1}}
+.form .est{grid-column:1/-1;margin:0;font-size:.95rem;background:rgba(255,255,255,.12);padding:8px 12px;border-radius:8px}.form .btn-wa{grid-column:span 2}
+@media (max-width:900px){.form{grid-template-columns:1fr 1fr}.form .btn-wa,.form .wide{grid-column:1/-1}}
 
 /* proof strip */
 .proof{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--line);margin-top:36px}
