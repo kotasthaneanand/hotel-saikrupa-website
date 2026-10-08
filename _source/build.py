@@ -125,6 +125,11 @@ def aarti():
     return f'''<section class="aarti" id="aarti"><div class="wrap">
 <div class="section-head"><span class="eyebrow">Plan your darshan</span><h2>Aarti timings at the Samadhi Mandir</h2>
 <p class="muted">Four aartis mark Shri Saibaba's day. From our door it is 350 m on foot, about 5 minutes, to Gate 5/6, so you can step out just before an aarti and be back to rest after.</p></div>
+<div class="darshan">
+<figure><img src="img/samadhi-face.jpg" alt="Shri Saibaba at the Samadhi Mandir, Shirdi" loading="lazy" width="600" height="898"></figure>
+<figure><img src="img/samadhi-mandir.jpg" alt="Shri Saibaba Samadhi Mandir, Shirdi" loading="lazy" width="900" height="602"></figure>
+<p class="credit">Photo courtesy: Shri Saibaba Sansthan Trust, Shirdi</p>
+</div>
 <div class="day"><div class="day-inner"><div class="day-bar"></div>{m}
 <div class="day-scale"><span>4 am</span><span>8 am</span><span>12 noon</span><span>4 pm</span><span>8 pm</span><span>11 pm</span></div></div></div>
 <p class="src muted">Timings are set by Shri Saibaba Sansthan Trust, Shirdi, and can change on festival days. Our reception will confirm them for your dates.</p>
@@ -141,7 +146,7 @@ def index_body():
 <section class="hero"><div class="wrap">
 <div><span class="eyebrow">Shirdi · Kankuri Road · since 1988</span>
 <h1>Five minutes' walk to <em>Shri Saibaba's</em> Samadhi Mandir</h1>
-<p class="lead">A family-run, pure-vegetarian hotel with 38 rooms, from doubles to family suites for six.</p>
+<p class="lead">A family-run, pure-vegetarian hotel in Shirdi with 38 AC and non-AC rooms, from budget doubles to family suites for six.</p>
 <p class="tagline">{TAGLINE}</p>
 <div class="ctas"><a class="btn btn-wa" href="#book">{WA_ICON}Check availability</a><a class="btn btn-line" href="rooms.html">See rooms and prices</a></div>
 <p class="phone-line">Call or WhatsApp <b>{PHONE_DISPLAY}</b> · Landline {LANDLINES}</p></div>
@@ -188,6 +193,8 @@ def index_body():
 <div class="rv-top"><b>4.6 ★</b><span class="muted">Google rating from 1,160+ reviews · 4.88 average for reviews since 2025</span></div>
 <div class="reviews">{revs}</div>
 </div></section>
+
+<section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
 
 <section id="policies"><div class="wrap info">
 <div><div class="section-head"><span class="eyebrow">Good to know</span><h2>House rules</h2></div>
@@ -271,6 +278,8 @@ def rooms_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
+FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
+
 JSONLD = {
     "@context": "https://schema.org", "@type": "Hotel", "name": "Hotel Saikrupa",
     "url": "https://www.shirdihotelsaikrupa.com/", "telephone": "+91 82628 00200", "email": EMAIL,
@@ -278,28 +287,34 @@ JSONLD = {
                 "addressLocality": "Shirdi", "postalCode": "423109", "addressRegion": "Maharashtra", "addressCountry": "IN"},
     "image": "https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg", "numberOfRooms": 38,
     "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "₹1,150–₹4,000",
-    "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": n, "value": True} for n in ["Free Wi-Fi", "Parking", "24-hour hot water", "Restaurant"]],
+    "description": "Family-run pure-vegetarian hotel in Shirdi since 1988, 350 m from Gate 5/6 of Shri Saibaba Samadhi Mandir.",
+    "foundingDate": "1988", "sameAs": ["https://www.instagram.com/hotel_saikrupa_shirdi/"],
+    "hasMap": "https://www.google.com/maps/search/?api=1&query=Hotel+Saikrupa+Shirdi",
+    "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": n, "value": True} for n in ["Free Wi-Fi", "Free parking", "24-hour hot water", "Restaurant", "Family rooms", "Air conditioning"]],
 }
+FAQLD = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]}
 
 def full(title, desc, body, canonical, jsonld=False):
-    ld = f'<script type="application/ld+json">{json.dumps(JSONLD, ensure_ascii=False)}</script>' if jsonld else ""
+    ld = (f'<script type="application/ld+json">{json.dumps(JSONLD, ensure_ascii=False)}</script>'
+          f'<script type="application/ld+json">{json.dumps(FAQLD, ensure_ascii=False)}</script>') if jsonld else ""
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canonical}"><link rel="icon" href="img/emblem.png">
-<meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg"><meta property="og:type" content="website">
+<meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg"><meta property="og:type" content="website"><meta property="og:locale" content="en_IN"><meta property="og:site_name" content="Hotel Saikrupa Shirdi"><meta property="og:url" content="{canonical}"><meta name="twitter:card" content="summary_large_image">
+<meta name="keywords" content="hotel in Shirdi, hotels near Sai Baba temple Shirdi, hotel near Shri Saibaba Samadhi Mandir, budget hotel Shirdi, family rooms Shirdi, AC rooms Shirdi, pure veg hotel Shirdi, Shirdi hotel with parking, Hotel Saikrupa Shirdi, Kankuri Road Shirdi"><meta name="geo.region" content="IN-MH"><meta name="geo.placename" content="Shirdi">
 <meta name="theme-color" content="#1F3A6E">
 {FONTS}<style>{CSS}</style>{ld}</head>
 <body>{body}</body></html>'''
 
-TITLE = "Hotel Saikrupa Shirdi"
-DESC = "Family-run pure-vegetarian hotel in Shirdi since 1988, 350 m (5 minutes' walk) from Gate 5/6 of Shri Saibaba's Samadhi Mandir. 38 rooms, family rooms and suites for up to 6. WhatsApp 8262 800 200."
+TITLE = "Hotel Saikrupa Shirdi | Family Hotel 5 Minutes from Shri Saibaba Samadhi Mandir"
+DESC = "Family-run pure-veg hotel in Shirdi since 1988, 5 minutes' walk from Shri Saibaba Samadhi Mandir. AC and non-AC rooms, family suites for 6, parking. Book direct on WhatsApp 8262 800 200 for the best price."
 
 def main():
     site = os.path.join(ROOT, "site"); prev = os.path.join(ROOT, "preview")
     os.makedirs(prev, exist_ok=True)
     open(os.path.join(site, "index.html"), "w", encoding="utf-8").write(full(TITLE, DESC, index_body(), "https://www.shirdihotelsaikrupa.com/", True))
-    open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and prices · Hotel Saikrupa Shirdi", "All 9 room types at Hotel Saikrupa, Shirdi: beds, sizes, guests and prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
+    open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and Prices | Hotel Saikrupa Shirdi", "AC and non-AC rooms in Shirdi near Shri Saibaba Samadhi Mandir: doubles, triples, family rooms and suites for up to 6, with weekday, weekend and festival prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
     # preview: index without document wrapper; rooms as a full page
     open(os.path.join(prev, "index.html"), "w", encoding="utf-8").write(f"<title>{TITLE}</title>\n{FONTS}\n<style>{CSS}</style>\n{index_body()}")
     shutil.copy(os.path.join(site, "rooms.html"), os.path.join(prev, "rooms.html"))
