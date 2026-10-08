@@ -6,6 +6,8 @@ LANDLINES = "02423 255018 / 02423 255019"
 EMAIL = "hotelsaikrupabooking@gmail.com"
 ADDRESS = "Behind Shirdi Nagar Parishad office, Kankuri Road, Shirdi 423109, Maharashtra"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Hotel+Saikrupa+Shirdi"
+GOOGLE_REVIEWS = "https://maps.app.goo.gl/98SHnhePbwJummed7"
+GOOGLE_WRITE_REVIEW = "https://g.page/r/CdEE9DBaz4zaEBM/review"
 INSTAGRAM = "https://www.instagram.com/hotel_saikrupa_shirdi/"
 TAGLINE = "🙏 Seva of Shri Saibaba's devotees is our dharma. Since 1988. 🙏"
 

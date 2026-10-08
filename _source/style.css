@@ -184,3 +184,5 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 .faq details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px}
 .faq summary{cursor:pointer;font-weight:600;font-size:1.05rem}
 .faq details p{margin-top:8px;color:var(--muted)}
+
+.rv-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
