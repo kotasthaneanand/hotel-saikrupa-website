@@ -64,7 +64,7 @@ def booking_box():
 </div>"""
 
 def room_js():
-    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "wd": PRICES[r[0]], "we": WEEKEND[r[0]]} for r in ROOMS}
+    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "ac": r[2] == "AC", "wd": PRICES[r[0]], "we": WEEKEND[r[0]]} for r in ROOMS}
     return json.dumps(d, ensure_ascii=False)
 
 JS = """<script>
@@ -94,17 +94,30 @@ JS = """<script>
       lines.push('Nights: '+nights);
       lines.push('Guests: '+adults+' adult'+(adults>1?'s':'')+(kids?', '+kids+' child'+(kids>1?'ren':''):''));
       lines.push('Rooms: '+f.rn.value);
+      function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){var dy=d.getDay();t+=(dy===5||dy===6||dy===0)?room.we:room.wd;d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
+      function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(kids/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
+      function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
+      var nn=nights+' night'+(nights>1?'s':'');
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
-        var total=0, wk=0, we=0, d=new Date(ci);
-        for(var i=0;i<nights;i++){var day=d.getDay(); if(day===5||day===6||day===0){total+=room.we;we++;}else{total+=room.wd;wk++;} d.setDate(d.getDate()+1);}
-        total*=rooms;
-        var extra=Math.max(0,adults-room.b*rooms); total+=extra*250*nights;
-        var gst=Math.round(total*0.05);
-        est='Estimated: '+inr(total)+' + '+inr(gst)+' GST for '+nights+' night'+(nights>1?'s':'')+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':'')+'. Festival dates may differ; we confirm on WhatsApp.';
-        lines.push('Website estimate: '+inr(total)+' + GST'+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':''));
-      } else lines.push('Room type: Any suitable room');
+        var c=cost(room), gst=Math.round(c.t*0.05);
+        est='Estimated: '+inr(c.t)+' + '+inr(gst)+' GST for '+nn+exTxt(c.ex)+'.';
+        lines.push('Website estimate: '+inr(c.t)+' + GST for '+nn+exTxt(c.ex));
+      } else {
+        lines.push('Room type: Any suitable room');
+        var best={}, k;
+        for(k in R){var r=R[k];if(!fits(r))continue;var key=r.ac?'ac':'non';var c2=cost(r);if(!best[key]||c2.t<best[key].c.t)best[key]={r:r,c:c2};}
+        var sug=[];
+        if(best.non)sug.push(best.non.r.n+' '+inr(best.non.c.t)+exTxt(best.non.c.ex));
+        if(best.ac)sug.push(best.ac.r.n+' '+inr(best.ac.c.t)+exTxt(best.ac.c.ex));
+        if(sug.length){
+          est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
+          lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
+        }
+      }
+      if(kids)est+=(est?' ':'')+'Children above 5 years are charged ₹250 per night.';
+      if(est)est+=' Festival dates may differ; we confirm on WhatsApp.';
     }
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;

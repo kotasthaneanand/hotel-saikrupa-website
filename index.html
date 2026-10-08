@@ -359,7 +359,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 <a class="btn btn-wa sticky-wa" href="https://wa.me/918262800200?text=Namaste%2C%20I%20would%20like%20to%20know%20room%20availability%20and%20the%20best%20price%20at%20Hotel%20Saikrupa%2C%20Shirdi." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg><span>WhatsApp us</span></a>
 <script>
 (function(){
-  var R={"deluxe-double": {"n": "Deluxe Double Room (AC)", "b": 2, "wd": 1350, "we": 1700}, "deluxe-triple": {"n": "Deluxe Triple Room (AC)", "b": 3, "wd": 1800, "we": 2200}, "compact-triple": {"n": "Compact Triple Room (AC)", "b": 3, "wd": 1650, "we": 2000}, "deluxe-family": {"n": "Deluxe Family Room (AC)", "b": 4, "wd": 2600, "we": 3100}, "suite-ac": {"n": "Family Suite, 2 rooms (AC)", "b": 4, "wd": 2800, "we": 3300}, "standard-double": {"n": "Standard Double Room (Non-AC)", "b": 2, "wd": 1150, "we": 1450}, "standard-triple": {"n": "Standard Triple Room (Non-AC)", "b": 3, "wd": 1450, "we": 1800}, "standard-family": {"n": "Standard Family Room (Non-AC)", "b": 4, "wd": 2200, "we": 2700}, "suite-nonac": {"n": "Family Suite, 2 rooms (Non-AC)", "b": 4, "wd": 2500, "we": 3000}}, PHONE='918262800200';
+  var R={"deluxe-double": {"n": "Deluxe Double Room (AC)", "b": 2, "ac": true, "wd": 1350, "we": 1700}, "deluxe-triple": {"n": "Deluxe Triple Room (AC)", "b": 3, "ac": true, "wd": 1800, "we": 2200}, "compact-triple": {"n": "Compact Triple Room (AC)", "b": 3, "ac": true, "wd": 1650, "we": 2000}, "deluxe-family": {"n": "Deluxe Family Room (AC)", "b": 4, "ac": true, "wd": 2600, "we": 3100}, "suite-ac": {"n": "Family Suite, 2 rooms (AC)", "b": 4, "ac": true, "wd": 2800, "we": 3300}, "standard-double": {"n": "Standard Double Room (Non-AC)", "b": 2, "ac": false, "wd": 1150, "we": 1450}, "standard-triple": {"n": "Standard Triple Room (Non-AC)", "b": 3, "ac": false, "wd": 1450, "we": 1800}, "standard-family": {"n": "Standard Family Room (Non-AC)", "b": 4, "ac": false, "wd": 2200, "we": 2700}, "suite-nonac": {"n": "Family Suite, 2 rooms (Non-AC)", "b": 4, "ac": false, "wd": 2500, "we": 3000}}, PHONE='918262800200';
   var $=function(i){return document.getElementById(i)};
   var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),c:$('f-c'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est')};
   if(!f.go)return;
@@ -384,17 +384,30 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
       lines.push('Nights: '+nights);
       lines.push('Guests: '+adults+' adult'+(adults>1?'s':'')+(kids?', '+kids+' child'+(kids>1?'ren':''):''));
       lines.push('Rooms: '+f.rn.value);
+      function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){var dy=d.getDay();t+=(dy===5||dy===6||dy===0)?room.we:room.wd;d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
+      function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(kids/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
+      function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
+      var nn=nights+' night'+(nights>1?'s':'');
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
-        var total=0, wk=0, we=0, d=new Date(ci);
-        for(var i=0;i<nights;i++){var day=d.getDay(); if(day===5||day===6||day===0){total+=room.we;we++;}else{total+=room.wd;wk++;} d.setDate(d.getDate()+1);}
-        total*=rooms;
-        var extra=Math.max(0,adults-room.b*rooms); total+=extra*250*nights;
-        var gst=Math.round(total*0.05);
-        est='Estimated: '+inr(total)+' + '+inr(gst)+' GST for '+nights+' night'+(nights>1?'s':'')+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':'')+'. Festival dates may differ; we confirm on WhatsApp.';
-        lines.push('Website estimate: '+inr(total)+' + GST'+(extra?' (incl. '+extra+' extra adult'+(extra>1?'s':'')+')':''));
-      } else lines.push('Room type: Any suitable room');
+        var c=cost(room), gst=Math.round(c.t*0.05);
+        est='Estimated: '+inr(c.t)+' + '+inr(gst)+' GST for '+nn+exTxt(c.ex)+'.';
+        lines.push('Website estimate: '+inr(c.t)+' + GST for '+nn+exTxt(c.ex));
+      } else {
+        lines.push('Room type: Any suitable room');
+        var best={}, k;
+        for(k in R){var r=R[k];if(!fits(r))continue;var key=r.ac?'ac':'non';var c2=cost(r);if(!best[key]||c2.t<best[key].c.t)best[key]={r:r,c:c2};}
+        var sug=[];
+        if(best.non)sug.push(best.non.r.n+' '+inr(best.non.c.t)+exTxt(best.non.c.ex));
+        if(best.ac)sug.push(best.ac.r.n+' '+inr(best.ac.c.t)+exTxt(best.ac.c.ex));
+        if(sug.length){
+          est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
+          lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
+        }
+      }
+      if(kids)est+=(est?' ':'')+'Children above 5 years are charged ₹250 per night.';
+      if(est)est+=' Festival dates may differ; we confirm on WhatsApp.';
     }
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
