@@ -176,3 +176,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 .back:hover{background:var(--blue);color:var(--on-accent)}
 
 .walkmap{margin:0 0 18px}.walkmap svg{width:100%;height:auto;display:block;font-family:var(--body)}
+
+.darshan{display:grid;grid-template-columns:.62fr 1fr;gap:14px;align-items:end;margin-bottom:28px;max-width:640px}
+.darshan figure{margin:0}.darshan img{width:100%;height:auto;border-radius:8px}
+.darshan .credit{grid-column:1/-1;margin:0;font-size:.85rem;color:var(--muted);font-style:italic}
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px}
+.faq summary{cursor:pointer;font-weight:600;font-size:1.05rem}
+.faq details p{margin-top:8px;color:var(--muted)}
