@@ -35,7 +35,7 @@ def footer():
 def room_card(r):
     rid, name, ac, size, beds, guests, mx, photo, text = r
     p = PRICES.get(rid)
-    price = f'<span><span class="muted">From</span> <b>{rupees(p)}</b> <span class="muted">/ night</span></span>' if p else '<span class="muted">Ask for today\'s rate</span>'
+    price = f'<span><span class="muted">Discounted tariff from</span> <b>{rupees(p)}</b> <span class="muted">/ night</span></span>' if p else '<span class="muted">Ask for today\'s rate</span>'
     msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
     return f'''<article class="room"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
 <div class="body"><span class="tag">{ac}</span><h3>{E(name)}</h3><p class="muted">{E(text)}</p>
@@ -292,8 +292,8 @@ def rooms_body():
     arts = ""
     for r in ROOMS:
         rid, name, ac, size, beds, guests, mx, photo, text = r
-        mw, tfs, sat, fest, card = RATES[rid]
-        price = f"Mon–Wed <b>{rupees(mw)}</b> · Thu, Fri, Sun {rupees(tfs)} · Sat {rupees(sat)} · Festivals {rupees(fest)}<br><span class='muted'>per night, plus 5% GST · published tariff {rupees(card)}</span>"
+        mw, card = RATES[rid][0], RATES[rid][4]
+        price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><span class='muted'>Published tariff {rupees(card)}</span><br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
