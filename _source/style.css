@@ -180,3 +180,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 .faq details p{margin-top:8px;color:var(--muted)}
 
 .rv-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.tariff{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:12px}
+.tariff h2{margin:0}
+.tariff table{border-collapse:collapse;width:100%;max-width:560px;font-size:.98rem}
+.tariff td,.tariff th{padding:7px 0;border-bottom:1px solid var(--line);text-align:left}
+.tariff td:last-child,.tariff th:last-child{text-align:right;white-space:nowrap}
+.tariff p{margin:0}

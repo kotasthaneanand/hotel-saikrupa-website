@@ -64,12 +64,15 @@ def booking_box():
 </div>"""
 
 def room_js():
-    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "ac": r[2] == "AC", "wd": PRICES[r[0]], "we": WEEKEND[r[0]]} for r in ROOMS}
+    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
     return json.dumps(d, ensure_ascii=False)
+
+def periods_js():
+    return json.dumps({"fest": [[a, b] for _, a, b in FESTIVALS], "card": [[a, b] for _, a, b in CARD_PERIODS]})
 
 JS = """<script>
 (function(){
-  var R=__ROOMS__, PHONE='__PHONE__';
+  var R=__ROOMS__, PER=__PERIODS__, PHONE='__PHONE__';
   var $=function(i){return document.getElementById(i)};
   var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),c:$('f-c'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est')};
   if(!f.go)return;
@@ -94,7 +97,9 @@ JS = """<script>
       lines.push('Nights: '+nights);
       lines.push('Guests: '+adults+' adult'+(adults>1?'s':'')+(kids?', '+kids+' child'+(kids>1?'ren':''):''));
       lines.push('Rooms: '+f.rn.value);
-      function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){var dy=d.getDay();t+=(dy===5||dy===6||dy===0)?room.we:room.wd;d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
+      function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return true;}return false;}
+      function nightRate(room,d){var s=iso(d),dy=d.getDay();if(inP(s,PER.card))return room.p[4];if(inP(s,PER.fest))return room.p[3];if(dy===6)return room.p[2];if(dy===4||dy===5||dy===0)return room.p[1];return room.p[0];}
+      function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){t+=nightRate(room,d);d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
       function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(kids/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
       function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
       var nn=nights+' night'+(nights>1?'s':'');
@@ -117,7 +122,7 @@ JS = """<script>
         }
       }
       if(kids)est+=(est?' ':'')+'Children above 5 years are charged ₹250 per night.';
-      if(est)est+=' Festival dates may differ; we confirm on WhatsApp.';
+      if(est)est+=' Each night is priced by its day: Mon\u2013Wed lowest, festival dates higher. We confirm on WhatsApp.';
     }
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
@@ -177,7 +182,7 @@ def index_body():
 
 <section id="rooms"><div class="wrap">
 <div class="section-head"><span class="eyebrow">Rooms</span><h2>A room for every group, from two to six</h2>
-<p class="muted">Every room has an attached bathroom, a 32-inch LED TV and 24-hour hot water. Weekday prices shown, plus 5% GST. Our website and WhatsApp prices are always below booking sites.</p></div>
+<p class="muted">Every room has an attached bathroom, a 32-inch LED TV and 24-hour hot water. Lowest (Monday to Wednesday) prices shown, plus 5% GST. Our website and WhatsApp prices are always below booking sites.</p></div>
 <div class="rooms">{cards}</div>
 <p class="more"><a class="btn btn-line" href="rooms.html">All 9 room types, with beds and sizes</a></p>
 </div></section>
@@ -208,7 +213,7 @@ def index_body():
 <div class="rv-cta"><a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a>{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Stayed with us? Write a review</a>') if GOOGLE_WRITE_REVIEW else ''}</div>
 </div></section>
 
-<section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I pay the advance?</summary><p>By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
+<section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I pay the advance?</summary><p>By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there.</p></details><details><summary>Do your prices go up at festivals?</summary><p>Festival nights (Dasara 16–20 Oct, Diwali 6–15 Nov, Makar Sankranti 14–16 Jan, Republic Day 23–26 Jan) use our festival price, and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
 
 <section id="policies"><div class="wrap info">
 <div><div class="section-head"><span class="eyebrow">Good to know</span><h2>House rules</h2></div>
@@ -268,14 +273,27 @@ def index_body():
 </div></section>
 </main>
 {footer()}
-{JS.replace("__ROOMS__", room_js()).replace("__PHONE__", PHONE_INTL)}'''
+{JS.replace("__ROOMS__", room_js()).replace("__PERIODS__", periods_js()).replace("__PHONE__", PHONE_INTL)}'''
+
+def dmy(s):
+    import datetime
+    return datetime.date.fromisoformat(s).strftime("%-d %b")
+
+def tariff_section():
+    rows = "".join(f"<tr><td>{E(r[1])} ({r[2]})</td><td>{rupees(RATES[r[0]][4])}</td></tr>" for r in ROOMS)
+    fest = "; ".join(f"{n} {dmy(a)}–{dmy(b)}" for n, a, b in FESTIVALS)
+    card = "; ".join(f"{n} {dmy(a)}–{dmy(b)}" for n, a, b in CARD_PERIODS)
+    return f'''<section class="tariff" id="tariff"><h2>Our published tariff</h2>
+<p><b>Since 1988, we have never charged above our published tariff, even in the festival rush.</b> On most nights our price is well below it.</p>
+<table><thead><tr><th>Room type</th><th>Published tariff per night</th></tr></thead><tbody>{rows}</tbody></table>
+<p class="muted">Plus GST as applicable. Prices on this website are valid till {VALID_TILL}. Festival prices apply on: {fest}. Published tariff applies on: {card}. Extra person above 5 years ₹250 per night; children up to 5 stay free.</p></section>'''
 
 def rooms_body():
     arts = ""
     for r in ROOMS:
         rid, name, ac, size, beds, guests, mx, photo, text = r
-        p = PRICES.get(rid)
-        price = f"Mon–Thu {rupees(p)} · Fri–Sun {rupees(WEEKEND[rid])} · Festivals {rupees(PEAK[rid])}<br><span class='muted'>per night, plus 5% GST</span>" if p else "Ask for today's rate"
+        mw, tfs, sat, fest, card = RATES[rid]
+        price = f"Mon–Wed <b>{rupees(mw)}</b> · Thu, Fri, Sun {rupees(tfs)} · Sat {rupees(sat)} · Festivals {rupees(fest)}<br><span class='muted'>per night, plus 5% GST · published tariff {rupees(card)}</span>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
@@ -289,10 +307,11 @@ def rooms_body():
 <div class="section-head" style="margin-top:18px"><span class="eyebrow">Rooms and prices</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">9 room types, for two to six guests</h1>
 <p class="muted">Every room has an attached bathroom with 24-hour hot water, a 32-inch LED TV and Wi-Fi. Extra person ₹250 per night; children up to 5 years stay free. Our website and WhatsApp prices are the lowest you will find, below booking sites.</p><p class="tagline">{TAGLINE}</p></div>
 <div class="rp">{arts}</div>
+{tariff_section()}
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
-FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I pay the advance?', "By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there."), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
+FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I pay the advance?', "By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there."), ('Do your prices go up at festivals?', 'Festival nights (Dasara 16–20 Oct, Diwali 6–15 Nov, Makar Sankranti 14–16 Jan, Republic Day 23–26 Jan) use our festival price, and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.'), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
 
 JSONLD = {
     "@context": "https://schema.org", "@type": "Hotel", "name": "Hotel Saikrupa",
@@ -300,7 +319,7 @@ JSONLD = {
     "address": {"@type": "PostalAddress", "streetAddress": "Behind Shirdi Nagar Parishad office, Kankuri Road",
                 "addressLocality": "Shirdi", "postalCode": "423109", "addressRegion": "Maharashtra", "addressCountry": "IN"},
     "image": "https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg", "numberOfRooms": 38,
-    "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "₹1,150–₹4,000",
+    "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "₹900–₹4,000",
     "description": "Family-run pure-vegetarian hotel in Shirdi since 1988, 350 m from Gate 5/6 of Shri Saibaba Samadhi Mandir.",
     "foundingDate": "1988", "sameAs": ["https://www.instagram.com/hotel_saikrupa_shirdi/"],
     "hasMap": "https://www.google.com/maps/search/?api=1&query=Hotel+Saikrupa+Shirdi",
