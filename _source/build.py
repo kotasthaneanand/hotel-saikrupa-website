@@ -308,11 +308,21 @@ JSONLD = {
 }
 FAQLD = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]}
 
+# Google Analytics 4 (property "ShirdiHotelSaikrupa.com", account hotelsaikrupabooking@gmail.com).
+# Counts only on the real domain, so local test pages are not counted.
+# Also records WhatsApp and phone taps as events: whatsapp_click (where: booking_form or other) and call_click.
+GA_ID = "G-56FJB5HJES"
+GA = f'''<script>if(/(^|\\.)shirdihotelsaikrupa\\.com$/.test(location.hostname)){{var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id={GA_ID}';document.head.appendChild(s);}}
+window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');
+document.addEventListener('click',function(e){{var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
+if(h.indexOf('https://wa.me/')===0)gtag('event','whatsapp_click',{{where:a.closest('form')?'booking_form':'other',page:location.pathname}});
+else if(h.indexOf('tel:')===0)gtag('event','call_click',{{page:location.pathname}});}},true);</script>'''
+
 def full(title, desc, body, canonical, jsonld=False):
     ld = (f'<script type="application/ld+json">{json.dumps(JSONLD, ensure_ascii=False)}</script>'
           f'<script type="application/ld+json">{json.dumps(FAQLD, ensure_ascii=False)}</script>') if jsonld else ""
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="en"><head>{GA}<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canonical}"><link rel="icon" href="img/emblem.png">
 <meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg"><meta property="og:type" content="website"><meta property="og:locale" content="en_IN"><meta property="og:site_name" content="Hotel Saikrupa Shirdi"><meta property="og:url" content="{canonical}"><meta name="twitter:card" content="summary_large_image">
