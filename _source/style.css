@@ -186,3 +186,5 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 .tariff td,.tariff th{padding:7px 0;border-bottom:1px solid var(--line);text-align:left}
 .tariff td:last-child,.tariff th:last-child{text-align:right;white-space:nowrap}
 .tariff p{margin:0}
+.tnotes{margin:4px 0 0;padding-left:1.2em;display:grid;gap:6px;color:var(--muted)}
+.tnotes ul{margin:6px 0 0;padding-left:1.2em;display:grid;gap:3px}
