@@ -281,19 +281,29 @@ def dmy(s):
 
 def tariff_section():
     rows = "".join(f"<tr><td>{E(r[1])} ({r[2]})</td><td>{rupees(RATES[r[0]][4])}</td></tr>" for r in ROOMS)
-    fest = "; ".join(f"{n} {dmy(a)}–{dmy(b)}" for n, a, b in FESTIVALS)
-    card = "; ".join(f"{n} {dmy(a)}–{dmy(b)}" for n, a, b in CARD_PERIODS)
+    per = sorted(FESTIVALS + CARD_PERIODS, key=lambda x: x[1])
+    def span(a, b):
+        import datetime
+        x, y = datetime.date.fromisoformat(a), datetime.date.fromisoformat(b)
+        left = x.strftime("%-d %b") + (x.strftime(" %Y") if x.year != y.year else "")
+        return f"{left} – {y.strftime('%-d %b %Y')}"
+    items = "".join(f"<li>{E(n)}: {span(a, b)}</li>" for n, a, b in per)
     return f'''<section class="tariff" id="tariff"><h2>Our published tariff</h2>
 <p><b>Since 1988, we have never charged above our published tariff, even in the festival rush.</b> On most nights our price is well below it.</p>
 <table><thead><tr><th>Room type</th><th>Published tariff per night</th></tr></thead><tbody>{rows}</tbody></table>
-<p class="muted">Plus GST as applicable. Prices on this website are valid till {VALID_TILL}. Festival prices apply on: {fest}. Published tariff applies on: {card}. Extra person above 5 years ₹250 per night; children up to 5 stay free.</p></section>'''
+<ul class="tnotes">
+<li>Plus GST as applicable. Prices on this website are valid till {VALID_TILL}.</li>
+<li>Extra person above 5 years ₹250 per night; children up to 5 years stay free.</li>
+<li>Festival periods when we expect a lot of rush in Shirdi:<ul>{items}</ul></li>
+<li>If you are planning a visit to Shirdi for Shri Saibaba darshan, we strongly suggest booking in advance, directly with us on this website or by calling <a href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.</li>
+</ul></section>'''
 
 def rooms_body():
     arts = ""
     for r in ROOMS:
         rid, name, ac, size, beds, guests, mx, photo, text = r
-        mw, card = RATES[rid][0], RATES[rid][4]
-        price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><span class='muted'>Published tariff {rupees(card)}</span><br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
+        mw = RATES[rid][0]
+        price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
