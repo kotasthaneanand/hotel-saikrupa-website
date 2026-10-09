@@ -292,8 +292,8 @@ def rooms_body():
     arts = ""
     for r in ROOMS:
         rid, name, ac, size, beds, guests, mx, photo, text = r
-        mw, card = RATES[rid][0], RATES[rid][4]
-        price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><span class='muted'>Published tariff {rupees(card)}</span><br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
+        mw = RATES[rid][0]
+        price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
