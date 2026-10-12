@@ -11,24 +11,27 @@ GOOGLE_WRITE_REVIEW = "https://g.page/r/CdEE9DBaz4zaEBM/review"
 INSTAGRAM = "https://www.instagram.com/hotel_saikrupa_shirdi/"
 TAGLINE = "🙏 Seva of Shri Saibaba's devotees is our dharma. Since 1988. 🙏"
 
-# Prices valid till 31 Jan 2027 (Anand, 9 Oct 2026). Rs per room per night, plus 5% GST.
-# Per room: (Mon-Wed, Thu/Fri/Sun, Saturday, Festival, Published tariff card)
+# Prices valid till 31 Jan 2027 (staff guide V5, Anand, 12 Oct 2026). Rs per room per night, plus 5% GST.
+# Direct price = tariff card minus 10%. Weekday = Sun to Fri nights; only Saturday night is the weekend.
+# Per room: (Weekday, Weekday, Saturday, Festival, Published tariff card); the first two are equal since V5.
 # The tariff card is the ceiling: since 1988 the hotel never charges above it.
 RATES = {
-    "standard-double": (900, 1100, 1450, 1900, 2200),
-    "deluxe-double":   (1100, 1200, 1700, 2200, 2800),
-    "standard-triple": (1150, 1300, 1750, 2300, 2700),
-    "compact-triple":  (1300, 1400, 1800, 2400, 3000),
-    "deluxe-triple":   (1450, 1550, 2000, 2600, 3200),
-    "standard-family": (1750, 1900, 2200, 2800, 3300),
-    "suite-nonac":     (2000, 2100, 2400, 3000, 3500),
-    "deluxe-family":   (2100, 2200, 2600, 3400, 3800),
-    "suite-ac":        (2250, 2400, 2800, 3600, 4000),
+    "standard-double": (1050, 1050, 1300, 1700, 2200),
+    "deluxe-double":   (1200, 1200, 1550, 2150, 2800),
+    "standard-triple": (1300, 1300, 1600, 2050, 2700),
+    "compact-triple":  (1500, 1500, 1800, 2350, 3000),
+    "deluxe-triple":   (1600, 1600, 2000, 2500, 3200),
+    "standard-family": (2000, 2000, 2450, 2950, 3300),
+    "suite-nonac":     (2250, 2250, 2700, 3150, 3500),
+    "deluxe-family":   (2350, 2350, 2800, 3400, 3800),
+    "suite-ac":        (2500, 2500, 2950, 3600, 4000),
 }
 PRICES = {k: v[0] for k, v in RATES.items()}  # lowest ("From") price
 # Nights (first and last night, inclusive) priced at the Festival rate
-FESTIVALS = [("Dasara", "2026-10-16", "2026-10-20"), ("Diwali", "2026-11-06", "2026-11-15"),
-             ("Makar Sankranti", "2027-01-14", "2027-01-16"), ("Republic Day", "2027-01-23", "2027-01-26")]
+FESTIVALS = [("Shri Saibaba Punyatithi (Dasara)", "2026-10-18", "2026-10-21"), ("Diwali", "2026-11-05", "2026-11-11"),
+             ("Republic Day", "2027-01-23", "2027-01-25")]
+# Nights priced at the Saturday rate whatever the day
+SAT_PERIODS = [("Diwali holidays", "2026-11-12", "2026-11-15"), ("Makar Sankranti", "2027-01-13", "2027-01-15")]
 # Nights priced at the published tariff card (no discount)
 CARD_PERIODS = [("Christmas and New Year", "2026-12-23", "2027-01-04")]
 VALID_TILL = "31 Jan 2027"
