@@ -82,4 +82,4 @@ REVIEWS = [
 ]
 
 # Extra photos shown on the rooms page under a room type
-EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"]}
+EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"]}
