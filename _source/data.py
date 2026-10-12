@@ -23,7 +23,8 @@ RATES = {
     "deluxe-triple":   (1600, 1600, 2000, 2500, 3200),
     "standard-family": (2000, 2000, 2450, 2950, 3300),
     "suite-nonac":     (2250, 2250, 2700, 3150, 3500),
-    "deluxe-family":   (2350, 2350, 2800, 3400, 3800),
+    "premium-triple":  (1950, 1950, 2350, 2850, 3550),
+    "deluxe-family":   (2750, 2750, 3200, 3800, 4200),  # Premium Deluxe Family, room 210
     "suite-ac":        (2500, 2500, 2950, 3600, 4000),
 }
 PRICES = {k: v[0] for k, v in RATES.items()}  # lowest ("From") price
@@ -44,12 +45,15 @@ ROOMS = [
     ("deluxe-triple", "Deluxe Triple Room", "AC", "about 160 sq ft", "1 double + 1 single bed", 3,
      "4 adults, or 3 adults + 2 children", "r-deluxe-triple.jpg",
      "A spacious air-conditioned room for three adults, with an attached bathroom. Some rooms have a balcony."),
+    ("premium-triple", "Premium Deluxe Triple Room", "AC", "about 160 sq ft", "1 double + 1 single bed", 3,
+     "4 adults, or 3 adults + 2 children", "r-premium-triple.jpg",
+     "Newly renovated in 2026: a double bed with storage drawers and a padded headboard, a matching single bed, a full-length mirror and a kettle with tea tray. Air-conditioned, with an attached bathroom."),
     ("compact-triple", "Compact Triple Room", "AC", "about 125 sq ft", "1 double + 1 single bed", 3,
      "4 adults, or 3 adults + 2 children", "r-compact-triple.jpg",
      "Smaller than our Deluxe Triple, air-conditioned, with an attached bathroom. Good value for a short darshan stay."),
-    ("deluxe-family", "Deluxe Family Room", "AC", "about 230 sq ft", "2 double beds", 4,
-     "6 adults, or 4 adults + 2 children", "r-deluxe-family-wide.jpg",
-     "Our largest room, air-conditioned, for families travelling together."),
+    ("deluxe-family", "Premium Deluxe Family Room", "AC", "about 230 sq ft", "2 double beds", 4,
+     "6 adults, or 4 adults + 2 children", "r-premium-family.jpg",
+     "Newly renovated in 2026: two double beds with storage drawers, wall shelves and a large mirror. Our largest air-conditioned room, for families travelling together."),
     ("suite-ac", "Family Suite, 2 rooms", "AC", "240–325 sq ft", "Double bed in one room, 2 single beds in the other", 4,
      "6 adults, or 4 adults + 2 children", "r-suite-combo.jpg",
      "Two air-conditioned rooms behind one private entrance, sharing a bathroom. The family stays together with a little more privacy."),
@@ -78,4 +82,4 @@ REVIEWS = [
 ]
 
 # Extra photos shown on the rooms page under a room type
-EXTRA_PHOTOS = {"deluxe-family": ["r-deluxe-family-2.jpg"]}
+EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"]}

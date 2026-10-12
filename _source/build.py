@@ -184,7 +184,7 @@ def index_body():
 <div class="section-head"><span class="eyebrow">Rooms</span><h2>A room for every group, from two to six</h2>
 <p class="muted">Every room has an attached bathroom, a 32-inch LED TV and 24-hour hot water. Weekday (Sunday to Friday night) prices shown, plus 5% GST. Our website and WhatsApp prices are always below booking sites.</p></div>
 <div class="rooms">{cards}</div>
-<p class="more"><a class="btn btn-line" href="rooms.html">All 9 room types, with beds and sizes</a></p>
+<p class="more"><a class="btn btn-line" href="rooms.html">All 10 room types, with beds and sizes</a></p>
 </div></section>
 
 {aarti()}
@@ -314,7 +314,7 @@ def rooms_body():
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap">
 <a class="back" href="index.html">← Back to home</a>
-<div class="section-head" style="margin-top:18px"><span class="eyebrow">Rooms and prices</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">9 room types, for two to six guests</h1>
+<div class="section-head" style="margin-top:18px"><span class="eyebrow">Rooms and prices</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">10 room types, for two to six guests</h1>
 <p class="muted">Every room has an attached bathroom with 24-hour hot water, a 32-inch LED TV and Wi-Fi. Extra person ₹250 per night; children up to 5 years stay free. Our website and WhatsApp prices are the lowest you will find, below booking sites.</p><p class="tagline">{TAGLINE}</p></div>
 <div class="rp">{arts}</div>
 {tariff_section()}
