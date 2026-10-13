@@ -37,12 +37,14 @@ def room_card(r):
     p = PRICES.get(rid)
     price = f'<span><span class="muted">Discounted tariff from</span> <b>{rupees(p)}</b> <span class="muted">/ night</span></span>' if p else '<span class="muted">Ask for today\'s rate</span>'
     msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
-    return f'''<article class="room"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
-<div class="body"><span class="tag">{ac}</span><h3>{E(name)}</h3><p class="muted">{E(text)}</p>
+    cls = "room premium" if name.startswith("Premium") else "room"
+    return f'''<article class="{cls}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
+<div class="body"><span class="tag">{ac}</span>{NEW if name.startswith("Premium") else ""}<h3>{E(name)}</h3><p class="muted">{E(text)}</p>
 <div class="facts"><span>{E(beds)}</span><span>Up to {E(mx)}</span></div>
 <div class="price">{price}<a href="{msg}" target="_blank" rel="noopener">Book on WhatsApp</a></div></div></article>'''
 
-FEATURED = ["deluxe-double", "deluxe-triple", "deluxe-family", "suite-ac", "standard-triple", "standard-double"]
+FEATURED = ["deluxe-family", "premium-triple", "deluxe-double", "deluxe-triple", "suite-ac", "standard-double"]
+NEW = '<span class="new-badge">New · renovated 2026</span>'
 
 def booking_box():
     opts = "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
@@ -154,7 +156,8 @@ def aarti():
 </div></section>'''
 
 def index_body():
-    cards = "".join(room_card(r) for r in ROOMS if r[0] in FEATURED)
+    byid = {r[0]: r for r in ROOMS}
+    cards = "".join(room_card(byid[k]) for k in FEATURED)
     revs = "".join(f'<blockquote><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{E(q)}”</p><cite>{E(n)} · Google review, {E(d)}</cite></blockquote>' for q, n, d in REVIEWS)
     route = '''<svg viewBox="0 0 220 40" role="img" aria-label="Walking route from Hotel Saikrupa to Gate 5/6, 350 metres">
 <path d="M10 28 C 60 28, 70 12, 110 14 S 170 26, 210 12" fill="none" stroke="var(--marigold)" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
@@ -300,14 +303,14 @@ def tariff_section():
 
 def rooms_body():
     arts = ""
-    for r in ROOMS:
+    for r in sorted(ROOMS, key=lambda r: not r[1].startswith("Premium")):
         rid, name, ac, size, beds, guests, mx, photo, text = r
         mw = RATES[rid][0]
         price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
-<div class="body"><span class="eyebrow">{ac}</span><h2 style="font-size:1.7rem">{E(name)}</h2><p class="muted">{E(text)}</p>
+<div class="body"><span class="eyebrow">{ac}</span>{NEW if name.startswith("Premium") else ""}<h2 style="font-size:1.7rem">{E(name)}</h2><p class="muted">{E(text)}</p>
 <table><tr><th>Beds</th><td>{E(beds)}</td></tr><tr><th>Size</th><td>{E(size)} (sleeping area)</td></tr>
 <tr><th>Standard</th><td>{guests} adults</td></tr><tr><th>Maximum</th><td>{E(mx)}</td></tr><tr><th>Price</th><td>{price}</td></tr></table>
 <p><a class="btn btn-wa" href="{msg}" target="_blank" rel="noopener">{WA_ICON}Book on WhatsApp</a></p></div>{extra}</article>'''
