@@ -29,7 +29,7 @@ def header(active=""):
 
 def footer():
     return f'''<div class="tag-band"><div class="wrap"><p>{TAGLINE}</p></div></div>
-<footer><div class="wrap"><span>© Hotel Saikrupa, Shirdi · {E(ADDRESS)}</span><span><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram @hotel_saikrupa_shirdi</a></span></div></footer>
+<footer><div class="wrap"><span>© Hotel Saikrupa, Shirdi · {E(ADDRESS)}</span><span><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram @hotel_saikrupa_shirdi</a> · <a href="privacy.html">Privacy policy</a></span></div></footer>
 <a class="btn btn-wa sticky-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}<span>WhatsApp us</span></a>'''
 
 def room_card(r):
@@ -324,6 +324,27 @@ def rooms_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
+def privacy_body():
+    return f'''{header()}
+<main><section style="padding-top:20px"><div class="wrap" style="max-width:760px">
+<a class="back" href="index.html">← Back to home</a>
+<div class="section-head" style="margin-top:18px"><span class="eyebrow">Privacy</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">Privacy policy</h1>
+<p class="muted">Hotel Saikrupa, Shirdi. Last updated 14 October 2026.</p></div>
+<h2>What we collect</h2>
+<ul><li>When you contact us on WhatsApp or by phone, we receive your name, phone number and the trip details you share with us, so that we can answer and confirm your booking.</li>
+<li>When you stay with us, we record your name, contact number, address and identity proof in our guest register, as required by law for hotels in India.</li>
+<li>This website uses Google Analytics to count visits and taps on the WhatsApp and call buttons. It does not collect your name or phone number.</li></ul>
+<h2>How we use it</h2>
+<ul><li>To answer your enquiries, manage your booking and stay, and meet legal requirements.</li>
+<li>If you agree, to send you occasional offers on WhatsApp. You can ask us to stop at any time.</li>
+<li>We do not sell your information or share it with anyone else, except where the law requires it.</li></ul>
+<h2>Google Business Profile</h2>
+<p>Our internal tools use Google's Business Profile APIs only to read and reply to reviews of our own hotel listing and to keep our listing up to date. Public reviews may be quoted, word for word, in our social media posts with the reviewer's first name and last initial. We do not use Google account data for any other purpose and do not share it with anyone.</p>
+<h2>Contact</h2>
+<p>For any question about your information, or to ask us to correct or delete it, write to <a href="mailto:{EMAIL}">{EMAIL}</a> or WhatsApp <a href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.<br>Hotel Saikrupa, {E(ADDRESS)}.</p>
+<p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
+{footer()}'''
+
 FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I pay the advance?', "By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there."), ('Do your prices go up at festivals?', 'Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.'), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
 
 JSONLD = {
@@ -371,6 +392,7 @@ def main():
     os.makedirs(prev, exist_ok=True)
     open(os.path.join(site, "index.html"), "w", encoding="utf-8").write(full(TITLE, DESC, index_body(), "https://www.shirdihotelsaikrupa.com/", True))
     open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and Prices | Hotel Saikrupa Shirdi", "AC and non-AC rooms in Shirdi near Shri Saibaba Samadhi Mandir: doubles, triples, family rooms and suites for up to 6, with weekday, weekend and festival prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
+    open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(full("Privacy Policy | Hotel Saikrupa Shirdi", "How Hotel Saikrupa, Shirdi collects and uses guest information.", privacy_body(), "https://www.shirdihotelsaikrupa.com/privacy.html"))
     # preview: index without document wrapper; rooms as a full page
     open(os.path.join(prev, "index.html"), "w", encoding="utf-8").write(f"<title>{TITLE}</title>\n{FONTS}\n<style>{CSS}</style>\n{index_body()}")
     shutil.copy(os.path.join(site, "rooms.html"), os.path.join(prev, "rooms.html"))
