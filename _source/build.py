@@ -62,7 +62,7 @@ def booking_box():
 <p class="est" id="f-est" aria-live="polite"></p>
 <a class="btn btn-wa" id="f-go" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}Ask on WhatsApp</a>
 </form>
-<p class="note">Best price guaranteed: our direct prices are always below booking sites. We reply on WhatsApp with availability for your dates. Or call {PHONE_DISPLAY}.<br><b>Advance payment by UPI after we confirm your room on WhatsApp.</b></p>
+<p class="note">Best price guaranteed: our direct prices are always below booking sites. We reply on WhatsApp with availability for your dates. Or call <a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.<br><b>Advance payment by UPI after we confirm your room on WhatsApp.</b></p>
 </div>"""
 
 def room_js():
@@ -170,7 +170,7 @@ def index_body():
 <p class="lead">A family-run, pure-vegetarian hotel in Shirdi with 38 AC and non-AC rooms, from budget doubles to family suites for six.</p>
 <p class="tagline">{TAGLINE}</p>
 <div class="ctas"><a class="btn btn-wa" href="#book">{WA_ICON}Check availability</a><a class="btn btn-line" href="rooms.html">See rooms and prices</a></div>
-<p class="phone-line">Call or WhatsApp <b>{PHONE_DISPLAY}</b> · Landline {LANDLINES}</p></div>
+<p class="phone-line">Call or WhatsApp <b><a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a></b> · Landline {LANDLINES}</p></div>
 <div class="hero-photo"><img src="img/facade-new-hero.jpg" alt="Hotel Saikrupa building on Kankuri Road, Shirdi" width="1600" height="1374">
 <div class="route">{route}<div><strong>350 m · 5 min walk</strong><span class="lbl">to Samadhi Mandir, Gate 5/6</span></div></div></div>
 </div></section>
@@ -270,7 +270,7 @@ def index_body():
 <section class="reach" id="reach"><div class="wrap info">
 <div><h2>Reach us</h2><p class="tagline" style="color:inherit;opacity:.9">{TAGLINE}</p>
 <dl class="dl" style="margin-top:18px"><dt>Address</dt><dd>{E(ADDRESS)}</dd>
-<dt>Call or WhatsApp</dt><dd>{PHONE_DISPLAY}</dd><dt>Landline</dt><dd>{LANDLINES}</dd><dt>Email</dt><dd>{EMAIL}</dd></dl>
+<dt>Call or WhatsApp</dt><dd><a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a></dd><dt>Landline</dt><dd>{LANDLINES}</dd><dt>Email</dt><dd>{EMAIL}</dd></dl>
 <div class="ctas"><a class="btn btn-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}WhatsApp us</a><a class="btn btn-line" href="{MAPS}" target="_blank" rel="noopener">Open in Google Maps</a></div></div>
 <div><img src="img/facade-dusk.jpg" alt="Hotel Saikrupa lit up in the evening" loading="lazy" style="border-radius:var(--r)"></div>
 </div></section>
