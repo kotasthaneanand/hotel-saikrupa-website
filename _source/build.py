@@ -365,8 +365,9 @@ FAQLD = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"
 # Counts only on the real domain, so local test pages are not counted.
 # Also records WhatsApp and phone taps as events: whatsapp_click (where: booking_form or other) and call_click.
 GA_ID = "G-56FJB5HJES"
+ADS_ID = "AW-18516178237"  # Google Ads account (Hotel Sai Krupa, created 16 Oct 2026); same tag, so ad clicks can be measured
 GA = f'''<script>if(/(^|\\.)shirdihotelsaikrupa\\.com$/.test(location.hostname)){{var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id={GA_ID}';document.head.appendChild(s);}}
-window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');
+window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');gtag('config','{ADS_ID}');
 document.addEventListener('click',function(e){{var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
 if(h.indexOf('https://wa.me/')===0)gtag('event','whatsapp_click',{{where:a.closest('form')?'booking_form':'other',page:location.pathname}});
 else if(h.indexOf('tel:')===0)gtag('event','call_click',{{page:location.pathname}});}},true);</script>'''
