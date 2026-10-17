@@ -177,8 +177,8 @@ def index_body():
 
 <div class="wrap">{booking_box()}
 <div class="proof">
-<div><b>4.6 ★</b><span>on Google, from 1,160+ guest reviews</span></div>
-<div><b>97%</b><span>of 2025–26 guests rated us 4 or 5 stars</span></div>
+<div><b>4.6 ★</b><span>on Google, from 1,160+ guest reviews</span><a class="proof-link" href="reviews.html">Read reviews →</a></div>
+<div><b>97%</b><span>of 2025–26 guests rated us 4 or 5 stars</span><a class="proof-link" href="reviews.html">See reviews →</a></div>
 <div><b>38</b><span>rooms, including family rooms and suites for up to 6</span></div>
 <div><b>24 × 7</b><span>hot water, Wi-Fi on every floor, ample parking</span></div>
 </div></div>
