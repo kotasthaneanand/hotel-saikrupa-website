@@ -219,5 +219,4 @@ OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT C
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
 # Extra photos shown on the rooms page under a room type
-EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"],
-                "suite-ac": ["r-suite-singles.jpg"], "suite-nonac": ["r-suite-singles.jpg"]}
+EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"]}  # Family Suite twin-bed photo: waiting for the original from Anand (crop removed 17 Oct)
