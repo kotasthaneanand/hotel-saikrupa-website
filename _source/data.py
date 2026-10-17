@@ -67,7 +67,7 @@ ROOMS = [
      "6 adults, or 4 adults + 2 children", "room-family.jpg",
      "A large non-AC room for families and groups."),
     ("suite-nonac", "Family Suite, 2 rooms", "Non-AC", "about 325 sq ft", "Double + single bed in one room, 2 single beds in the other", 4,
-     "6 adults, or 4 adults + 2 children", "r-suite-double.jpg",
+     "6 adults, or 4 adults + 2 children", "r-suite-nonac-double.jpg",
      "Two non-AC rooms behind one private entrance, sharing a bathroom."),
 ]
 
@@ -218,6 +218,46 @@ OTA_REVIEWS = []
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
+# Photo gallery page (gallery.html), Anand's photos of 17 Oct 2026: (file, caption)
+GALLERY = [  # (group heading, [(file, caption), ...])
+    ("The hotel", [
+        ("g-facade-day.jpg", "Hotel Saikrupa, Kankuri Road, Shirdi"),
+        ("g-facade-lit.jpg", "Lit up for the festival season"),
+        ("facade-dusk.jpg", "The hotel in the evening"),
+        ("since-1988.jpg", "स्थापना १९८८: welcoming devotees since 1988"),
+        ("parking.jpg", "Ample parking for cars and buses"),
+        ("terrace.jpg", "Covered terrace garden, first floor"),
+    ]),
+    ("Reception and lobby", [
+        ("g-entrance.jpg", "Our entrance, decorated with fresh flowers"),
+        ("g-entrance-day.jpg", "Reception, renovated in 2026"),
+        ("g-reception-desk.jpg", "Reception desk, with Shri Saibaba's portrait"),
+        ("g-reception.jpg", "Reception and lobby seating"),
+        ("g-lobby.jpg", "The lobby"),
+        ("g-lobby-family.jpg", "Anjali Kotasthane, partner in Hotel Saikrupa, in the renovated lobby"),
+        ("murti.jpg", "Shri Saibaba murti in the lobby"),
+        ("g-brass-lamps.jpg", "Brass lamps in the lobby"),
+        ("g-staircase.jpg", "Staircase to the rooms"),
+    ]),
+    ("Rooms", [
+        ("r-premium-family.jpg", "Premium family room, renovated 2026"),
+        ("r-premium-triple.jpg", "Premium triple room, renovated 2026"),
+        ("r-deluxe-double.jpg", "Deluxe double room"),
+        ("r-deluxe-family.jpg", "Deluxe family room"),
+        ("r-suite-double.jpg", "Family Suite: double-bed room"),
+        ("r-suite-twin.jpg", "Family Suite: twin-bed room"),
+        ("r-suite-nonac-double.jpg", "Non-AC Family Suite: double-bed room"),
+        ("g-room-double.jpg", "Double room, fresh towels and blankets"),
+        ("g-bathroom.jpg", "Attached bathroom with western toilet and hot water"),
+    ]),
+    ("Sacred places and the view", [
+        ("view-statue-day.jpg", "Shri Saibaba statue near the Samadhi Mandir, seen from the hotel"),
+        ("view-statue-dusk.jpg", "The same view, lit up in the evening"),
+        ("shrine-maulay-devi.jpg", "Maulay Devi Mandir, within our premises"),
+        ("shrine-datta.jpg", "Shri Datta murti, within our premises"),
+    ]),
+]
+
 # Extra photos shown on the rooms page under a room type
 EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"],
-                "suite-ac": ["r-suite-twin.jpg"]}  # Family Suite (AC) twin-bed room, original photo from Anand 17 Oct
+                "suite-ac": ["r-suite-twin.jpg"], "suite-nonac": ["r-suite-nonac-double-2.jpg"]}  # Family Suite (AC) twin-bed room, original photo from Anand 17 Oct
