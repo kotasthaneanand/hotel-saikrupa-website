@@ -171,7 +171,7 @@ def index_body():
 <p class="tagline">{TAGLINE}</p>
 <div class="ctas"><a class="btn btn-wa" href="#book">{WA_ICON}Check availability</a><a class="btn btn-line" href="rooms.html">See rooms and prices</a></div>
 <p class="phone-line">Call or WhatsApp <b><a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a></b> · Landline {LANDLINES}</p></div>
-<div class="hero-photo"><img src="img/facade-new-hero.jpg" alt="Hotel Saikrupa building on Kankuri Road, Shirdi" width="1600" height="1374">
+<div class="hero-photo"><img src="img/facade-new-hero.jpg" alt="Hotel Saikrupa building on Kankuri Road, Shirdi" width="1200" height="1500">
 <div class="route">{route}<div><strong>350 m · 5 min walk</strong><span class="lbl">to Samadhi Mandir, Gate 5/6</span></div></div></div>
 </div></section>
 
