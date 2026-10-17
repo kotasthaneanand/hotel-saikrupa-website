@@ -192,6 +192,14 @@ def index_body():
 
 {aarti()}
 
+<section class="view" id="view"><div class="wrap">
+<div class="section-head"><span class="eyebrow">Steps from the Mandir</span><h2>Shri Saibaba, seen from our hotel</h2>
+<p class="muted">The Shri Saibaba statue near the Samadhi Mandir is in view from Hotel Saikrupa. Our guests see it in the morning light and lit up in the evening.</p></div>
+<div class="view-grid">
+<figure><img src="img/view-statue-day.jpg" alt="Shri Saibaba statue near the Samadhi Mandir, Shirdi, in the morning, seen from Hotel Saikrupa" width="1200" height="1600" loading="lazy"><figcaption>Morning</figcaption></figure>
+<figure><img src="img/view-statue-dusk.jpg" alt="Shri Saibaba statue near the Samadhi Mandir, Shirdi, lit up in the evening, seen from Hotel Saikrupa" width="1600" height="1200" loading="lazy"><figcaption>Evening</figcaption></figure>
+</div></div></section>
+
 <section id="stay"><div class="wrap">
 <div class="section-head"><span class="eyebrow">The hotel</span><h2>Simple, clean, and run by a family since 1988</h2><p class="muted" style="font-size:1.1rem">Founded in 1988 by Dr. Avinash Kotasthane, Hotel Saikrupa has been a second home to Shri Saibaba's devotees for 38 years.</p></div>
 <div class="fac">
@@ -207,6 +215,12 @@ def index_body():
 <li>32-inch LED TV in every room</li><li>Covered terrace garden restaurant, first floor</li><li>Breakfast from November 2026</li>
 <li>Ample parking for cars and buses</li><li>Check-in 12 noon · Check-out 11 am</li><li>Children up to 5 years stay free</li>
 </ul>
+<div class="section-head" style="margin-top:44px"><h3 class="sub-h">Sacred places within our premises</h3></div>
+<div class="view-grid two">
+<figure><img src="img/shrine-maulay-devi.jpg" alt="Maulay Devi Mandir within the Hotel Saikrupa premises, Shirdi" width="1600" height="1200" loading="lazy"><figcaption>Maulay Devi Mandir</figcaption></figure>
+<figure><img src="img/shrine-datta.jpg" alt="Shri Datta murti within the Hotel Saikrupa premises, Shirdi" width="1600" height="1200" loading="lazy"><figcaption>Shri Datta murti</figcaption></figure>
+</div>
+<p class="muted shrine-note">The Maulay Devi Mandir, within our premises, has a long history. Shirdi villagers, especially newly-weds, and Shirdi residents come here regularly to seek blessings and make offerings on important occasions. The Shri Datta murti stands just opposite the mandir.</p>
 </div></section>
 
 <section id="reviews" style="background:var(--paper-2)"><div class="wrap">
