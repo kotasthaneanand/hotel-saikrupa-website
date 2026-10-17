@@ -67,7 +67,7 @@ ROOMS = [
      "6 adults, or 4 adults + 2 children", "room-family.jpg",
      "A large non-AC room for families and groups."),
     ("suite-nonac", "Family Suite, 2 rooms", "Non-AC", "about 325 sq ft", "Double + single bed in one room, 2 single beds in the other", 4,
-     "6 adults, or 4 adults + 2 children", "r-suite-double.jpg",
+     "6 adults, or 4 adults + 2 children", "r-suite-nonac-double.jpg",
      "Two non-AC rooms behind one private entrance, sharing a bathroom."),
 ]
 
@@ -246,6 +246,7 @@ GALLERY = [  # (group heading, [(file, caption), ...])
         ("r-deluxe-family.jpg", "Deluxe family room"),
         ("r-suite-double.jpg", "Family Suite: double-bed room"),
         ("r-suite-twin.jpg", "Family Suite: twin-bed room"),
+        ("r-suite-nonac-double.jpg", "Non-AC Family Suite: double-bed room"),
         ("g-room-double.jpg", "Double room, fresh towels and blankets"),
         ("g-bathroom.jpg", "Attached bathroom with western toilet and hot water"),
     ]),
@@ -259,4 +260,4 @@ GALLERY = [  # (group heading, [(file, caption), ...])
 
 # Extra photos shown on the rooms page under a room type
 EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"],
-                "suite-ac": ["r-suite-twin.jpg"]}  # Family Suite (AC) twin-bed room, original photo from Anand 17 Oct
+                "suite-ac": ["r-suite-twin.jpg"], "suite-nonac": ["r-suite-nonac-double-2.jpg"]}  # Family Suite (AC) twin-bed room, original photo from Anand 17 Oct
