@@ -153,6 +153,9 @@ section{padding-block:56px}
 .rv-feature blockquote p{margin:0;font-size:1.15rem}
 .rv-feature cite{font-style:normal;font-size:.9rem;color:var(--muted)}
 @media (max-width:640px){.rv-feature{grid-template-columns:1fr}.rv-feature figure{max-width:260px}}
+.rv-photo{margin:0 0 22px;max-width:760px}
+.rv-photo img{width:100%;height:auto;border-radius:var(--r)}
+.rv-photo figcaption{font-size:.85rem;color:var(--muted);margin-top:6px}
 .rv-end{margin-top:30px;padding:24px;border-radius:var(--r);background:var(--paper-2);display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
 .rv-end .ctas{display:flex;flex-wrap:wrap;gap:10px}
 
