@@ -29,7 +29,7 @@ def header(active=""):
 
 def footer():
     return f'''<div class="tag-band"><div class="wrap"><p>{TAGLINE}</p></div></div>
-<footer><div class="wrap"><span>© Hotel Saikrupa, Shirdi · {E(ADDRESS)}</span><span><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram @hotel_saikrupa_shirdi</a> · <a href="privacy.html">Privacy policy</a></span></div></footer>
+<footer><div class="wrap"><span>© Hotel Saikrupa, Shirdi · {E(ADDRESS)}</span><span><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram @hotel_saikrupa_shirdi</a> · <a href="gallery.html">Photos</a> · <a href="reviews.html">Reviews</a> · <a href="privacy.html">Privacy policy</a></span></div></footer>
 <a class="btn btn-wa sticky-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}<span>WhatsApp us</span></a>'''
 
 def room_card(r):
@@ -210,6 +210,7 @@ def index_body():
 <figure class="f5"><img src="img/terrace.jpg" alt="Covered terrace garden on the first floor" loading="lazy"><figcaption>Terrace garden, first floor</figcaption></figure>
 <figure class="f6"><img src="img/parking.jpg" alt="Hotel parking area" loading="lazy"><figcaption>Ample parking</figcaption></figure>
 </div>
+<p class="more"><a class="btn btn-line" href="gallery.html">See all photos of the hotel →</a></p>
 <ul class="amen">
 <li>Pure vegetarian, alcohol-free, no smoking</li><li>24-hour hot water (central solar system)</li><li>High-speed Wi-Fi on all floors and in the lobby</li>
 <li>32-inch LED TV in every room</li><li>Covered terrace garden restaurant, first floor</li><li>Breakfast from November 2026</li>
