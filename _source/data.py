@@ -218,6 +218,19 @@ OTA_REVIEWS = []
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
+# Photo gallery page (gallery.html), Anand's photos of 17 Oct 2026: (file, caption)
+GALLERY = [
+    ("g-facade-day.jpg", "Hotel Saikrupa, Kankuri Road, Shirdi"),
+    ("g-facade-lit.jpg", "Lit up for the festival season"),
+    ("g-entrance.jpg", "Our entrance, decorated with fresh flowers"),
+    ("g-reception.jpg", "Reception and lobby"),
+    ("g-reception-desk.jpg", "Reception desk, with Shri Saibaba's portrait"),
+    ("g-lobby.jpg", "Lobby seating"),
+    ("g-brass-lamps.jpg", "Brass lamps in the lobby"),
+    ("g-staircase.jpg", "Staircase to the rooms"),
+    ("g-bathroom.jpg", "Attached bathroom with western toilet and hot water"),
+]
+
 # Extra photos shown on the rooms page under a room type
 EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"],
                 "suite-ac": ["r-suite-twin.jpg"]}  # Family Suite (AC) twin-bed room, original photo from Anand 17 Oct

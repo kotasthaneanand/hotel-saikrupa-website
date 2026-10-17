@@ -23,7 +23,7 @@ def rupees(n): return f"₹{n:,}"
 def header(active=""):
     return f'''<header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>
-<nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="index.html#aarti">Aarti timings</a><a href="reviews.html">Reviews</a><a href="index.html#reach">Reach us</a></nav>
+<nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="index.html#aarti">Aarti timings</a><a href="reviews.html">Reviews</a><a href="gallery.html">Photos</a><a href="index.html#reach">Reach us</a></nav>
 <a class="btn btn-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}<span>WhatsApp {PHONE_DISPLAY}</span></a>
 </div></header>'''
 
@@ -387,6 +387,23 @@ def reviews_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
+def gallery_body():
+    from PIL import Image
+    figs = ""
+    for f, cap in GALLERY:
+        w, h = Image.open(os.path.join(ROOT, "img", f)).size
+        figs += f'<figure><img src="img/{f}" alt="{E(cap)}" width="{w}" height="{h}" loading="lazy"><figcaption>{E(cap)}</figcaption></figure>'
+    return f'''{header()}
+<main><section style="padding-top:20px"><div class="wrap">
+<a class="back" href="index.html">← Back to home</a>
+<div class="section-head" style="margin-top:18px"><span class="eyebrow">Photos</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">A look around Hotel Saikrupa</h1>
+<p class="muted">The building, reception and lobby after our 2026 renovation. Room photos are on the <a href="rooms.html">rooms page</a>.</p></div>
+<div class="gallery">{figs}</div>
+<div class="rv-end"><div><h2>Like what you see?</h2><p class="muted">Tell us your dates on WhatsApp and we reply with the best price.</p></div>
+<div class="ctas"><a class="btn btn-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}WhatsApp {PHONE_DISPLAY}</a><a class="btn btn-line" href="rooms.html">See rooms and prices</a></div></div>
+<p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
+{footer()}'''
+
 def privacy_body():
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap" style="max-width:760px">
@@ -458,6 +475,7 @@ def main():
     open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and Prices | Hotel Saikrupa Shirdi", "AC and non-AC rooms in Shirdi near Shri Saibaba Samadhi Mandir: doubles, triples, family rooms and suites for up to 6, with weekday, weekend and festival prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
     open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(full("Privacy Policy | Hotel Saikrupa Shirdi", "How Hotel Saikrupa, Shirdi collects and uses guest information.", privacy_body(), "https://www.shirdihotelsaikrupa.com/privacy.html"))
     open(os.path.join(site, "reviews.html"), "w", encoding="utf-8").write(full("Guest Reviews | Hotel Saikrupa Shirdi", "Read what devotees and families say about Hotel Saikrupa, Shirdi: 40 five-star Google reviews on our location near Shri Saibaba Samadhi Mandir, clean rooms, staff and prices.", reviews_body(), "https://www.shirdihotelsaikrupa.com/reviews.html"))
+    open(os.path.join(site, "gallery.html"), "w", encoding="utf-8").write(full("Photos | Hotel Saikrupa Shirdi", "Photos of Hotel Saikrupa, Shirdi: the building on Kankuri Road, reception, lobby and bathrooms after the 2026 renovation, 350 m from Shri Saibaba Samadhi Mandir.", gallery_body(), "https://www.shirdihotelsaikrupa.com/gallery.html"))
     # preview: index without document wrapper; rooms as a full page
     open(os.path.join(prev, "index.html"), "w", encoding="utf-8").write(f"<title>{TITLE}</title>\n{FONTS}\n<style>{CSS}</style>\n{index_body()}")
     shutil.copy(os.path.join(site, "rooms.html"), os.path.join(prev, "rooms.html"))
