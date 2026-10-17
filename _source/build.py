@@ -192,6 +192,14 @@ def index_body():
 
 {aarti()}
 
+<section class="view" id="view"><div class="wrap">
+<div class="section-head"><span class="eyebrow">Steps from the Mandir</span><h2>Shri Saibaba, seen from our hotel</h2>
+<p class="muted">The Shri Saibaba statue near the Samadhi Mandir is in view from Hotel Saikrupa. Our guests see it in the morning light and lit up in the evening.</p></div>
+<div class="view-grid">
+<figure><img src="img/view-statue-day.jpg" alt="Shri Saibaba statue near the Samadhi Mandir, Shirdi, in the morning, seen from Hotel Saikrupa" width="1200" height="1600" loading="lazy"><figcaption>Morning</figcaption></figure>
+<figure><img src="img/view-statue-dusk.jpg" alt="Shri Saibaba statue near the Samadhi Mandir, Shirdi, lit up in the evening, seen from Hotel Saikrupa" width="1600" height="1200" loading="lazy"><figcaption>Evening</figcaption></figure>
+</div></div></section>
+
 <section id="stay"><div class="wrap">
 <div class="section-head"><span class="eyebrow">The hotel</span><h2>Simple, clean, and run by a family since 1988</h2><p class="muted" style="font-size:1.1rem">Founded in 1988 by Dr. Avinash Kotasthane, Hotel Saikrupa has been a second home to Shri Saibaba's devotees for 38 years.</p></div>
 <div class="fac">
