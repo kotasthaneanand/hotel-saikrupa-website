@@ -324,11 +324,20 @@ def rooms_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
-def quote_card(q, n, d):
-    return f'<blockquote><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{E(q)}”</p><cite>{E(n)} · Google review, {E(d)}</cite></blockquote>'
+def quote_card(q, n, d, src="Google", stars=5):
+    return f'<blockquote><span class="stars" aria-label="{stars} out of 5 stars">{"★" * stars}</span><p>“{E(q)}”</p><cite>{E(n)} · {E(src)} review, {E(d)}</cite></blockquote>'
+
+def ota_section():
+    if not OTA_REVIEWS:
+        return ""
+    cards = "".join(quote_card(q, n, d, src, st) for q, n, src, d, st in OTA_REVIEWS)
+    rating = f" Rated {E(OTA_RATING)} on MakeMyTrip." if OTA_RATING else ""
+    return f'''<section class="rv-group" id="ota"><div class="section-head"><span class="eyebrow">MakeMyTrip and Goibibo</span><h2>From guests who booked online</h2>
+<p class="muted">{E(OTA_COUNT)} ratings from guests who booked through MakeMyTrip and Goibibo.{rating} Booking direct on WhatsApp is always cheaper.</p></div>
+<div class="rv-wall">{cards}</div></section>'''
 
 def reviews_body():
-    chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS)
+    chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS) + ('<a href="#ota">MakeMyTrip and Goibibo</a>' if OTA_REVIEWS else "")
     groups = "".join(f'''<section class="rv-group" id="{gid}"><div class="section-head"><h2>{E(t)}</h2><p class="muted">{E(intro)}</p></div>
 <div class="rv-wall">{"".join(quote_card(*x) for x in qs)}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
     msg = wa("Namaste, I read the guest reviews on your website. Please share room availability and the best price at Hotel Saikrupa, Shirdi.")
@@ -345,6 +354,7 @@ def reviews_body():
 </div>
 <nav class="rv-chips" aria-label="Review topics">{chips}</nav>
 {groups}
+{ota_section()}
 <div class="rv-end"><div><h2>Stayed with us?</h2><p class="muted">Your review helps other devotees choose. It takes a minute on Google.</p></div>
 <div class="ctas">{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Write a Google review</a>') if GOOGLE_WRITE_REVIEW else ''}<a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a><a class="btn btn-wa" href="{msg}" target="_blank" rel="noopener">{WA_ICON}Ask for your dates</a></div></div>
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>

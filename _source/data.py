@@ -148,5 +148,12 @@ REVIEW_GROUPS = [('near',
     'Aug 2026'),
    ('Nice hotel As we are coming in this hotel since Five Years Cheap and best RATES', 'Surendra J.', 'Feb 2025')])]
 
+# MakeMyTrip / Goibibo reviews for the reviews page. 4 and 5 stars only, word for word (trimmed only, … marks a cut).
+# Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY").
+# The section stays hidden while this list is empty.
+OTA_REVIEWS = []
+OTA_COUNT = "120"  # ratings on MakeMyTrip and Goibibo together (MMT Connect, 17 Oct 2026)
+OTA_RATING = ""    # overall MakeMyTrip rating, e.g. "4.2 / 5"; left blank until confirmed
+
 # Extra photos shown on the rooms page under a room type
 EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"]}
