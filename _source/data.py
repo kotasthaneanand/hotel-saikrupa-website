@@ -234,6 +234,7 @@ GALLERY = [  # (group heading, [(file, caption), ...])
         ("g-reception-desk.jpg", "Reception desk, with Shri Saibaba's portrait"),
         ("g-reception.jpg", "Reception and lobby seating"),
         ("g-lobby.jpg", "The lobby"),
+        ("g-lobby-family.jpg", "Anjali Kotasthane, partner in Hotel Saikrupa, in the renovated lobby"),
         ("murti.jpg", "Shri Saibaba murti in the lobby"),
         ("g-brass-lamps.jpg", "Brass lamps in the lobby"),
         ("g-staircase.jpg", "Staircase to the rooms"),
