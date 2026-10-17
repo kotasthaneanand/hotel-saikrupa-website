@@ -76,7 +76,11 @@ section{padding-block:56px}
 .enquire{background:var(--blue);color:var(--on-accent);border-radius:var(--r);padding:22px;display:grid;gap:14px}
 .enquire h2{color:var(--on-accent);font-size:1.5rem}
 .form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
-.form label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
+.form label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9;min-width:0}
+/* iPad/iPhone Safari draws date boxes wider than their column and centres the date: keep them inside the cell */
+.form input,.form select{height:46px;box-sizing:border-box;line-height:1.2}
+.form input[type=date]{-webkit-appearance:none;appearance:none;display:block;max-width:100%;text-align:left}
+.form input[type=date]::-webkit-date-and-time-value{text-align:left}
 .form input,.form select{font:inherit;font-size:1rem;text-transform:none;letter-spacing:0;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:var(--card);color:var(--ink);min-width:0;width:100%}
 .form .btn-wa{height:46px;white-space:nowrap}
 .enquire .note{font-size:.88rem;opacity:.85}

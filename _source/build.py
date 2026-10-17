@@ -311,7 +311,7 @@ def rooms_body():
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
         arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
 <div class="body"><span class="eyebrow">{ac}</span>{NEW if name.startswith("Premium") else ""}<h2 style="font-size:1.7rem">{E(name)}</h2><p class="muted">{E(text)}</p>
-<table><tr><th>Beds</th><td>{E(beds)}</td></tr><tr><th>Size</th><td>{E(size)} (sleeping area)</td></tr>
+<table><tr><th>Beds</th><td>{E(beds)}</td></tr><tr><th>Size</th><td>{E(size)} (excluding bathroom)</td></tr>
 <tr><th>Standard</th><td>{guests} adults</td></tr><tr><th>Maximum</th><td>{E(mx)}</td></tr><tr><th>Price</th><td>{price}</td></tr></table>
 <p><a class="btn btn-wa" href="{msg}" target="_blank" rel="noopener">{WA_ICON}Book on WhatsApp</a></p></div>{extra}</article>'''
     return f'''{header()}
