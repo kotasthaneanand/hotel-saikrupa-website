@@ -390,15 +390,18 @@ def reviews_body():
 def gallery_body():
     from PIL import Image
     figs = ""
-    for f, cap in GALLERY:
-        w, h = Image.open(os.path.join(ROOT, "img", f)).size
-        figs += f'<figure><img src="img/{f}" alt="{E(cap)}" width="{w}" height="{h}" loading="lazy"><figcaption>{E(cap)}</figcaption></figure>'
+    for heading, items in GALLERY:
+        figs += f'<h2 class="g-h">{E(heading)}</h2><div class="gallery">'
+        for f, cap in items:
+            w, h = Image.open(os.path.join(ROOT, "img", f)).size
+            figs += f'<figure><img src="img/{f}" alt="{E(cap)}" width="{w}" height="{h}" loading="lazy"><figcaption>{E(cap)}</figcaption></figure>'
+        figs += '</div>'
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap">
 <a class="back" href="index.html">← Back to home</a>
 <div class="section-head" style="margin-top:18px"><span class="eyebrow">Photos</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">A look around Hotel Saikrupa</h1>
-<p class="muted">The building, reception and lobby after our 2026 renovation. Room photos are on the <a href="rooms.html">rooms page</a>.</p></div>
-<div class="gallery">{figs}</div>
+<p class="muted">The building, reception, rooms and the sacred places within our premises, after our 2026 renovation. Prices for every room type are on the <a href="rooms.html">rooms page</a>.</p></div>
+{figs}
 <div class="rv-end"><div><h2>Like what you see?</h2><p class="muted">Tell us your dates on WhatsApp and we reply with the best price.</p></div>
 <div class="ctas"><a class="btn btn-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}WhatsApp {PHONE_DISPLAY}</a><a class="btn btn-line" href="rooms.html">See rooms and prices</a></div></div>
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
