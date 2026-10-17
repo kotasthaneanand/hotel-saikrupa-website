@@ -38,7 +38,7 @@ def room_card(r):
     price = f'<span><span class="muted">Discounted tariff from</span> <b>{rupees(p)}</b> <span class="muted">/ night</span></span>' if p else '<span class="muted">Ask for today\'s rate</span>'
     msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
     cls = "room premium" if name.startswith("Premium") else "room"
-    return f'''<article class="{cls}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
+    return f'''<article class="{cls}"><a class="photo-wa" href="{msg}" target="_blank" rel="noopener" aria-label="Book {E(name)} ({ac}) on WhatsApp"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy"><span class="photo-wa-tag">{WA_ICON}Book</span></a>
 <div class="body"><span class="tag">{ac}</span>{NEW if name.startswith("Premium") else ""}<h3>{E(name)}</h3><p class="muted">{E(text)}</p>
 <div class="facts"><span>{E(beds)}</span><span>Up to {E(mx)}</span></div>
 <div class="price">{price}<a href="{msg}" target="_blank" rel="noopener">Book on WhatsApp</a></div></div></article>'''
@@ -323,7 +323,7 @@ def rooms_body():
         price = f"Discounted tariff from <b>{rupees(mw)}</b> per night, plus 5% GST<br><a href='index.html#book'>Tell us about your trip for the best rate →</a>"
         msg = wa(f"Namaste, I would like to book a {name} ({ac}) at Hotel Saikrupa. Dates: __ . Guests: __ .")
         extra = "".join(f'<img class="extra" src="img/{x}" alt="{E(name)}, another view" loading="lazy">' for x in EXTRA_PHOTOS.get(rid, []))
-        arts += f'''<article id="{rid}"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy">
+        arts += f'''<article id="{rid}"><a class="photo-wa" href="{msg}" target="_blank" rel="noopener" aria-label="Book {E(name)} ({ac}) on WhatsApp"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy"><span class="photo-wa-tag">{WA_ICON}Book</span></a>
 <div class="body"><span class="eyebrow">{ac}</span>{NEW if name.startswith("Premium") else ""}<h2 style="font-size:1.7rem">{E(name)}</h2><p class="muted">{E(text)}</p>
 <table><tr><th>Beds</th><td>{E(beds)}</td></tr><tr><th>Size</th><td>{E(size)} (excluding bathroom)</td></tr>
 <tr><th>Standard</th><td>{guests} adults</td></tr><tr><th>Maximum</th><td>{E(mx)}</td></tr><tr><th>Price</th><td>{price}</td></tr></table>

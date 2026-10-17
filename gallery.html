@@ -155,6 +155,14 @@ section{padding-block:56px}
 .gallery img{width:100%;height:auto;display:block}
 .gallery figcaption{padding:8px 12px;font-size:.9rem;color:var(--muted)}
 
+/* room photo opens the WhatsApp booking message */
+.photo-wa{position:relative;display:block;line-height:0}
+.photo-wa-tag{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--wa);color:var(--on-accent);font-size:.85rem;font-weight:600;line-height:1.2;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.photo-wa-tag svg{width:16px;height:16px;fill:currentColor}
+.rp article>a.photo-wa{grid-column:1;grid-row:1;align-self:start}
+.rp article>a.photo-wa img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+@media (max-width:760px){.rp article>a.photo-wa{grid-column:auto;grid-row:auto}}
+
 /* reviews */
 .rv-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin-bottom:22px}
 .rv-top b{font-family:var(--display);font-weight:400;font-size:2.2rem;color:var(--red)}
