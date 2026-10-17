@@ -164,7 +164,7 @@ FEATURED_STORY = {
 # The section stays hidden while this list is empty.
 OTA_REVIEWS = []
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
-OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026 (Anand to decide)
+OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
 # Extra photos shown on the rooms page under a room type
 EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"]}
