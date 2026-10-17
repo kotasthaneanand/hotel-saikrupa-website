@@ -148,6 +148,17 @@ REVIEW_GROUPS = [('near',
     'Aug 2026'),
    ('Nice hotel As we are coming in this hotel since Five Years Cheap and best RATES', 'Surendra J.', 'Feb 2025')])]
 
+# Featured story on the reviews page: guest's silver chain returned (4 Aug 2026). Review word for word.
+# Photo is a still from the hotel's video with the guest's face blurred until he agrees to the website showing it.
+FEATURED_STORY = {
+    "title": "A guest's silver chain, kept safe for a month",
+    "photo": "chain-returned.jpg",
+    "alt": "Hotel Saikrupa's reception manager handing back a silver chain to a guest at reception, guest's face blurred",
+    "caption": "Returned by the Hotel Saikrupa Reception Manager, 4 Aug 2026. Guest's face blurred for privacy.",
+    "quote": "Thanks giving my silver chain aftet 1months all staff are well maintain job for me thanks again all of one thank you🥰😍🙏🙏",
+    "credit": "Sagar B.", "date": "Aug 2026",
+}
+
 # MakeMyTrip / Goibibo reviews for the reviews page. 4 and 5 stars only, word for word (trimmed only, … marks a cut).
 # Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY").
 # The section stays hidden while this list is empty.

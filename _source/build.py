@@ -327,6 +327,12 @@ def rooms_body():
 def quote_card(q, n, d, src="Google", stars=5):
     return f'<blockquote><span class="stars" aria-label="{stars} out of 5 stars">{"★" * stars}</span><p>“{E(q)}”</p><cite>{E(n)} · {E(src)} review, {E(d)}</cite></blockquote>'
 
+def featured_story():
+    f = FEATURED_STORY
+    return f'''<section class="rv-feature" aria-labelledby="fs-h"><figure><img src="img/{f["photo"]}" alt="{E(f["alt"])}" width="474" height="850" loading="lazy"><figcaption>{E(f["caption"])}</figcaption></figure>
+<div><span class="eyebrow">Your belongings are safe with us</span><h2 id="fs-h">{E(f["title"])}</h2>
+<blockquote><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{E(f["quote"])}”</p><cite>{E(f["credit"])} · Google review, {E(f["date"])}</cite></blockquote></div></section>'''
+
 def ota_section():
     if not OTA_REVIEWS:
         return ""
@@ -352,6 +358,7 @@ def reviews_body():
 <div><b>4.88</b><span>average for reviews since 2025</span></div>
 <div><b>97%</b><span>of 2025–26 guests rated us 4 or 5 stars</span></div>
 </div>
+{featured_story()}
 <nav class="rv-chips" aria-label="Review topics">{chips}</nav>
 {groups}
 {ota_section()}
