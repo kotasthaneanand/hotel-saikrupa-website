@@ -215,6 +215,12 @@ def index_body():
 <li>32-inch LED TV in every room</li><li>Covered terrace garden restaurant, first floor</li><li>Breakfast from November 2026</li>
 <li>Ample parking for cars and buses</li><li>Check-in 12 noon · Check-out 11 am</li><li>Children up to 5 years stay free</li>
 </ul>
+<div class="section-head" style="margin-top:44px"><h3 class="sub-h">Sacred places within our premises</h3></div>
+<div class="view-grid two">
+<figure><img src="img/shrine-maulay-devi.jpg" alt="Maulay Devi Mandir within the Hotel Saikrupa premises, Shirdi" width="1600" height="1200" loading="lazy"><figcaption>Maulay Devi Mandir</figcaption></figure>
+<figure><img src="img/shrine-datta.jpg" alt="Shri Datta murti within the Hotel Saikrupa premises, Shirdi" width="1600" height="1200" loading="lazy"><figcaption>Shri Datta murti</figcaption></figure>
+</div>
+<p class="muted shrine-note">The Maulay Devi Mandir, within our premises, has a long history. Shirdi villagers, especially newly-weds, and Shirdi residents come here regularly to seek blessings and make offerings on important occasions. The Shri Datta murti stands just opposite the mandir.</p>
 </div></section>
 
 <section id="reviews" style="background:var(--paper-2)"><div class="wrap">

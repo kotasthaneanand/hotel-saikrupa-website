@@ -132,7 +132,10 @@ section{padding-block:56px}
 .view-grid figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;min-width:0}
 .view-grid img{width:100%;height:auto;display:block}
 .view-grid figcaption{position:absolute;left:10px;bottom:10px;background:var(--card);color:var(--ink);padding:4px 10px;border-radius:6px;font-size:.88rem;font-weight:500}
-@media (max-width:620px){.view-grid{grid-template-columns:1fr}.view-grid figure:first-child img{aspect-ratio:4/3;object-fit:cover;object-position:50% 30%}}
+.view-grid.two{grid-template-columns:1fr 1fr}
+.sub-h{font-size:clamp(1.3rem,2.6vw,1.7rem);color:var(--blue)}
+.shrine-note{margin-top:14px;max-width:70ch}
+@media (max-width:620px){.view-grid.two{grid-template-columns:1fr}.view-grid{grid-template-columns:1fr}.view-grid figure:first-child img{aspect-ratio:4/3;object-fit:cover;object-position:50% 30%}}
 
 /* reviews */
 .rv-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin-bottom:22px}
