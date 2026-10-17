@@ -23,7 +23,7 @@ def rupees(n): return f"₹{n:,}"
 def header(active=""):
     return f'''<header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>
-<nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="index.html#aarti">Aarti timings</a><a href="index.html#reviews">Reviews</a><a href="index.html#reach">Reach us</a></nav>
+<nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="rooms.html">Rooms</a><a href="index.html#aarti">Aarti timings</a><a href="reviews.html">Reviews</a><a href="index.html#reach">Reach us</a></nav>
 <a class="btn btn-wa" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}<span>WhatsApp {PHONE_DISPLAY}</span></a>
 </div></header>'''
 
@@ -213,7 +213,7 @@ def index_body():
 <div class="section-head"><span class="eyebrow">Reviews</span><h2>What our guests write</h2></div>
 <div class="rv-top"><b>4.6 ★</b><span class="muted">Google rating from 1,160+ reviews · 4.88 average for reviews since 2025</span></div>
 <div class="reviews">{revs}</div>
-<div class="rv-cta"><a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a>{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Stayed with us? Write a review</a>') if GOOGLE_WRITE_REVIEW else ''}</div>
+<div class="rv-cta"><a class="btn btn-line" href="reviews.html">Read 25 guest reviews</a><a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a>{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Stayed with us? Write a review</a>') if GOOGLE_WRITE_REVIEW else ''}</div>
 </div></section>
 
 <section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I pay the advance?</summary><p>By UPI to the hotel's bank account, after we confirm your room on WhatsApp. Our staff share the payment details with you there.</p></details><details><summary>Do your prices go up at festivals?</summary><p>Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
@@ -324,6 +324,49 @@ def rooms_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
+def quote_card(q, n, d, src="Google", stars=5):
+    return f'<blockquote><span class="stars" aria-label="{stars} out of 5 stars">{"★" * stars}</span><p>“{E(q)}”</p><cite>{E(n)} · {E(src)} review, {E(d)}</cite></blockquote>'
+
+def featured_story():
+    f = FEATURED_STORY
+    return f'''<section class="rv-feature" aria-labelledby="fs-h"><figure><img src="img/{f["photo"]}" alt="{E(f["alt"])}" width="474" height="850" loading="lazy"><figcaption>{E(f["caption"])}</figcaption></figure>
+<div><span class="eyebrow">Your belongings are safe with us</span><h2 id="fs-h">{E(f["title"])}</h2>
+<blockquote><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{E(f["quote"])}”</p><cite>{E(f["credit"])} · Google review, {E(f["date"])}</cite></blockquote></div></section>'''
+
+def ota_section():
+    if not OTA_REVIEWS:
+        return ""
+    cards = "".join(quote_card(q, n, d, src, st) for q, n, src, d, st in OTA_REVIEWS)
+    rating = f" Rated {E(OTA_RATING)} on MakeMyTrip." if OTA_RATING else ""
+    return f'''<section class="rv-group" id="ota"><div class="section-head"><span class="eyebrow">MakeMyTrip and Goibibo</span><h2>From guests who booked online</h2>
+<p class="muted">{E(OTA_COUNT)} ratings from guests who booked through MakeMyTrip and Goibibo.{rating} Booking direct on WhatsApp is always cheaper.</p></div>
+<div class="rv-wall">{cards}</div></section>'''
+
+def reviews_body():
+    chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS) + ('<a href="#ota">MakeMyTrip and Goibibo</a>' if OTA_REVIEWS else "")
+    groups = "".join(f'''<section class="rv-group" id="{gid}"><div class="section-head"><h2>{E(t)}</h2><p class="muted">{E(intro)}</p></div>
+<div class="rv-wall">{"".join(quote_card(*x) for x in qs)}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
+    msg = wa("Namaste, I read the guest reviews on your website. Please share room availability and the best price at Hotel Saikrupa, Shirdi.")
+    return f'''{header()}
+<main><section style="padding-top:20px"><div class="wrap">
+<a class="back" href="index.html">← Back to home</a>
+<div class="section-head" style="margin-top:18px"><span class="eyebrow">Guest reviews</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">In our guests' own words</h1>
+<p class="muted">25 of the five-star reviews our guests have written on Google, word for word. Some are shortened; “…” marks a cut. Names are shown as first name and last initial.</p></div>
+<div class="proof" style="margin-top:8px">
+<div><b>4.6 ★</b><span>Google rating</span></div>
+<div><b>1,160+</b><span>reviews on Google</span></div>
+<div><b>4.88</b><span>average for reviews since 2025</span></div>
+<div><b>97%</b><span>of 2025–26 guests rated us 4 or 5 stars</span></div>
+</div>
+{featured_story()}
+<nav class="rv-chips" aria-label="Review topics">{chips}</nav>
+{groups}
+{ota_section()}
+<div class="rv-end"><div><h2>Stayed with us?</h2><p class="muted">Your review helps other devotees choose. It takes a minute on Google.</p></div>
+<div class="ctas">{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Write a Google review</a>') if GOOGLE_WRITE_REVIEW else ''}<a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a><a class="btn btn-wa" href="{msg}" target="_blank" rel="noopener">{WA_ICON}Ask for your dates</a></div></div>
+<p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
+{footer()}'''
+
 def privacy_body():
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap" style="max-width:760px">
@@ -394,6 +437,7 @@ def main():
     open(os.path.join(site, "index.html"), "w", encoding="utf-8").write(full(TITLE, DESC, index_body(), "https://www.shirdihotelsaikrupa.com/", True))
     open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and Prices | Hotel Saikrupa Shirdi", "AC and non-AC rooms in Shirdi near Shri Saibaba Samadhi Mandir: doubles, triples, family rooms and suites for up to 6, with weekday, weekend and festival prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
     open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(full("Privacy Policy | Hotel Saikrupa Shirdi", "How Hotel Saikrupa, Shirdi collects and uses guest information.", privacy_body(), "https://www.shirdihotelsaikrupa.com/privacy.html"))
+    open(os.path.join(site, "reviews.html"), "w", encoding="utf-8").write(full("Guest Reviews | Hotel Saikrupa Shirdi", "Read what devotees and families say about Hotel Saikrupa, Shirdi: 25 five-star Google reviews on our location near Shri Saibaba Samadhi Mandir, clean rooms, staff and prices.", reviews_body(), "https://www.shirdihotelsaikrupa.com/reviews.html"))
     # preview: index without document wrapper; rooms as a full page
     open(os.path.join(prev, "index.html"), "w", encoding="utf-8").write(f"<title>{TITLE}</title>\n{FONTS}\n<style>{CSS}</style>\n{index_body()}")
     shutil.copy(os.path.join(site, "rooms.html"), os.path.join(prev, "rooms.html"))
