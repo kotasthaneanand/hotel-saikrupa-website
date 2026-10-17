@@ -55,7 +55,7 @@ ROOMS = [
      "6 adults, or 4 adults + 2 children", "r-premium-family.jpg",
      "Newly renovated in 2026: two double beds with storage drawers, wall shelves and a large mirror. Our largest air-conditioned room, for families travelling together."),
     ("suite-ac", "Family Suite, 2 rooms", "AC", "240–325 sq ft", "Double bed in one room, 2 single beds in the other", 4,
-     "6 adults, or 4 adults + 2 children", "r-suite-combo.jpg",
+     "6 adults, or 4 adults + 2 children", "r-suite-double.jpg",
      "Two air-conditioned rooms behind one private entrance, sharing a bathroom. The family stays together with a little more privacy."),
     ("standard-double", "Standard Double Room", "Non-AC", "about 120 sq ft", "1 double bed", 2,
      "3 (1 extra adult or child)", "r-standard-double.jpg",
@@ -67,7 +67,7 @@ ROOMS = [
      "6 adults, or 4 adults + 2 children", "room-family.jpg",
      "A large non-AC room for families and groups."),
     ("suite-nonac", "Family Suite, 2 rooms", "Non-AC", "about 325 sq ft", "Double + single bed in one room, 2 single beds in the other", 4,
-     "6 adults, or 4 adults + 2 children", "r-suite-combo.jpg",
+     "6 adults, or 4 adults + 2 children", "r-suite-double.jpg",
      "Two non-AC rooms behind one private entrance, sharing a bathroom."),
 ]
 
@@ -219,4 +219,5 @@ OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT C
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
 # Extra photos shown on the rooms page under a room type
-EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"]}
+EXTRA_PHOTOS = {"premium-triple": ["r-premium-triple-2.jpg"], "deluxe-family": ["r-premium-family-2.jpg"],
+                "suite-ac": ["r-suite-singles.jpg"], "suite-nonac": ["r-suite-singles.jpg"]}
