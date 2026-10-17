@@ -342,10 +342,16 @@ def ota_section():
 <p class="muted">{E(OTA_COUNT)} ratings from guests who booked through MakeMyTrip and Goibibo.{rating} Booking direct on WhatsApp is always cheaper.</p></div>
 <div class="rv-wall">{cards}</div></section>'''
 
+def group_photo(gid):
+    if gid not in GROUP_PHOTOS:
+        return ""
+    f, alt, cap = GROUP_PHOTOS[gid]
+    return f'<figure class="rv-photo"><img src="img/{f}" alt="{E(alt)}" width="1200" height="900" loading="lazy"><figcaption>{E(cap)}</figcaption></figure>'
+
 def reviews_body():
     chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS) + ('<a href="#ota">MakeMyTrip and Goibibo</a>' if OTA_REVIEWS else "")
     groups = "".join(f'''<section class="rv-group" id="{gid}"><div class="section-head"><h2>{E(t)}</h2><p class="muted">{E(intro)}</p></div>
-<div class="rv-wall">{"".join(quote_card(*x) for x in qs)}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
+{group_photo(gid)}<div class="rv-wall">{"".join(quote_card(*x) for x in qs)}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
     msg = wa("Namaste, I read the guest reviews on your website. Please share room availability and the best price at Hotel Saikrupa, Shirdi.")
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap">

@@ -205,6 +205,12 @@ FEATURED_STORY = {
     "credit": "Sagar B.", "date": "Aug 2026",
 }
 
+# Photos shown with a review group: group id -> (file, alt text, caption). Faces of guests blurred until they agree.
+GROUP_PHOTOS = {
+    "loyal": ("guest-with-team.jpg", "A regular guest with the Hotel Saikrupa team at reception, guest's face blurred",
+              "Prabhakar K., a regular guest, with the Hotel Saikrupa team at reception, Sep 2026. Guest's face blurred for privacy."),
+}
+
 # MakeMyTrip / Goibibo reviews for the reviews page. 4 and 5 stars only, word for word (trimmed only, … marks a cut).
 # Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY").
 # The section stays hidden while this list is empty.
