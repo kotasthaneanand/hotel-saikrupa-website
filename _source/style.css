@@ -116,9 +116,9 @@ section{padding-block:56px}
 
 /* facilities */
 .fac{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-.fac figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;min-width:0}
-.fac img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
-.fac figcaption{position:absolute;left:10px;bottom:10px;background:var(--card);color:var(--ink);padding:4px 10px;border-radius:6px;font-size:.88rem;font-weight:500}
+.fac figure{margin:0;border-radius:var(--r);overflow:hidden;min-width:0;background:var(--card);border:1px solid var(--line)}
+.fac img{width:100%;height:auto;display:block;object-fit:cover;aspect-ratio:4/3}
+.fac figcaption{padding:8px 12px;font-size:.9rem;color:var(--muted)}
 .f1{grid-column:span 5}.f2{grid-column:span 3}.f3{grid-column:span 4}.f4{grid-column:span 4}.f5{grid-column:span 4}.f6{grid-column:span 4}
 .f2 img{aspect-ratio:3/4}
 @media (max-width:760px){.fac{grid-template-columns:1fr 1fr}.fac figure{grid-column:auto}.f2 img{aspect-ratio:4/3}}
@@ -129,13 +129,13 @@ section{padding-block:56px}
 
 /* view from the hotel */
 .view-grid{display:grid;grid-template-columns:9fr 16fr;gap:16px}
-.view-grid figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;min-width:0}
+.view-grid figure{margin:0;border-radius:var(--r);overflow:hidden;min-width:0;background:var(--card);border:1px solid var(--line)}
 .view-grid img{width:100%;height:auto;display:block}
-.view-grid figcaption{position:absolute;left:10px;bottom:10px;background:var(--card);color:var(--ink);padding:4px 10px;border-radius:6px;font-size:.88rem;font-weight:500}
+.view-grid figcaption{padding:8px 12px;font-size:.9rem;color:var(--muted)}
 .view-grid.two{grid-template-columns:1fr 1fr}
 .sub-h{font-size:clamp(1.3rem,2.6vw,1.7rem);color:var(--blue)}
 .shrine-note{margin-top:14px;max-width:70ch}
-@media (max-width:620px){.view-grid.two{grid-template-columns:1fr}.view-grid{grid-template-columns:1fr}.view-grid figure:first-child img{aspect-ratio:4/3;object-fit:cover;object-position:50% 30%}}
+@media (max-width:620px){.view-grid.two{grid-template-columns:1fr}.view-grid{grid-template-columns:1fr}}
 
 /* gallery page */
 .gallery{columns:3 300px;column-gap:16px;margin-top:8px}
