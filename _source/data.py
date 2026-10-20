@@ -212,9 +212,24 @@ GROUP_PHOTOS = {
 }
 
 # MakeMyTrip / Goibibo reviews for the reviews page. 4 and 5 stars only, word for word (trimmed only, … marks a cut).
-# Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY").
+# Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY", stars).
 # The section stays hidden while this list is empty.
-OTA_REVIEWS = []
+OTA_REVIEWS = [
+    ("I have been coming to Shirdi for more than 25 years, and I can genuinely say this has been my best hotel stay here. In my previous visits, I have seen some issue like cleanliness, hot water, bedbugs, or the attitude of the staff. This time, it was a completely different experience. The room was clean, and the service was outstanding. Every single person we interacted with was polite and helpful. Many times they came to us on their own just to ask if we needed anything, instead of waiting for us to call them. That small gesture was very good. It's rare to find such a hotel in Shirdi. Thank you for making our Shirdi trip so pleasant.", "Shailaja P.", "MakeMyTrip", "Aug 2026", 5),
+    ("Hotel is good and food provided at restaurant is good and owner and staff so helpfull", "Nathu K.", "MakeMyTrip", "Apr 2023", 5),
+    ("nice stay. good ambience. close to temple", "Arpan S.", "MakeMyTrip", "Dec 2022", 5),
+    ("hotel is very good looking 👌 namaste", "Sunil S.", "MakeMyTrip", "Dec 2022", 5),
+    ("Nice staff. Counter person and receptionist also gave proper guidance. Warm water was excellent and sufficient staff.", "Satish P.", "MakeMyTrip", "Nov 2018", 5),
+    ("Very satisfying. … Walkable distance to temple. And transport facilities to other places also is very convenient. I will recommend this hotel to my friends also", "Chamarthy M.", "MakeMyTrip", "Sep 2017", 5),
+    ("Rooms are clean, staff is good, have decent parking space and near to the temple is good advantage.", "Mitesh K.", "MakeMyTrip", "Aug 2026", 4),
+    ("property location is very near to the temple and the service was also good Near to temple good and polite staff", "Krishna P.", "MakeMyTrip", "Aug 2025", 5),
+    ("Service is very nice and staff is also nice and our family enjoyed very much and our kids feel very happy", "Poonam B.", "MakeMyTrip", "Dec 2024", 5),
+    ("excellent staff behavior and response", "Sandeep R.", "Goibibo", "Aug 2025", 5),
+    ("The hotel location is good. Rooms are also big and clean. Staff behavior is good. The reception staff are friendly and helpful. The price is also affordable for an air-conditioned room. Old hotel interior.", "Nikhil P.", "Goibibo", "Aug 2025", 5),
+    ("very clean and comfort hotel , just 2 minutes distance of sai mandir.", "Harish B.", "Goibibo", "Dec 2017", 5),
+    ("If u are looking to a budget hotel near to shirdi temple ensure that u do the booking in this hotel.", "Abhinandan D.", "Goibibo", "Apr 2017", 5),
+    ("good service by staff...hotel is located at suitable place....worth it..", "Gajanand G.", "Goibibo", "Jul 2015", 5),
+]
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
 
