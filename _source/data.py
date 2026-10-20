@@ -75,10 +75,10 @@ ROOMS = [
 REVIEWS = [
     ("This is perfect hotel for us for 32 years … I come 2 to 3 times a year … this time you all have exceeded the expectations of cleanliness in room lobby corridors", "Ajay Kumar S.", "Sep 2026"),
     ("Safe for women, best room service, very close to sai temple. 24hrs hot water, tea and water bottles are been provided as per demand. Well cleaned washroom. Had a great stay here.", "Nupur G.", "Jun 2026"),
-    ("The hotel is clean. Very near to the holy place of sai baba mandir. The staff is very polite, professional. I will recommend to all family people for stay over here.", "Dhaval S.", "Dec 2025"),
+    ("The hotel is clean. The staff is very polite, professional. I will recommend to all family people for stay over here.", "Dhaval S.", "Dec 2025"),
     ("Great service and very close to the Mandir. Reasonable priced rooms and very helpful staff. Recommended. Complimentary water bottles also provided", "Hakim D.", "Sep 2026"),
     ("I've been staying at this hotel since 2006...needless to say I am extremely happy with their service.", "Shobha N.", "Jan 2022"),
-    ("Nearest to the Shirdi Sai Baba temple. Good service, huge rooms overall a good experience", "Krish P.", "Mar 2025"),
+    ("Good service, huge rooms overall a good experience", "Krish P.", "Mar 2025"),
 ]
 
 # Reviews page (17 Oct 2026): 40 five-star Google reviews from the Quote Bank, word for word.
@@ -142,8 +142,8 @@ REVIEW_GROUPS = [('near',
     'Bharathi K.',
     'Dec 2025'),
    ('It was the best experience, I was with my family we had a very pleasant stay , the management was very helpful and polite to us , they helped us in darshan also', 'Yeshwanth R.', 'May 2025'),
-   ('The hotel is clean. Very near to the holy place of sai baba mandir. The staff is very polite, professional. I will recommend to all family people for stay over here.', 'Dhaval S.', 'Dec 2025'),
-   ("Quite a good premises for the devotees and for traveller to get a blessing from Lord Sai Baba. Premises is neat and clean. Ambiance is good and too near from the temple. I'll definitely suggest "
+   ('The hotel is clean. The staff is very polite, professional. I will recommend to all family people for stay over here.', 'Dhaval S.', 'Dec 2025'),
+   ("Premises is neat and clean. Ambiance is good and too near from the temple. I'll definitely suggest "
     'for the pilgrims to come and enjoy the stay. Have a happy day🙂',
     'Gaurav B.',
     'Mar 2026'),
@@ -175,7 +175,7 @@ REVIEW_GROUPS = [('near',
     'Jul 2026'),
    ('Good service and very good location. Neat maintenance and provided support for local site visit with reasonable price.', 'Omkar S.', 'Apr 2025'),
    ('Hotel is near the temple with reasonable rates and awesome service.', 'Mrunal P.', 'Sep 2025'),
-   ('Nearest to the Shirdi Sai Baba temple. Good service, huge rooms overall a good experience', 'Krish P.', 'Mar 2025'),
+   ('Good service, huge rooms overall a good experience', 'Krish P.', 'Mar 2025'),
    ('Nice stay ,comfiy room great place to stay , with u and your family,it was an extraordinary experience with in budget sai kripa hotel near nagar parishad', 'Subramanyama B.', 'Jun 2025')]),
  ('loyal',
   'Guests who come back, year after year',
