@@ -220,6 +220,7 @@ OTA_REVIEWS = [
     ("hotel is very good looking 👌 namaste", "Sunil S.", "MakeMyTrip", "Dec 2022", 5),
     ("Nice staff. Counter person and receptionist also gave proper guidance. Warm water was excellent and sufficient staff.", "Satish P.", "MakeMyTrip", "Nov 2018", 5),
     ("Very satisfying. … Walkable distance to temple. And transport facilities to other places also is very convenient. I will recommend this hotel to my friends also", "Chamarthy M.", "MakeMyTrip", "Sep 2017", 5),
+    ("Rooms are clean, staff is good, have decent parking space and near to the temple is good advantage.", "Mitesh K.", "MakeMyTrip", "Aug 2026", 4),
 ]
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
