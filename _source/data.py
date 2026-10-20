@@ -228,6 +228,7 @@ OTA_REVIEWS = [
     ("The hotel location is good. Rooms are also big and clean. Staff behavior is good. The reception staff are friendly and helpful. The price is also affordable for an air-conditioned room. Old hotel interior.", "Nikhil P.", "Goibibo", "Aug 2025", 5),
     ("very clean and comfort hotel , just 2 minutes distance of sai mandir.", "Harish B.", "Goibibo", "Dec 2017", 5),
     ("If u are looking to a budget hotel near to shirdi temple ensure that u do the booking in this hotel.", "Abhinandan D.", "Goibibo", "Apr 2017", 5),
+    ("good service by staff...hotel is located at suitable place....worth it..", "Gajanand G.", "Goibibo", "Jul 2015", 5),
 ]
 OTA_COUNT = "120"  # ratings on MakeMyTrip (65) and Goibibo (55) together (MMT Connect, 17 Oct 2026)
 OTA_RATING = ""    # not shown on purpose: MakeMyTrip 3.7/5, Goibibo 3.8/5 on 17 Oct 2026; Anand decided 17 Oct not to show them
