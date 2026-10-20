@@ -215,6 +215,7 @@ GROUP_PHOTOS = {
 # Text must be copied from MakeMyTrip Connect (not typed from screenshots). Each: (quote, credit, "MakeMyTrip" or "Goibibo", "Mon YYYY", stars).
 # The section stays hidden while this list is empty.
 OTA_REVIEWS = [
+    ("I have been coming to Shirdi for more than 25 years, and I can genuinely say this has been my best hotel stay here. In my previous visits, I have seen some issue like cleanliness, hot water, bedbugs, or the attitude of the staff. This time, it was a completely different experience. The room was clean, and the service was outstanding. Every single person we interacted with was polite and helpful. Many times they came to us on their own just to ask if we needed anything, instead of waiting for us to call them. That small gesture was very good. It's rare to find such a hotel in Shirdi. Thank you for making our Shirdi trip so pleasant.", "Shailaja P.", "MakeMyTrip", "Aug 2026", 5),
     ("Hotel is good and food provided at restaurant is good and owner and staff so helpfull", "Nathu K.", "MakeMyTrip", "Apr 2023", 5),
     ("nice stay. good ambience. close to temple", "Arpan S.", "MakeMyTrip", "Dec 2022", 5),
     ("hotel is very good looking 👌 namaste", "Sunil S.", "MakeMyTrip", "Dec 2022", 5),
