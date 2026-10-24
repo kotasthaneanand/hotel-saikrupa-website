@@ -28,6 +28,13 @@ RATES = {
     "suite-ac":        (2500, 2500, 2950, 3600, 4000),
 }
 PRICES = {k: v[0] for k, v in RATES.items()}  # lowest ("From") price
+
+# Paytm payment links for the advance (fixed amounts, created in the Paytm dashboard, 24 Oct 2026).
+ADVANCE_LINKS = [
+    (500,  "https://paytm.me/PYTMPS/cHarHdP"),
+    (1000, "https://paytm.me/PYTMPS/jpCrHdP"),
+    (1500, "https://paytm.me/PYTMPS/WA6rHdP"),
+]
 # Nights (first and last night, inclusive) priced at the Festival rate
 FESTIVALS = [("Shri Saibaba Punyatithi (Dasara)", "2026-10-18", "2026-10-21"), ("Diwali", "2026-11-05", "2026-11-11"),
              ("Republic Day", "2027-01-23", "2027-01-25")]
