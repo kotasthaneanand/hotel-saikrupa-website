@@ -10,7 +10,7 @@ GOOGLE_REVIEWS = "https://maps.app.goo.gl/98SHnhePbwJummed7"
 GOOGLE_WRITE_REVIEW = "https://g.page/r/CdEE9DBaz4zaEBM/review"
 INSTAGRAM = "https://www.instagram.com/hotel_saikrupa_shirdi/"
 # Google Apps Script web app for advance bookings (see booking-backend/SETUP.md). Until it is set, online payment shows a WhatsApp fallback.
-BOOKING_SCRIPT_URL = "PASTE_WEB_APP_URL"
+BOOKING_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvmqu7QxcSSai28ZZ9d7zu7JBzpLuwzivgeDwSV5VfnbCuERw-MpQjSAyTz3PiTI1N/exec"
 TAGLINE = "🙏 Seva of Shri Saibaba's devotees is our dharma. Since 1988. 🙏"
 
 # Prices valid till 31 Jan 2027 (staff guide V5, Anand, 12 Oct 2026). Rs per room per night, plus 5% GST.
