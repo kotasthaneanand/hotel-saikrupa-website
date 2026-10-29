@@ -104,7 +104,6 @@ function sendAlert(code, d, link) {
     'Check-in: ' + d.checkin + '   Check-out: ' + (d.checkout || '-') + '   Nights: ' + (d.nights || '-'),
     'Adults: ' + d.adults + '   Children above 5: ' + (d.children || 0),
     'Room type: ' + (d.roomType || '-') + '   Rooms: ' + (d.rooms || 1),
-    'Aadhaar last 4: ' + (d.aadhaar4 || 'not given'),
     '',
     'Screenshot: ' + link,
     '',
