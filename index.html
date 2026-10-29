@@ -343,10 +343,12 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 <p class="ob-small">We use these details only to confirm your booking. The Aadhaar digits are optional and are kept only for our records.</p>
 <p id="ob-people" class="ob-small"></p>
 <div id="ob-suggest" class="ob-suggest"></div>
+<div id="ob-picker">
 <p class="ob-title">Or choose your rooms (up to 4)</p>
 <div id="ob-rooms-pick" class="ob-pick"></div>
 <div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add a room</button><button type="button" class="btn btn-line" id="ob-del-room">Remove last room</button></div>
 <p class="ob-error" id="ob-err25" hidden></p>
+</div>
 <div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="0">Back</button><button type="button" class="btn btn-line ob-next" id="ob-rooms-next">Next</button></div>
 </div>
 
@@ -517,11 +519,8 @@ function pickedIds(){
   for(var i=0;i<s.length;i++){if(s[i].value)out.push(s[i].value)}
   return out;
 }
-function renderSuggestions(d){
-  var people_=people(d), total=people_.adults+people_.kids;
-  $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
-  var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
-  if(!sug.length){
+function renderGroup(d){
+  var box2=$('ob-suggest'); box2.innerHTML='';
     var now=new Date(), gref=genRef('GRP');
     var gl=['Group Booking Enquiry + Ref ID: '+gref,'',
       'Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,
@@ -533,8 +532,12 @@ function renderSuggestions(d){
     gb.addEventListener('click',function(e){e.preventDefault();
       goWa(this.href,{type:'group',ref:gref,name:d.name,mobile:d.mobile,city:d.city,checkin:dmyStr(d.checkin),nights:d.nights,
         adults:d.adults,small:d.small,big:d.big,rooms:'More than '+MAXR+' rooms',source:'Group enquiry (above '+MAXR+' rooms)',notes:''});});
-    return;
-  }
+}
+function renderSuggestions(d){
+  var people_=people(d), total=people_.adults+people_.kids;
+  $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
+  var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
+  if(!sug.length){renderGroup(d);return}
   sug.forEach(function(x,i){
     var names=x.list.map(function(id){return R[id].n}).join(' + ');
     var div=document.createElement('div'); div.className='ob-option';
@@ -599,9 +602,13 @@ function goRooms(){
   var d=details(), mm=checkDetails(d);
   if(mm){err('f-msg',mm);return}
   err('f-msg','');
+  var rooms=parseInt($('f-rn').value,10)||1, group=rooms>MAXR;
+  // 5 rooms or more: group enquiry straight away, no room picker
+  $('ob-picker').hidden=group; $('ob-rooms-next').hidden=group;
+  if(group){ $('ob-people').textContent=''; renderGroup(d); show(2.5); return; }
   $('ob-room').value=$('f-r').value;
   renderSuggestions(d);
-  var first=$('ob-room').value, n=Math.min(MAXR,Math.max(1,parseInt($('f-rn').value,10)||1)), copies=[], i;
+  var first=$('ob-room').value, n=Math.min(MAXR,rooms), copies=[], i;
   for(i=0;i<n;i++)copies.push(first);
   var sugList=suggestions(d), start;
   if(first&&withinCaps(copies)&&priceList(copies,d))start=copies;
