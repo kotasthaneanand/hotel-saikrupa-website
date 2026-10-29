@@ -865,6 +865,8 @@ if(qs&&R[qs[1]]){$('ob-room').value=qs[1]}
           return ad===0&&kd===0?rs:null;
         };
         var priceAll=function(list){
+          var ac0=R[list[0]].ac;
+          for(var u=1;u<list.length;u++){if(R[list[u]].ac!==ac0)return null;}
           var placed=placeAll(list); if(!placed)return null;
           var sub=0, ex=0, cnt={}, order=[];
           for(var m=0;m<list.length;m++){
@@ -875,7 +877,7 @@ if(qs&&R[qs[1]]){$('ob-room').value=qs[1]}
             if(!cnt[list[m]]){cnt[list[m]]=0;order.push(list[m]);} cnt[list[m]]++;
           }
           var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
-          return {sub:sub, ex:ex, label:label};
+          return {sub:sub, ex:ex, label:label, ac:ac0};
         };
         var combos=[];
         (function rec(start,acc){
@@ -883,7 +885,16 @@ if(qs&&R[qs[1]]){$('ob-room').value=qs[1]}
           for(var i=start;i<IDS.length;i++){acc.push(IDS[i]);rec(i,acc);acc.pop();}
         })(0,[]);
         combos.sort(function(x,y){return x.sub-y.sub});
-        var sug=combos.slice(0,3).map(function(c){
+        // Keep one type per option: the cheapest all-Non-AC and the cheapest all-AC first, then the next cheapest.
+        var pick=[], rest=[], gotNon=false, gotAc=false;
+        for(var ci2=0;ci2<combos.length;ci2++){
+          var cc=combos[ci2];
+          if(!cc.ac && !gotNon){pick.push(cc);gotNon=true;}
+          else if(cc.ac && !gotAc){pick.push(cc);gotAc=true;}
+          else rest.push(cc);
+        }
+        var chosen=pick.concat(rest).slice(0,3).sort(function(x,y){return x.sub-y.sub});
+        var sug=chosen.map(function(c){
           return c.label+' '+inr(c.sub)+(N>1?' for all '+N+' rooms':'')+(c.ex?' (incl. '+c.ex+' extra adult'+(c.ex>1?'s':'')+')':'');
         });
         if(sug.length){
