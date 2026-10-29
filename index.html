@@ -421,6 +421,18 @@ function tier(total){return total<=1500?500:(total<=3000?1000:1500)}
 function show(n){for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getAttribute('data-step')!==n)}
   if(n>1){var top=box.getBoundingClientRect().top+window.pageYOffset-80; window.scrollTo({top:top,behavior:'smooth'});}}
 function err(id,msg){var e=$(id);e.textContent=msg;e.hidden=!msg}
+// ---- enquiry logging: every WhatsApp hand-off is logged first (within 4 seconds), then WhatsApp opens ----
+var ENQ_TIMEOUT=4000;
+function genRef(prefix){var now=new Date();return prefix+'-'+pad(now.getDate())+pad(now.getMonth()+1)+String(now.getFullYear()).slice(2)+'-'+('000'+Math.floor(Math.random()*10000)).slice(-4)}
+function logEnquiry(payload){
+  if(SCRIPT_URL.indexOf('PASTE_')===0)return Promise.resolve(null);
+  var call=fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(function(r){return r.json()}).catch(function(){return null});
+  var wait=new Promise(function(res){setTimeout(function(){res(null)},ENQ_TIMEOUT)});
+  return Promise.race([call,wait]);
+}
+function goWa(href,payload){ logEnquiry(payload).then(function(){window.location.href=href}); }
+function appendRef(href,ref){return href+encodeURIComponent('\nRef: '+ref)}
 
 // ---- guests and rooms ----
 function people(d){ // counted persons: adults, children above 5, children up to 5 beyond the free ones
@@ -512,7 +524,11 @@ function renderSuggestions(d){
       'Check-in: '+parse(d.checkin).toDateString()+', Nights: '+d.nights,
       'Guests: '+d.adults+' adult(s), '+d.small+' child(ren) up to 5, '+d.big+' child(ren) above 5',
       'Rooms: more than '+MAXR+' rooms needed','','Please share the best offers and group discount.'];
-    box2.innerHTML='<div class="ob-option group"><p><b>Connect with our Reservation Team for best offers and group discount.</b><br>Your group needs more than '+MAXR+' rooms, so we will arrange it for you on WhatsApp.</p><p class="ob-small">Reference: <b>'+gref+'</b></p><a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/'+PHONE+'?text='+encodeURIComponent(gl.join('\n'))+'">Send group enquiry on WhatsApp</a></div>';
+    box2.innerHTML='<div class="ob-option group"><p><b>Connect with our Reservation Team for best offers and group discount.</b><br>Your group needs more than '+MAXR+' rooms, so we will arrange it for you on WhatsApp.</p><p class="ob-small">Reference: <b>'+gref+'</b></p><a class="btn btn-wa ob-group-wa" target="_blank" rel="noopener" href="https://wa.me/'+PHONE+'?text='+encodeURIComponent(gl.join('\n'))+'">Send group enquiry on WhatsApp</a></div>';
+    var gb=box2.querySelector('.ob-group-wa');
+    gb.addEventListener('click',function(e){e.preventDefault();
+      goWa(this.href,{type:'group',ref:gref,name:d.name,mobile:d.mobile,city:d.city,checkin:d.checkin,nights:d.nights,
+        adults:d.adults,small:d.small,big:d.big,rooms:'More than '+MAXR+' rooms',source:'Group enquiry (above '+MAXR+' rooms)',notes:''});});
     return;
   }
   sug.forEach(function(x,i){
@@ -596,6 +612,20 @@ $('ob-rooms-next').addEventListener('click',function(){
   err('ob-err25',''); picked=list; fillSummary(); show(3);
 });
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
+$('ob-wa').addEventListener('click',function(e){ e.preventDefault();
+  var d=cur.d, ref=genRef('ENQ');
+  goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:cur.ci.toDateString(),
+    nights:d.nights,adults:d.adults,small:d.small,big:d.big,rooms:roomNames(),source:'Online booking: details sent on WhatsApp',notes:'Total incl. GST '+rs(cur.q.total)});
+});
+// Check availability form (on the home page): log, then open WhatsApp
+var fgo=$('f-go');
+if(fgo){ fgo.addEventListener('click',function(e){ e.preventDefault();
+  var m=decodeURIComponent(this.href).match(/Ref: (WEB-[A-Z0-9]+)/), ref=m?m[1]:genRef('ENQ');
+  var kids=$('f-c').value, rt=$('f-r').options[$('f-r').selectedIndex].text;
+  goWa(this.href,{type:'availability',ref:ref,name:$('f-name').value.trim(),mobile:'',city:$('f-city').value.trim(),
+    checkin:$('f-in').value,nights:$('f-n').value,adults:$('f-a').value,small:0,big:0,rooms:$('f-rn').value+' room(s), '+rt,
+    source:'Check availability form',notes:'Children: '+kids+' (ages not asked)'});
+}); }
 $('ob-submit').addEventListener('click',function(){
   err('ob-err4','');
   if(!$('ob-consent').checked){err('ob-err4','Please tick the consent box to continue.');return}
