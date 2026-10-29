@@ -96,7 +96,7 @@ REVIEWS = [
     ("Good service, huge rooms overall a good experience", "Krish P.", "Mar 2025"),
 ]
 
-# Reviews page (17 Oct 2026): 40 five-star Google reviews from the Quote Bank, word for word.
+# Reviews page (17 Oct 2026, 40+ after Oct 2026 additions): 40+ five-star Google reviews from the Quote Bank, word for word.
 # Trimmed only (… marks a cut). Credit: first name + last initial.
 REVIEW_GROUPS = [('near',
   "A few minutes' walk to the Mandir",
@@ -179,7 +179,11 @@ REVIEW_GROUPS = [('near',
    ('I visited to shirdi temple for a vacation and this hotel makes my journey beautiful as it ambience is awesome … staff was very co operative, specially Mangesh is one the kind Night Manager who '
     'was there to assist u in every possible way. Overall experience was good.',
     'Rohit V.',
-    'Dec 2025')]),
+    'Dec 2025'),
+   ('It was wonderful experience at Hotel Saikrupa hotel, the reception staff Sheikh Mam had assisted all the way from booking to room availability. Rooms are clean and spacious. Good for family and group booking. Only 5 minutes walking from Mandir and Main Market. Ample parking available. All the staff is was very helpful. Do consider visiting.', 'Amit M.', 'Oct 2026'),
+   ('Great Hotel with Excellent Service in Shirdi! We had a very pleasant stay at Hotel Saikrupa, Shirdi. The rooms were comfortable, clean, and well-maintained, making it a great choice for families and pilgrims visiting Sai Baba Temple. The hotel staff were friendly, helpful, and cooperative throughout our stay. … I would definitely recommend Hotel Saikrupa, Shirdi, to anyone looking for a comfortable and hassle-free stay during their Shirdi visit.', 'Harish P.', 'Oct 2026'),
+   ('Best hotel Sai kripa at Shirdi Sai Baba nearby and best services best quality best staff coordination and better than other than hotels services in shirdi', 'Lakshya S.', 'Oct 2026'),
+   ('It was a very comfortable stay and the staff were excellent, helpful, polite and friendly. I would like to say Prathabha was outstanding in making this a memorable stay. I would love to come back again and will be recommending to all my friends.', 'Rateesh P.', 'Oct 2026')]),
  ('value',
   'Fair prices',
   'Our published tariff has never been exceeded since 1988, even in the festival rush.',
