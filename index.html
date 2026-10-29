@@ -510,6 +510,7 @@ function addPickRow(val){
 function syncAddButtons(){
   var c=document.querySelectorAll('#ob-rooms-pick select').length;
   $('ob-add-room').disabled=c>=MAXR; $('ob-del-room').disabled=c<=1;
+  $('ob-add-room').hidden=c>=MAXR; $('ob-del-room').hidden=c<=1;
 }
 $('ob-add-room').addEventListener('click',function(){addPickRow('');syncAddButtons()});
 $('ob-del-room').addEventListener('click',function(){
