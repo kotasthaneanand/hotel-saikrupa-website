@@ -13,7 +13,7 @@ Bookings are accepted only for stays that end on or before LAST_STAY.
 import json
 
 LAST_STAY = "2027-01-31"
-MAX_ROOMS = 6
+MAX_ROOMS = 4
 FREE_CHILDREN_UP_TO_5 = 2
 
 # Maximum people per room (rooms page): total, and adults only.
@@ -43,7 +43,7 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
     }.items():
         js = js.replace(k, v)
     nights = _select("n", range(1, 11))
-    adults = _select("a", range(1, 13), 2)
+    adults = _select("a", range(1, 25), 2)
     small = _select("s", range(0, 6))
     big = _select("b", range(0, 6))
     return f"""<section id="book-online" class="online"><div class="wrap">
@@ -74,14 +74,20 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
 <label>Children above 5 (Rs 250 a night)<select id="ob-kids-big">{big}</select></label>
 <label>Aadhaar, last 4 digits (optional)<input id="ob-aadhaar" type="text" inputmode="numeric" maxlength="4" placeholder="1234"></label>
 </div>
-<div class="ob-rooms">
-<p class="ob-title">Rooms</p>
-<div id="ob-extra-rooms"></div>
-<div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add another room type</button></div>
-</div>
 <p class="ob-small">We use these details only to confirm your booking. The Aadhaar digits are optional and are kept only for our records.</p>
 <p class="ob-error" id="ob-err2" hidden></p>
-<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="1">Back</button><button type="button" class="btn btn-line ob-next" data-go="3">Next</button></div>
+<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="1">Back</button><button type="button" class="btn btn-line ob-next" data-go="2.5">Next</button></div>
+</div>
+
+<div class="ob-step" data-step="2.5" hidden>
+<p class="ob-title">Step 2 of 4: choose your rooms</p>
+<p id="ob-people" class="ob-small"></p>
+<div id="ob-suggest" class="ob-suggest"></div>
+<p class="ob-title">Or choose your rooms (up to 4)</p>
+<div id="ob-rooms-pick" class="ob-pick"></div>
+<div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add a room</button><button type="button" class="btn btn-line" id="ob-del-room">Remove last room</button></div>
+<p class="ob-error" id="ob-err25" hidden></p>
+<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="2">Back</button><button type="button" class="btn btn-line ob-next" id="ob-rooms-next">Next</button></div>
 </div>
 
 <div class="ob-step" data-step="3" hidden>
@@ -125,7 +131,8 @@ var $=function(i){return document.getElementById(i)};
 var box=$('ob-steps'); if(!box)return;
 var steps=box.querySelectorAll('.ob-step');
 var ROOM_OPTS=$('ob-room').innerHTML;
-var ref='', cur=null;
+var IDS=Object.keys(R);
+var ref='', cur=null, picked=[];
 function pad(x){return (x<10?'0':'')+x}
 function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
@@ -137,73 +144,109 @@ function show(n){for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getA
   if(n>1){var top=box.getBoundingClientRect().top+window.pageYOffset-80; window.scrollTo({top:top,behavior:'smooth'});}}
 function err(id,msg){var e=$(id);e.textContent=msg;e.hidden=!msg}
 
-// Room rows: the Step 1 choice plus any extra room types added on Step 2
-function addRoomRow(){
-  var n=document.querySelectorAll('#ob-extra-rooms .ob-extra').length;
-  if(n+1>=MAXR){$('ob-add-room').disabled=true}
-  var wrap=document.createElement('label'); wrap.className='ob-extra';
-  wrap.innerHTML='Another room type<select class="ob-extra-sel"><option value="">Choose a room</option>'+ROOM_OPTS+'</select><button type="button" class="btn btn-line ob-remove">Remove</button>';
-  $('ob-extra-rooms').appendChild(wrap);
+// ---- guests and rooms ----
+function people(d){ // counted persons: adults, children above 5, children up to 5 beyond the free ones
+  return {adults:d.adults, kids:Math.max(0,d.small-FREE)+d.big};
 }
-$('ob-add-room').addEventListener('click',function(){addRoomRow()});
-document.addEventListener('click',function(e){
-  if(e.target.classList&&e.target.classList.contains('ob-remove')){
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode); $('ob-add-room').disabled=false;
-  }
-});
-function roomIds(){
-  var ids=[]; var first=$('ob-room').value; if(first)ids.push(first);
-  var sels=document.querySelectorAll('.ob-extra-sel');
-  for(var i=0;i<sels.length;i++){if(sels[i].value)ids.push(sels[i].value)}
-  return ids;
-}
-
-// Place people in the rooms: base occupancy first, then extra persons up to each room's maximum
-function allocate(rooms,adults,kids){
-  var ad=adults, kd=kids, i, a, k;
-  for(i=0;i<rooms.length;i++){ // base pass
-    var r=rooms[i]; r.ad=0; r.kd=0; r.p=0;
+// Place people in the given rooms: base occupancy first, then extra up to each room's maximum.
+function allocate(list,adults,kids){
+  var rooms=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
+  var ad=adults,kd=kids,i,a,k;
+  for(i=0;i<rooms.length;i++){var r=rooms[i];
     a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a;
-    k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;
-  }
-  for(i=0;i<rooms.length;i++){ // extra pass
-    var q=rooms[i];
+    k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
+  for(i=0;i<rooms.length;i++){var q=rooms[i];
     a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a;
-    k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;
-  }
-  return ad===0&&kd===0;
+    k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+  return ad===0&&kd===0?rooms:null;
 }
-function quote(d){
-  var ci=parse(d.checkin), nights=d.nights, rooms=[], sub=0, extraTotal=0;
-  for(var j=0;j<d.roomList.length;j++){
-    var room=R[d.roomList[j]]; rooms.push({id:d.roomList[j],n:room.n,b:room.b,mt:room.mt,ma:room.ma,p:room.p,rate:room.p});
-  }
-  var kidsCounted=Math.max(0,d.small-FREE)+d.big;
-  if(!allocate(rooms.map(function(r){return {b:r.b,mt:r.mt,ma:r.ma}}),d.adults,kidsCounted)){return null}
-  // reuse allocate results
-  var alloc=rooms.map(function(r){return {b:r.b,mt:r.mt,ma:r.ma}});
-  allocate(alloc,d.adults,kidsCounted);
-  var lines=[];
-  for(var m=0;m<alloc.length;m++){
-    var rm=alloc[m], room=R[d.roomList[m]];
-    var t=0, dt=new Date(ci);
+// Price a list of rooms for the stay. Returns null if the guests do not fit.
+function priceList(list,d){
+  var g=people(d), placed=allocate(list,g.adults,g.kids);
+  if(!placed)return null;
+  var ci=parse(d.checkin), nights=d.nights, lines=[], sub=0;
+  for(var m=0;m<list.length;m++){
+    var room=R[list[m]], dt=new Date(ci), t=0;
     for(var i=0;i<nights;i++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1)}
-    var extra=Math.max(0,rm.p-room.b), ec=extra*250*nights;
-    lines.push({n:room.n,persons:rm.p,base:room.b,room:t,extra:extra,extraCost:ec,sum:t+ec});
-    sub+=t+ec; extraTotal+=extra;
+    var extra=Math.max(0,placed[m].p-room.b), ec=extra*250*nights;
+    lines.push({n:room.n,persons:placed[m].p,base:room.b,room:t,extra:extra,extraCost:ec,sum:t+ec});
+    sub+=t+ec;
   }
   var gst=Math.round(sub*0.05);
-  return {lines:lines,sub:sub,gst:gst,total:sub+gst,extra:extraTotal,counted:d.adults+kidsCounted};
+  return {lines:lines,sub:sub,gst:gst,total:sub+gst};
 }
-function read(){
-  var ids=roomIds();
-  return {roomList:ids,name:$('ob-name').value.trim(),mobile:$('ob-mobile').value.replace(/\s+/g,''),
+// Cheapest room combinations of 1 to 4 rooms that fit the guests
+function suggestions(d){
+  var found=[], n, a, b, c, e;
+  function consider(list){var q=priceList(list,d); if(q)found.push({list:list,q:q});}
+  for(a=0;a<IDS.length;a++){
+    consider([IDS[a]]);
+    for(b=a;b<IDS.length;b++){
+      consider([IDS[a],IDS[b]]);
+      for(c=b;c<IDS.length;c++){
+        consider([IDS[a],IDS[b],IDS[c]]);
+        for(e=c;e<IDS.length;e++){consider([IDS[a],IDS[b],IDS[c],IDS[e]]);}
+      }
+    }
+  }
+  found.sort(function(x,y){return x.q.total-y.q.total});
+  var out=[], seen={};
+  for(var i=0;i<found.length&&out.length<3;i++){
+    var key=found[i].list.slice().sort().join('|');
+    if(seen[key])continue; seen[key]=1; out.push(found[i]);
+  }
+  return out;
+}
+function setPick(list){
+  var wrap=$('ob-rooms-pick'); wrap.innerHTML='';
+  var rows=Math.max(1,list.length);
+  for(var i=0;i<rows;i++){addPickRow(list[i]||'')}
+  syncAddButtons();
+}
+function addPickRow(val){
+  var n=document.querySelectorAll('#ob-rooms-pick select').length+1;
+  var lab=document.createElement('label');
+  lab.innerHTML='Room #'+n+'<select class="ob-pick-sel"><option value="">Choose a room</option>'+ROOM_OPTS+'</select>';
+  $('ob-rooms-pick').appendChild(lab);
+  if(val)lab.querySelector('select').value=val;
+}
+function syncAddButtons(){
+  var c=document.querySelectorAll('#ob-rooms-pick select').length;
+  $('ob-add-room').disabled=c>=MAXR; $('ob-del-room').disabled=c<=1;
+}
+$('ob-add-room').addEventListener('click',function(){addPickRow('');syncAddButtons()});
+$('ob-del-room').addEventListener('click',function(){
+  var rows=$('ob-rooms-pick').querySelectorAll('label'); if(rows.length>1){rows[rows.length-1].remove()} syncAddButtons();
+});
+function pickedIds(){
+  var out=[], s=document.querySelectorAll('.ob-pick-sel');
+  for(var i=0;i<s.length;i++){if(s[i].value)out.push(s[i].value)}
+  return out;
+}
+function renderSuggestions(d){
+  var people_=people(d), total=people_.adults+people_.kids;
+  $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
+  var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
+  if(!sug.length){
+    box2.innerHTML='<p class="ob-error">We cannot fit this group in up to '+MAXR+' rooms online. Please WhatsApp us on '+PHONE+' and we will arrange it.</p>';
+    return;
+  }
+  sug.forEach(function(x,i){
+    var names=x.list.map(function(id){return R[id].n}).join(' + ');
+    var div=document.createElement('div'); div.className='ob-option';
+    div.innerHTML='<p><b>Option '+(i+1)+': '+x.list.length+' room'+(x.list.length>1?'s':'')+'</b> ('+names+')<br>'+rs(x.q.total)+' in total including GST, for '+d.nights+' night'+(d.nights>1?'s':'')+'</p>';
+    var btn=document.createElement('button'); btn.type='button'; btn.className='btn btn-line'; btn.textContent='Use this option';
+    btn.addEventListener('click',function(){setPick(x.list)});
+    div.appendChild(btn); box2.appendChild(div);
+  });
+}
+function details(){
+  return {name:$('ob-name').value.trim(),mobile:$('ob-mobile').value.replace(/\s+/g,''),
     city:$('ob-city').value.trim(),checkin:$('ob-in').value,nights:+$('ob-nights').value,
     adults:+$('ob-adults').value,small:+$('ob-kids-small').value,big:+$('ob-kids-big').value,
     aadhaar:$('ob-aadhaar').value.trim()};
 }
 function checkDetails(d){
-  if(!d.roomList.length)return 'Please choose a room on Step 1.';
   if(d.name.length<2)return 'Please enter your name.';
   if(!/^[0-9]{10}$/.test(d.mobile))return 'Please enter a 10-digit mobile number.';
   if(!d.checkin)return 'Please choose a check-in date.';
@@ -212,29 +255,15 @@ function checkDetails(d){
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
   if(iso(co)>LAST)return 'Online booking is open for stays ending by 31 Jan 2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
-  var q=quote(d);
-  if(!q)return 'These guests do not fit in the rooms chosen. Add another room type, or choose larger rooms.';
   return '';
 }
 function summaryHtml(d,q,ci,co){
   var s='<dl><dt>Check-in</dt><dd>'+ci.toDateString()+', 12 noon</dd><dt>Check-out</dt><dd>'+co.toDateString()+', 11 am</dd><dt>Nights</dt><dd>'+d.nights+'</dd>';
   s+='<dt>Guests</dt><dd>'+d.adults+' adult'+(d.adults>1?'s':'')+(d.small?', '+d.small+' child'+(d.small>1?'ren':'')+' up to 5'+(d.small>FREE?' ('+FREE+' free)':' (free)'):'')+(d.big?', '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+'</dd>';
   for(var i=0;i<q.lines.length;i++){var L=q.lines[i];
-    s+='<dt>Room '+(i+1)+'</dt><dd>'+L.n+': '+L.persons+' people'+(L.extra?', '+L.extra+' extra × Rs 250 a night':'')+'<br>'+rs(L.sum)+' before GST</dd>';}
+    s+='<dt>Room '+(i+1)+'</dt><dd>'+L.n+': '+L.persons+' people'+(L.extra?', '+L.extra+' extra × Rs 250 a night':'')+'<br>'+rs(L.sum)+' before GST, for the stay</dd>';}
   s+='<dt>Room charge</dt><dd>'+rs(q.sub)+' before GST</dd><dt>GST (5%)</dt><dd>'+rs(q.gst)+'</dd><dt>Total bill</dt><dd>'+rs(q.total)+'</dd><dt>Advance to pay now</dt><dd>'+rs(tier(q.total))+' (the rest at the hotel)</dd></dl>';
   return s;
-}
-function fillSummary(){
-  var d=read(); var m=checkDetails(d); if(m){err('ob-err2',m);show(2);return false}
-  err('ob-err2','');
-  var ci=parse(d.checkin), co=new Date(ci); co.setDate(co.getDate()+d.nights);
-  var q=quote(d);
-  cur={d:d,q:q,ci:ci,co:co};
-  $('ob-summary').innerHTML=summaryHtml(d,q,ci,co);
-  $('ob-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(waText());
-  var pathWa=$('ob-path').value==='wa';
-  $('ob-proceed').hidden=pathWa; $('ob-wa').hidden=!pathWa;
-  return true;
 }
 function roomNames(){return cur.q.lines.map(function(L){return L.n+' ('+L.persons+')'}).join(', ')}
 function waText(){
@@ -246,6 +275,15 @@ function waText(){
   L.push('','Please confirm availability and the booking.');
   return L.join('\n');
 }
+function fillSummary(){
+  var d=details(); d.roomList=picked; var ci=parse(d.checkin), co=new Date(ci); co.setDate(co.getDate()+d.nights);
+  var q=priceList(d.roomList,d);
+  cur={d:d,q:q,ci:ci,co:co};
+  $('ob-summary').innerHTML=summaryHtml(d,q,ci,co);
+  $('ob-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(waText());
+  var pathWa=$('ob-path').value==='wa';
+  $('ob-proceed').hidden=pathWa; $('ob-wa').hidden=!pathWa;
+}
 function payLink(){
   var t=tier(cur.q.total);
   $('ob-amount').textContent='Advance to pay: '+rs(t)+' (part of your total bill of '+rs(cur.q.total)+' incl. GST).';
@@ -254,8 +292,24 @@ function payLink(){
 document.addEventListener('click',function(e){
   var b=e.target.closest?e.target.closest('[data-go]'):null; if(!b)return;
   var n=+b.getAttribute('data-go');
-  if(n===3){ if(!fillSummary())return; }
+  if(n===2.5){
+    var d=details(), mm=checkDetails(d);
+    if(mm){err('ob-err2',mm);show(2);return}
+    err('ob-err2','');
+    renderSuggestions(d);
+    var first=$('ob-room').value, sugList=suggestions(d);
+    var start=(first&&priceList([first],d))?[first]:(sugList.length?sugList[0].list:(first?[first]:[]));
+    setPick(start);
+    err('ob-err25','');
+  }
   show(n);
+});
+$('ob-rooms-next').addEventListener('click',function(){
+  var d=details(); var list=pickedIds();
+  if(!list.length){err('ob-err25','Please choose at least one room.');return}
+  if(list.length>MAXR){err('ob-err25','You can book up to '+MAXR+' rooms online.');return}
+  if(!priceList(list,d)){err('ob-err25','These rooms do not fit these guests. Choose one of the options above, or add a room.');return}
+  err('ob-err25',''); picked=list; fillSummary(); show(3);
 });
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
 $('ob-submit').addEventListener('click',function(){

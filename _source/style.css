@@ -272,3 +272,10 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 @media (max-width:760px){.ob-grid{grid-template-columns:1fr}.ob-grid .wide{grid-column:auto}}
 .online-box .btn-line{border-color:var(--on-accent);color:var(--on-accent)}
 .online-box .btn-line:hover{background:var(--on-accent);color:var(--blue)}
+.ob-suggest{display:grid;gap:10px}
+.ob-option{background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ob-option p{margin:0;flex:1 1 220px}
+.ob-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ob-pick label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
+.ob-pick select{height:46px;text-transform:none;letter-spacing:0;font-size:1rem}
+@media (max-width:760px){.ob-pick{grid-template-columns:1fr}}

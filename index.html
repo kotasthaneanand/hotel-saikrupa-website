@@ -283,6 +283,13 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 @media (max-width:760px){.ob-grid{grid-template-columns:1fr}.ob-grid .wide{grid-column:auto}}
 .online-box .btn-line{border-color:var(--on-accent);color:var(--on-accent)}
 .online-box .btn-line:hover{background:var(--on-accent);color:var(--blue)}
+.ob-suggest{display:grid;gap:10px}
+.ob-option{background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ob-option p{margin:0;flex:1 1 220px}
+.ob-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ob-pick label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
+.ob-pick select{height:46px;text-transform:none;letter-spacing:0;font-size:1rem}
+@media (max-width:760px){.ob-pick{grid-template-columns:1fr}}
 </style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Hotel", "name": "Hotel Saikrupa", "url": "https://www.shirdihotelsaikrupa.com/", "telephone": "+91 82628 00200", "email": "hotelsaikrupabooking@gmail.com", "address": {"@type": "PostalAddress", "streetAddress": "Behind Shirdi Nagar Parishad office, Kankuri Road", "addressLocality": "Shirdi", "postalCode": "423109", "addressRegion": "Maharashtra", "addressCountry": "IN"}, "image": "https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg", "numberOfRooms": 38, "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "Rs 1,050–Rs 4,000", "description": "Family-run pure-vegetarian hotel in Shirdi since 1988, 350 m from Gate 5/6 of Shri Saibaba Samadhi Mandir.", "foundingDate": "1988", "sameAs": ["https://www.instagram.com/hotel_saikrupa_shirdi/"], "hasMap": "https://www.google.com/maps/search/?api=1&query=Hotel+Saikrupa+Shirdi", "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": "Free Wi-Fi", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Free parking", "value": true}, {"@type": "LocationFeatureSpecification", "name": "24-hour hot water", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Family rooms", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?", "acceptedAnswer": {"@type": "Answer", "text": "350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road."}}, {"@type": "Question", "name": "Do you have family rooms for 4 to 6 people?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests."}}, {"@type": "Question", "name": "Do you have AC and non-AC rooms?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Doubles, triples and family rooms are available in both AC and non-AC."}}, {"@type": "Question", "name": "What are the check-in and check-out times?", "acceptedAnswer": {"@type": "Answer", "text": "Check-in is at 12 noon and check-out at 11 am."}}, {"@type": "Question", "name": "Is parking available?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, there is ample parking for cars and buses at the hotel."}}, {"@type": "Question", "name": "How far is Sainagar Shirdi railway station and Shirdi Airport?", "acceptedAnswer": {"@type": "Answer", "text": "Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi."}}, {"@type": "Question", "name": "How do I pay the advance?", "acceptedAnswer": {"@type": "Answer", "text": "Pay online with the Pay advance online buttons on this page, by UPI or card. The advance is Rs 500 for a total bill up to Rs 1,500, Rs 1,000 for Rs 1,501 to Rs 3,000, and Rs 1,500 above Rs 3,000, with GST included. You pay the rest at the hotel. Then send the payment confirmation on WhatsApp so we can confirm your room."}}, {"@type": "Question", "name": "Do your prices go up at festivals?", "acceptedAnswer": {"@type": "Answer", "text": "Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff."}}, {"@type": "Question", "name": "Can I cancel my booking?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Cancellation is free until 12 noon, one day before your check-in date. You can choose either a full refund of your advance, or keep the advance as credit for a stay within 6 months. After that, or if you do not arrive, the first night is charged. On festival dates, free cancellation is until 7 days before check-in."}}, {"@type": "Question", "name": "How do I get the best price?", "acceptedAnswer": {"@type": "Answer", "text": "Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites."}}]}</script></head>
 <body><header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>
@@ -343,19 +350,25 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 <label>Coming from<input id="ob-city" type="text" placeholder="City"></label>
 <label>Check-in<input id="ob-in" type="date" required></label>
 <label>Nights<select id="ob-nights"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></label>
-<label>Adults<select id="ob-adults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></label>
+<label>Adults<select id="ob-adults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option></select></label>
 <label>Children up to 5 (first 2 free)<select id="ob-kids-small"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
 <label>Children above 5 (Rs 250 a night)<select id="ob-kids-big"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
 <label>Aadhaar, last 4 digits (optional)<input id="ob-aadhaar" type="text" inputmode="numeric" maxlength="4" placeholder="1234"></label>
 </div>
-<div class="ob-rooms">
-<p class="ob-title">Rooms</p>
-<div id="ob-extra-rooms"></div>
-<div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add another room type</button></div>
-</div>
 <p class="ob-small">We use these details only to confirm your booking. The Aadhaar digits are optional and are kept only for our records.</p>
 <p class="ob-error" id="ob-err2" hidden></p>
-<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="1">Back</button><button type="button" class="btn btn-line ob-next" data-go="3">Next</button></div>
+<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="1">Back</button><button type="button" class="btn btn-line ob-next" data-go="2.5">Next</button></div>
+</div>
+
+<div class="ob-step" data-step="2.5" hidden>
+<p class="ob-title">Step 2 of 4: choose your rooms</p>
+<p id="ob-people" class="ob-small"></p>
+<div id="ob-suggest" class="ob-suggest"></div>
+<p class="ob-title">Or choose your rooms (up to 4)</p>
+<div id="ob-rooms-pick" class="ob-pick"></div>
+<div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add a room</button><button type="button" class="btn btn-line" id="ob-del-room">Remove last room</button></div>
+<p class="ob-error" id="ob-err25" hidden></p>
+<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="2">Back</button><button type="button" class="btn btn-line ob-next" id="ob-rooms-next">Next</button></div>
 </div>
 
 <div class="ob-step" data-step="3" hidden>
@@ -391,12 +404,13 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 </div></section>
 <script>
 (function(){
-var R={"deluxe-double": {"n": "Deluxe Double Room (AC)", "b": 2, "ac": true, "p": [1200, 1200, 1550, 2150, 2800], "mt": 3, "ma": 3}, "deluxe-triple": {"n": "Deluxe Triple Room (AC)", "b": 3, "ac": true, "p": [1600, 1600, 2000, 2500, 3200], "mt": 5, "ma": 4}, "premium-triple": {"n": "Premium Deluxe Triple Room (AC)", "b": 3, "ac": true, "p": [1950, 1950, 2350, 2850, 3550], "mt": 5, "ma": 4}, "compact-triple": {"n": "Compact Triple Room (AC)", "b": 3, "ac": true, "p": [1500, 1500, 1800, 2350, 3000], "mt": 5, "ma": 4}, "deluxe-family": {"n": "Premium Deluxe Family Room (AC)", "b": 4, "ac": true, "p": [2750, 2750, 3200, 3800, 4200], "mt": 6, "ma": 6}, "suite-ac": {"n": "Family Suite, 2 rooms (AC)", "b": 4, "ac": true, "p": [2500, 2500, 2950, 3600, 4000], "mt": 6, "ma": 6}, "standard-double": {"n": "Standard Double Room (Non-AC)", "b": 2, "ac": false, "p": [1050, 1050, 1300, 1700, 2200], "mt": 3, "ma": 3}, "standard-triple": {"n": "Standard Triple Room (Non-AC)", "b": 3, "ac": false, "p": [1300, 1300, 1600, 2050, 2700], "mt": 5, "ma": 4}, "standard-family": {"n": "Standard Family Room (Non-AC)", "b": 4, "ac": false, "p": [2000, 2000, 2450, 2950, 3300], "mt": 6, "ma": 6}, "suite-nonac": {"n": "Family Suite, 2 rooms (Non-AC)", "b": 4, "ac": false, "p": [2250, 2250, 2700, 3150, 3500], "mt": 6, "ma": 6}}, PER={"fest": [["2026-10-18", "2026-10-21"], ["2026-11-05", "2026-11-11"], ["2027-01-23", "2027-01-25"]], "card": [["2026-12-23", "2027-01-04"]], "sat": [["2026-11-12", "2026-11-15"], ["2027-01-13", "2027-01-15"]]}, LINKS={"500": "https://paytm.me/PYTMPS/cHarHdP", "1000": "https://paytm.me/PYTMPS/jpCrHdP", "1500": "https://paytm.me/PYTMPS/WA6rHdP"}, SCRIPT_URL='PASTE_WEB_APP_URL', PHONE='918262800200', LAST='2027-01-31', MAXR=6, FREE=2;
+var R={"deluxe-double": {"n": "Deluxe Double Room (AC)", "b": 2, "ac": true, "p": [1200, 1200, 1550, 2150, 2800], "mt": 3, "ma": 3}, "deluxe-triple": {"n": "Deluxe Triple Room (AC)", "b": 3, "ac": true, "p": [1600, 1600, 2000, 2500, 3200], "mt": 5, "ma": 4}, "premium-triple": {"n": "Premium Deluxe Triple Room (AC)", "b": 3, "ac": true, "p": [1950, 1950, 2350, 2850, 3550], "mt": 5, "ma": 4}, "compact-triple": {"n": "Compact Triple Room (AC)", "b": 3, "ac": true, "p": [1500, 1500, 1800, 2350, 3000], "mt": 5, "ma": 4}, "deluxe-family": {"n": "Premium Deluxe Family Room (AC)", "b": 4, "ac": true, "p": [2750, 2750, 3200, 3800, 4200], "mt": 6, "ma": 6}, "suite-ac": {"n": "Family Suite, 2 rooms (AC)", "b": 4, "ac": true, "p": [2500, 2500, 2950, 3600, 4000], "mt": 6, "ma": 6}, "standard-double": {"n": "Standard Double Room (Non-AC)", "b": 2, "ac": false, "p": [1050, 1050, 1300, 1700, 2200], "mt": 3, "ma": 3}, "standard-triple": {"n": "Standard Triple Room (Non-AC)", "b": 3, "ac": false, "p": [1300, 1300, 1600, 2050, 2700], "mt": 5, "ma": 4}, "standard-family": {"n": "Standard Family Room (Non-AC)", "b": 4, "ac": false, "p": [2000, 2000, 2450, 2950, 3300], "mt": 6, "ma": 6}, "suite-nonac": {"n": "Family Suite, 2 rooms (Non-AC)", "b": 4, "ac": false, "p": [2250, 2250, 2700, 3150, 3500], "mt": 6, "ma": 6}}, PER={"fest": [["2026-10-18", "2026-10-21"], ["2026-11-05", "2026-11-11"], ["2027-01-23", "2027-01-25"]], "card": [["2026-12-23", "2027-01-04"]], "sat": [["2026-11-12", "2026-11-15"], ["2027-01-13", "2027-01-15"]]}, LINKS={"500": "https://paytm.me/PYTMPS/cHarHdP", "1000": "https://paytm.me/PYTMPS/jpCrHdP", "1500": "https://paytm.me/PYTMPS/WA6rHdP"}, SCRIPT_URL='PASTE_WEB_APP_URL', PHONE='918262800200', LAST='2027-01-31', MAXR=4, FREE=2;
 var $=function(i){return document.getElementById(i)};
 var box=$('ob-steps'); if(!box)return;
 var steps=box.querySelectorAll('.ob-step');
 var ROOM_OPTS=$('ob-room').innerHTML;
-var ref='', cur=null;
+var IDS=Object.keys(R);
+var ref='', cur=null, picked=[];
 function pad(x){return (x<10?'0':'')+x}
 function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
@@ -408,73 +422,109 @@ function show(n){for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getA
   if(n>1){var top=box.getBoundingClientRect().top+window.pageYOffset-80; window.scrollTo({top:top,behavior:'smooth'});}}
 function err(id,msg){var e=$(id);e.textContent=msg;e.hidden=!msg}
 
-// Room rows: the Step 1 choice plus any extra room types added on Step 2
-function addRoomRow(){
-  var n=document.querySelectorAll('#ob-extra-rooms .ob-extra').length;
-  if(n+1>=MAXR){$('ob-add-room').disabled=true}
-  var wrap=document.createElement('label'); wrap.className='ob-extra';
-  wrap.innerHTML='Another room type<select class="ob-extra-sel"><option value="">Choose a room</option>'+ROOM_OPTS+'</select><button type="button" class="btn btn-line ob-remove">Remove</button>';
-  $('ob-extra-rooms').appendChild(wrap);
+// ---- guests and rooms ----
+function people(d){ // counted persons: adults, children above 5, children up to 5 beyond the free ones
+  return {adults:d.adults, kids:Math.max(0,d.small-FREE)+d.big};
 }
-$('ob-add-room').addEventListener('click',function(){addRoomRow()});
-document.addEventListener('click',function(e){
-  if(e.target.classList&&e.target.classList.contains('ob-remove')){
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode); $('ob-add-room').disabled=false;
-  }
-});
-function roomIds(){
-  var ids=[]; var first=$('ob-room').value; if(first)ids.push(first);
-  var sels=document.querySelectorAll('.ob-extra-sel');
-  for(var i=0;i<sels.length;i++){if(sels[i].value)ids.push(sels[i].value)}
-  return ids;
-}
-
-// Place people in the rooms: base occupancy first, then extra persons up to each room's maximum
-function allocate(rooms,adults,kids){
-  var ad=adults, kd=kids, i, a, k;
-  for(i=0;i<rooms.length;i++){ // base pass
-    var r=rooms[i]; r.ad=0; r.kd=0; r.p=0;
+// Place people in the given rooms: base occupancy first, then extra up to each room's maximum.
+function allocate(list,adults,kids){
+  var rooms=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
+  var ad=adults,kd=kids,i,a,k;
+  for(i=0;i<rooms.length;i++){var r=rooms[i];
     a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a;
-    k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;
-  }
-  for(i=0;i<rooms.length;i++){ // extra pass
-    var q=rooms[i];
+    k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
+  for(i=0;i<rooms.length;i++){var q=rooms[i];
     a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a;
-    k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;
-  }
-  return ad===0&&kd===0;
+    k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+  return ad===0&&kd===0?rooms:null;
 }
-function quote(d){
-  var ci=parse(d.checkin), nights=d.nights, rooms=[], sub=0, extraTotal=0;
-  for(var j=0;j<d.roomList.length;j++){
-    var room=R[d.roomList[j]]; rooms.push({id:d.roomList[j],n:room.n,b:room.b,mt:room.mt,ma:room.ma,p:room.p,rate:room.p});
-  }
-  var kidsCounted=Math.max(0,d.small-FREE)+d.big;
-  if(!allocate(rooms.map(function(r){return {b:r.b,mt:r.mt,ma:r.ma}}),d.adults,kidsCounted)){return null}
-  // reuse allocate results
-  var alloc=rooms.map(function(r){return {b:r.b,mt:r.mt,ma:r.ma}});
-  allocate(alloc,d.adults,kidsCounted);
-  var lines=[];
-  for(var m=0;m<alloc.length;m++){
-    var rm=alloc[m], room=R[d.roomList[m]];
-    var t=0, dt=new Date(ci);
+// Price a list of rooms for the stay. Returns null if the guests do not fit.
+function priceList(list,d){
+  var g=people(d), placed=allocate(list,g.adults,g.kids);
+  if(!placed)return null;
+  var ci=parse(d.checkin), nights=d.nights, lines=[], sub=0;
+  for(var m=0;m<list.length;m++){
+    var room=R[list[m]], dt=new Date(ci), t=0;
     for(var i=0;i<nights;i++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1)}
-    var extra=Math.max(0,rm.p-room.b), ec=extra*250*nights;
-    lines.push({n:room.n,persons:rm.p,base:room.b,room:t,extra:extra,extraCost:ec,sum:t+ec});
-    sub+=t+ec; extraTotal+=extra;
+    var extra=Math.max(0,placed[m].p-room.b), ec=extra*250*nights;
+    lines.push({n:room.n,persons:placed[m].p,base:room.b,room:t,extra:extra,extraCost:ec,sum:t+ec});
+    sub+=t+ec;
   }
   var gst=Math.round(sub*0.05);
-  return {lines:lines,sub:sub,gst:gst,total:sub+gst,extra:extraTotal,counted:d.adults+kidsCounted};
+  return {lines:lines,sub:sub,gst:gst,total:sub+gst};
 }
-function read(){
-  var ids=roomIds();
-  return {roomList:ids,name:$('ob-name').value.trim(),mobile:$('ob-mobile').value.replace(/\s+/g,''),
+// Cheapest room combinations of 1 to 4 rooms that fit the guests
+function suggestions(d){
+  var found=[], n, a, b, c, e;
+  function consider(list){var q=priceList(list,d); if(q)found.push({list:list,q:q});}
+  for(a=0;a<IDS.length;a++){
+    consider([IDS[a]]);
+    for(b=a;b<IDS.length;b++){
+      consider([IDS[a],IDS[b]]);
+      for(c=b;c<IDS.length;c++){
+        consider([IDS[a],IDS[b],IDS[c]]);
+        for(e=c;e<IDS.length;e++){consider([IDS[a],IDS[b],IDS[c],IDS[e]]);}
+      }
+    }
+  }
+  found.sort(function(x,y){return x.q.total-y.q.total});
+  var out=[], seen={};
+  for(var i=0;i<found.length&&out.length<3;i++){
+    var key=found[i].list.slice().sort().join('|');
+    if(seen[key])continue; seen[key]=1; out.push(found[i]);
+  }
+  return out;
+}
+function setPick(list){
+  var wrap=$('ob-rooms-pick'); wrap.innerHTML='';
+  var rows=Math.max(1,list.length);
+  for(var i=0;i<rows;i++){addPickRow(list[i]||'')}
+  syncAddButtons();
+}
+function addPickRow(val){
+  var n=document.querySelectorAll('#ob-rooms-pick select').length+1;
+  var lab=document.createElement('label');
+  lab.innerHTML='Room #'+n+'<select class="ob-pick-sel"><option value="">Choose a room</option>'+ROOM_OPTS+'</select>';
+  $('ob-rooms-pick').appendChild(lab);
+  if(val)lab.querySelector('select').value=val;
+}
+function syncAddButtons(){
+  var c=document.querySelectorAll('#ob-rooms-pick select').length;
+  $('ob-add-room').disabled=c>=MAXR; $('ob-del-room').disabled=c<=1;
+}
+$('ob-add-room').addEventListener('click',function(){addPickRow('');syncAddButtons()});
+$('ob-del-room').addEventListener('click',function(){
+  var rows=$('ob-rooms-pick').querySelectorAll('label'); if(rows.length>1){rows[rows.length-1].remove()} syncAddButtons();
+});
+function pickedIds(){
+  var out=[], s=document.querySelectorAll('.ob-pick-sel');
+  for(var i=0;i<s.length;i++){if(s[i].value)out.push(s[i].value)}
+  return out;
+}
+function renderSuggestions(d){
+  var people_=people(d), total=people_.adults+people_.kids;
+  $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
+  var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
+  if(!sug.length){
+    box2.innerHTML='<p class="ob-error">We cannot fit this group in up to '+MAXR+' rooms online. Please WhatsApp us on '+PHONE+' and we will arrange it.</p>';
+    return;
+  }
+  sug.forEach(function(x,i){
+    var names=x.list.map(function(id){return R[id].n}).join(' + ');
+    var div=document.createElement('div'); div.className='ob-option';
+    div.innerHTML='<p><b>Option '+(i+1)+': '+x.list.length+' room'+(x.list.length>1?'s':'')+'</b> ('+names+')<br>'+rs(x.q.total)+' in total including GST, for '+d.nights+' night'+(d.nights>1?'s':'')+'</p>';
+    var btn=document.createElement('button'); btn.type='button'; btn.className='btn btn-line'; btn.textContent='Use this option';
+    btn.addEventListener('click',function(){setPick(x.list)});
+    div.appendChild(btn); box2.appendChild(div);
+  });
+}
+function details(){
+  return {name:$('ob-name').value.trim(),mobile:$('ob-mobile').value.replace(/\s+/g,''),
     city:$('ob-city').value.trim(),checkin:$('ob-in').value,nights:+$('ob-nights').value,
     adults:+$('ob-adults').value,small:+$('ob-kids-small').value,big:+$('ob-kids-big').value,
     aadhaar:$('ob-aadhaar').value.trim()};
 }
 function checkDetails(d){
-  if(!d.roomList.length)return 'Please choose a room on Step 1.';
   if(d.name.length<2)return 'Please enter your name.';
   if(!/^[0-9]{10}$/.test(d.mobile))return 'Please enter a 10-digit mobile number.';
   if(!d.checkin)return 'Please choose a check-in date.';
@@ -483,29 +533,15 @@ function checkDetails(d){
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
   if(iso(co)>LAST)return 'Online booking is open for stays ending by 31 Jan 2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
-  var q=quote(d);
-  if(!q)return 'These guests do not fit in the rooms chosen. Add another room type, or choose larger rooms.';
   return '';
 }
 function summaryHtml(d,q,ci,co){
   var s='<dl><dt>Check-in</dt><dd>'+ci.toDateString()+', 12 noon</dd><dt>Check-out</dt><dd>'+co.toDateString()+', 11 am</dd><dt>Nights</dt><dd>'+d.nights+'</dd>';
   s+='<dt>Guests</dt><dd>'+d.adults+' adult'+(d.adults>1?'s':'')+(d.small?', '+d.small+' child'+(d.small>1?'ren':'')+' up to 5'+(d.small>FREE?' ('+FREE+' free)':' (free)'):'')+(d.big?', '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+'</dd>';
   for(var i=0;i<q.lines.length;i++){var L=q.lines[i];
-    s+='<dt>Room '+(i+1)+'</dt><dd>'+L.n+': '+L.persons+' people'+(L.extra?', '+L.extra+' extra × Rs 250 a night':'')+'<br>'+rs(L.sum)+' before GST</dd>';}
+    s+='<dt>Room '+(i+1)+'</dt><dd>'+L.n+': '+L.persons+' people'+(L.extra?', '+L.extra+' extra × Rs 250 a night':'')+'<br>'+rs(L.sum)+' before GST, for the stay</dd>';}
   s+='<dt>Room charge</dt><dd>'+rs(q.sub)+' before GST</dd><dt>GST (5%)</dt><dd>'+rs(q.gst)+'</dd><dt>Total bill</dt><dd>'+rs(q.total)+'</dd><dt>Advance to pay now</dt><dd>'+rs(tier(q.total))+' (the rest at the hotel)</dd></dl>';
   return s;
-}
-function fillSummary(){
-  var d=read(); var m=checkDetails(d); if(m){err('ob-err2',m);show(2);return false}
-  err('ob-err2','');
-  var ci=parse(d.checkin), co=new Date(ci); co.setDate(co.getDate()+d.nights);
-  var q=quote(d);
-  cur={d:d,q:q,ci:ci,co:co};
-  $('ob-summary').innerHTML=summaryHtml(d,q,ci,co);
-  $('ob-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(waText());
-  var pathWa=$('ob-path').value==='wa';
-  $('ob-proceed').hidden=pathWa; $('ob-wa').hidden=!pathWa;
-  return true;
 }
 function roomNames(){return cur.q.lines.map(function(L){return L.n+' ('+L.persons+')'}).join(', ')}
 function waText(){
@@ -517,6 +553,15 @@ function waText(){
   L.push('','Please confirm availability and the booking.');
   return L.join('\n');
 }
+function fillSummary(){
+  var d=details(); d.roomList=picked; var ci=parse(d.checkin), co=new Date(ci); co.setDate(co.getDate()+d.nights);
+  var q=priceList(d.roomList,d);
+  cur={d:d,q:q,ci:ci,co:co};
+  $('ob-summary').innerHTML=summaryHtml(d,q,ci,co);
+  $('ob-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(waText());
+  var pathWa=$('ob-path').value==='wa';
+  $('ob-proceed').hidden=pathWa; $('ob-wa').hidden=!pathWa;
+}
 function payLink(){
   var t=tier(cur.q.total);
   $('ob-amount').textContent='Advance to pay: '+rs(t)+' (part of your total bill of '+rs(cur.q.total)+' incl. GST).';
@@ -525,8 +570,24 @@ function payLink(){
 document.addEventListener('click',function(e){
   var b=e.target.closest?e.target.closest('[data-go]'):null; if(!b)return;
   var n=+b.getAttribute('data-go');
-  if(n===3){ if(!fillSummary())return; }
+  if(n===2.5){
+    var d=details(), mm=checkDetails(d);
+    if(mm){err('ob-err2',mm);show(2);return}
+    err('ob-err2','');
+    renderSuggestions(d);
+    var first=$('ob-room').value, sugList=suggestions(d);
+    var start=(first&&priceList([first],d))?[first]:(sugList.length?sugList[0].list:(first?[first]:[]));
+    setPick(start);
+    err('ob-err25','');
+  }
   show(n);
+});
+$('ob-rooms-next').addEventListener('click',function(){
+  var d=details(); var list=pickedIds();
+  if(!list.length){err('ob-err25','Please choose at least one room.');return}
+  if(list.length>MAXR){err('ob-err25','You can book up to '+MAXR+' rooms online.');return}
+  if(!priceList(list,d)){err('ob-err25','These rooms do not fit these guests. Choose one of the options above, or add a room.');return}
+  err('ob-err25',''); picked=list; fillSummary(); show(3);
 });
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
 $('ob-submit').addEventListener('click',function(){
