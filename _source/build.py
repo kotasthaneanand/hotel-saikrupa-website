@@ -18,7 +18,7 @@ import urllib.parse
 def wa(msg): return WA_BASE + urllib.parse.quote(msg)
 WA_HELLO = wa("Namaste, I would like to know room availability and the best price at Hotel Saikrupa, Shirdi.")
 
-def rupees(n): return f"₹{n:,}"
+def rupees(n): return f"Rs {n:,}"
 
 def header(active=""):
     return f'''<header class="top"><div class="wrap">
@@ -47,7 +47,7 @@ FEATURED = ["deluxe-family", "premium-triple", "deluxe-double", "deluxe-triple",
 NEW = '<span class="new-badge">New · renovated 2026</span>'
 
 def adv_buttons():
-    return "".join(f'<a class="btn btn-line" href="{u}" target="_blank" rel="noopener">Pay ₹{a:,} advance</a>' for a, u in ADVANCE_LINKS)
+    return "".join(f'<a class="btn btn-line" href="{u}" target="_blank" rel="noopener">Pay Rs {a:,} advance</a>' for a, u in ADVANCE_LINKS)
 
 def booking_box():
     opts = "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
@@ -89,7 +89,7 @@ JS = """<script>
   var ref='WEB-'+Math.random().toString(36).slice(2,6).toUpperCase();
   function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
   function nice(d){return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
-  function inr(x){return '\\u20b9'+x.toLocaleString('en-IN');}
+  function inr(x){return 'Rs '+x.toLocaleString('en-IN');}
   function upd(){
     var nights=+f.n.value, adults=+f.a.value, kids=+f.c.value, rooms=parseInt(f.rn.value,10);
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
@@ -127,7 +127,7 @@ JS = """<script>
           lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
         }
       }
-      if(kids)est+=(est?' ':'')+'Children above 5 years are charged ₹250 per night.';
+      if(kids)est+=(est?' ':'')+'Children above 5 years are charged Rs 250 per night.';
       if(est)est+=' Each night is priced by its day: Saturday and festival nights are higher. We confirm on WhatsApp.';
     }
     lines.push('','Please confirm availability and the best price.');
@@ -235,13 +235,13 @@ def index_body():
 <div class="rv-cta"><a class="btn btn-line" href="reviews.html">Read 40 guest reviews</a><a class="btn btn-line" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read all reviews on Google</a>{('<a class="btn btn-line" href="'+GOOGLE_WRITE_REVIEW+'" target="_blank" rel="noopener">Stayed with us? Write a review</a>') if GOOGLE_WRITE_REVIEW else ''}</div>
 </div></section>
 
-<section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I pay the advance?</summary><p>Pay online with the &ldquo;Pay advance online&rdquo; buttons on this page, by UPI or card. The advance is ₹500 for a total bill up to ₹1,500, ₹1,000 for ₹1,501 to ₹3,000, and ₹1,500 above ₹3,000, with GST included. You pay the rest at the hotel. Then send the payment confirmation on WhatsApp so we can confirm your room.</p></details><details><summary>Do your prices go up at festivals?</summary><p>Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.</p></details><details><summary>Can I cancel my booking?</summary><p>Yes. Cancellation is free until 12 noon, one day before your check-in date. You can choose either a full refund of your advance, or keep the advance as credit for a stay within 6 months. After that, or if you do not arrive, the first night is charged. On festival dates, free cancellation is until 7 days before check-in.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
+<section id="faq" style="background:var(--paper-2)"><div class="wrap"><div class="section-head"><span class="eyebrow">Questions</span><h2>Staying near the Samadhi Mandir: common questions</h2></div><div class="faq"><details><summary>How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?</summary><p>350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.</p></details><details><summary>Do you have family rooms for 4 to 6 people?</summary><p>Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.</p></details><details><summary>Do you have AC and non-AC rooms?</summary><p>Yes. Doubles, triples and family rooms are available in both AC and non-AC.</p></details><details><summary>What are the check-in and check-out times?</summary><p>Check-in is at 12 noon and check-out at 11 am.</p></details><details><summary>Is parking available?</summary><p>Yes, there is ample parking for cars and buses at the hotel.</p></details><details><summary>How far is Sainagar Shirdi railway station and Shirdi Airport?</summary><p>Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.</p></details><details><summary>How do I pay the advance?</summary><p>Pay online with the &ldquo;Pay advance online&rdquo; buttons on this page, by UPI or card. The advance is Rs 500 for a total bill up to Rs 1,500, Rs 1,000 for Rs 1,501 to Rs 3,000, and Rs 1,500 above Rs 3,000, with GST included. You pay the rest at the hotel. Then send the payment confirmation on WhatsApp so we can confirm your room.</p></details><details><summary>Do your prices go up at festivals?</summary><p>Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.</p></details><details><summary>Can I cancel my booking?</summary><p>Yes. Cancellation is free until 12 noon, one day before your check-in date. You can choose either a full refund of your advance, or keep the advance as credit for a stay within 6 months. After that, or if you do not arrive, the first night is charged. On festival dates, free cancellation is until 7 days before check-in.</p></details><details><summary>How do I get the best price?</summary><p>Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.</p></details></div></div></section>
 
 <section id="policies"><div class="wrap info">
 <div><div class="section-head"><span class="eyebrow">Good to know</span><h2>House rules</h2></div>
 <dl class="dl"><dt>Check-in</dt><dd>12 noon</dd><dt>Check-out</dt><dd>11 am</dd>
 <dt>ID</dt><dd>Valid photo ID for every guest. Foreign nationals: passport and valid visa.</dd>
-<dt>Children</dt><dd>Free up to 5 years. Above 5 years, charged as an extra person (₹250 per night).</dd>
+<dt>Children</dt><dd>Free up to 5 years. Above 5 years, charged as an extra person (Rs 250 per night).</dd>
 <dt>Food</dt><dd>Pure vegetarian premises. No alcohol, no smoking, no visitors in guest rooms.</dd>
 <dt>Lift</dt><dd>No lift; rooms are on the ground, first and second floors. Ask for a ground-floor room if needed.<br><em>A modern hydraulic lift is being installed and will be ready by 15 December 2026.</em></dd>
 <dt>Cancellation</dt><dd>Free until 12 noon, one day before your check-in date; the full advance is refunded. Cancelled after that, or not arrived: the first night is charged and any advance above that is refunded. Leaving early: nights not stayed are refunded, minus one night. Refunds by UPI to the same account within 7 working days.<br><em>Festival dates (Shri Saibaba Punyatithi, Diwali, Christmas–New Year, Republic Day): free cancellation until 7 days before check-in; after that, the first night is charged.</em></dd></dl></div>
@@ -315,7 +315,7 @@ def tariff_section():
 <table><thead><tr><th>Room type</th><th>Published tariff per night</th></tr></thead><tbody>{rows}</tbody></table>
 <ul class="tnotes">
 <li>Plus GST as applicable. Prices on this website are valid till {VALID_TILL}.</li>
-<li>Extra person above 5 years ₹250 per night; children up to 5 years stay free.</li>
+<li>Extra person above 5 years Rs 250 per night; children up to 5 years stay free.</li>
 <li>Festival periods when we expect a lot of rush in Shirdi:<ul>{items}</ul></li>
 <li>If you are planning a visit to Shirdi for Shri Saibaba darshan, we strongly suggest booking in advance, directly with us on this website or by calling <a href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.</li>
 </ul></section>'''
@@ -337,7 +337,7 @@ def rooms_body():
 <main><section style="padding-top:20px"><div class="wrap">
 <a class="back" href="index.html">← Back to home</a>
 <div class="section-head" style="margin-top:18px"><span class="eyebrow">Rooms and prices</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">10 room types, for two to six guests</h1>
-<p class="muted">Every room has an attached bathroom with 24-hour hot water, a 32-inch LED TV and Wi-Fi. Extra person ₹250 per night; children up to 5 years stay free. Our website and WhatsApp prices are the lowest you will find, below booking sites.</p><p class="tagline">{TAGLINE}</p></div>
+<p class="muted">Every room has an attached bathroom with 24-hour hot water, a 32-inch LED TV and Wi-Fi. Extra person Rs 250 per night; children up to 5 years stay free. Our website and WhatsApp prices are the lowest you will find, below booking sites.</p><p class="tagline">{TAGLINE}</p></div>
 <div class="rp">{arts}</div>
 {tariff_section()}
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
@@ -433,7 +433,7 @@ def privacy_body():
 <p style="margin-top:28px"><a class="back" href="index.html">← Back to home</a></p></div></section></main>
 {footer()}'''
 
-FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I pay the advance?', "Pay online with the Pay advance online buttons on this page, by UPI or card. The advance is ₹500 for a total bill up to ₹1,500, ₹1,000 for ₹1,501 to ₹3,000, and ₹1,500 above ₹3,000, with GST included. You pay the rest at the hotel. Then send the payment confirmation on WhatsApp so we can confirm your room."), ('Do your prices go up at festivals?', 'Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.'), ('Can I cancel my booking?', 'Yes. Cancellation is free until 12 noon, one day before your check-in date. You can choose either a full refund of your advance, or keep the advance as credit for a stay within 6 months. After that, or if you do not arrive, the first night is charged. On festival dates, free cancellation is until 7 days before check-in.'), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
+FAQ = [('How far is Hotel Saikrupa from Shri Saibaba Samadhi Mandir?', '350 m on foot, about 5 minutes, to Gate 5/6 of the Samadhi Mandir. The hotel is behind the Shirdi Nagar Parishad office on Kankuri Road.'), ('Do you have family rooms for 4 to 6 people?', 'Yes. We have family rooms with 2 double beds and family suites with 2 rooms behind one private entrance, each for up to 6 guests.'), ('Do you have AC and non-AC rooms?', 'Yes. Doubles, triples and family rooms are available in both AC and non-AC.'), ('What are the check-in and check-out times?', 'Check-in is at 12 noon and check-out at 11 am.'), ('Is parking available?', 'Yes, there is ample parking for cars and buses at the hotel.'), ('How far is Sainagar Shirdi railway station and Shirdi Airport?', 'Sainagar Shirdi railway station is about 3 km away and Shirdi Airport about 14 km. We can help arrange a taxi.'), ('How do I pay the advance?', "Pay online with the Pay advance online buttons on this page, by UPI or card. The advance is Rs 500 for a total bill up to Rs 1,500, Rs 1,000 for Rs 1,501 to Rs 3,000, and Rs 1,500 above Rs 3,000, with GST included. You pay the rest at the hotel. Then send the payment confirmation on WhatsApp so we can confirm your room."), ('Do your prices go up at festivals?', 'Festival nights (Shri Saibaba Punyatithi 18–21 Oct, Diwali 5–11 Nov, Republic Day 23–25 Jan) use our festival price; the Diwali holidays (12–15 Nov) and Makar Sankranti (13–15 Jan) our Saturday price; and Christmas–New Year (23 Dec–4 Jan) our published tariff. Since 1988 we have never charged above our published tariff.'), ('Can I cancel my booking?', 'Yes. Cancellation is free until 12 noon, one day before your check-in date. You can choose either a full refund of your advance, or keep the advance as credit for a stay within 6 months. After that, or if you do not arrive, the first night is charged. On festival dates, free cancellation is until 7 days before check-in.'), ('How do I get the best price?', 'Book directly on WhatsApp at 8262 800 200. Our direct prices are always below booking sites.')]
 
 JSONLD = {
     "@context": "https://schema.org", "@type": "Hotel", "name": "Hotel Saikrupa",
@@ -441,7 +441,7 @@ JSONLD = {
     "address": {"@type": "PostalAddress", "streetAddress": "Behind Shirdi Nagar Parishad office, Kankuri Road",
                 "addressLocality": "Shirdi", "postalCode": "423109", "addressRegion": "Maharashtra", "addressCountry": "IN"},
     "image": "https://www.shirdihotelsaikrupa.com/img/facade-new-hero.jpg", "numberOfRooms": 38,
-    "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "₹1,050–₹4,000",
+    "checkinTime": "12:00", "checkoutTime": "11:00", "priceRange": "Rs 1,050–Rs 4,000",
     "description": "Family-run pure-vegetarian hotel in Shirdi since 1988, 350 m from Gate 5/6 of Shri Saibaba Samadhi Mandir.",
     "foundingDate": "1988", "sameAs": ["https://www.instagram.com/hotel_saikrupa_shirdi/"],
     "hasMap": "https://www.google.com/maps/search/?api=1&query=Hotel+Saikrupa+Shirdi",
