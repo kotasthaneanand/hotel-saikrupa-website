@@ -435,7 +435,9 @@ function logEnquiry(payload){
   var wait=new Promise(function(res){setTimeout(function(){res(null)},ENQ_TIMEOUT)});
   return Promise.race([call,wait]);
 }
-function goWa(href,payload){ logEnquiry(payload).then(function(){window.location.href=href}); }
+var busyRefs={};
+function goWa(href,payload){ var k=payload.ref||href; if(busyRefs[k])return; busyRefs[k]=1; setTimeout(function(){delete busyRefs[k]},4500);
+  logEnquiry(payload).then(function(){window.location.href=href}); }
 function appendRef(href,ref){return href+encodeURIComponent('\nRef: '+ref)}
 
 // ---- guests and rooms ----
