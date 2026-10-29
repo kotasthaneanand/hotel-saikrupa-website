@@ -848,6 +848,8 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
     var nights=+f.n.value, aV=f.a.value, kS=f.cs.value, kB=f.cb.value, rooms=parseInt(f.rn.value,10);
     var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
     var kids=small+bigK;
+    // First 2 children up to 5 are free: they do not count for rooms or price (the 13-person limit counts everyone)
+    var counted=Math.max(0,small-2)+bigK;
     // Each room needs at least one adult: Rooms cannot be more than Adults (6+ only from 6 adults)
     var rnOpts=f.rn.options, q;
     for(q=0;q<rnOpts.length;q++){rnOpts[q].disabled=parseInt(rnOpts[q].text,10)>adults;}
@@ -874,11 +876,11 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
       function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return true;}return false;}
       function nightRate(room,d){var s=iso(d),dy=d.getDay();if(inP(s,PER.card))return room.p[4];if(inP(s,PER.fest))return room.p[3];if(dy===6||inP(s,PER.sat))return room.p[2];if(dy===4||dy===5||dy===0)return room.p[1];return room.p[0];}
       function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){t+=nightRate(room,d);d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
-      function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(kids/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
-      function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
+      function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(counted/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
+      function exTxt(ex){return ex?' (incl. '+ex+' extra guest'+(ex>1?'s':'')+')':'';}
       function sugTxt(r,c){return (rooms>1?rooms+' x ':'')+r.n+' '+inr(c.t)+(rooms>1?' in total for '+rooms+' rooms':'')+exTxt(c.ex);}
       var nn=nights+' night'+(nights>1?'s':'');
-      var nAd=adults, nKid=kids;
+      var nAd=adults, nKid=counted;
       // Place adults, then children, in the chosen rooms: base occupancy first, then extra up to each room's maximum.
       var placeAll=function(list){
         var rs=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
@@ -895,7 +897,7 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
         for(var m=0;m<list.length;m++){
           var room=R[list[m]], dt=new Date(ci), t=0;
           for(var i2=0;i2<nights;i2++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1);}
-          var extra=Math.max(0,placed[m].ad-room.b);
+          var extra=Math.max(0,placed[m].p-room.b);
           sub+=t+extra*250*nights; ex+=extra;
           if(!cnt[list[m]]){cnt[list[m]]=0;order.push(list[m]);} cnt[list[m]]++;
         }
@@ -916,7 +918,7 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
           est='This room type cannot hold '+adults+' adult'+(adults>1?'s':'')+(kids?' and '+kids+' child'+(kids>1?'ren':''):'')+' in '+rooms+' room'+(rooms>1?'s':'')+'. Please choose more rooms, or Any suitable room. For a larger group, please WhatsApp us.';
           lines.push('Capacity: this room type cannot hold the group in '+rooms+' room(s)');
         } else {
-          var exT=q.ex?' (incl. '+q.ex+' extra adult'+(q.ex>1?'s':'')+')':'';
+          var exT=q.ex?' (incl. '+q.ex+' extra guest'+(q.ex>1?'s':'')+')':'';
           est='Estimated: '+inr(q.sub)+' + '+inr(Math.round(q.sub*0.05))+' GST for '+nn+exT+'.';
           lines.push('Website estimate: '+inr(q.sub)+' + GST for '+nn+exT);
         }
@@ -943,7 +945,7 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
         }
         var chosen=pick.concat(rest).slice(0,3).sort(function(x,y){return x.sub-y.sub});
         var sug=chosen.map(function(c){
-          return c.label+' '+inr(c.sub)+(N>1?' for all '+N+' rooms':'')+(c.ex?' (incl. '+c.ex+' extra adult'+(c.ex>1?'s':'')+')':'');
+          return c.label+' '+inr(c.sub)+(N>1?' for all '+N+' rooms':'')+(c.ex?' (incl. '+c.ex+' extra guest'+(c.ex>1?'s':'')+')':'');
         });
         if(sug.length){
           est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
