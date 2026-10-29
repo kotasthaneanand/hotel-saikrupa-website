@@ -51,13 +51,13 @@ function handleAdvance(ss, data) {
   var code = newCode(sheet, 2, data.name, 'O-ADV', Number(data.advance));
   var link = saveScreenshot(data, code);
   var now = new Date();
-  sheet.appendRow([
+  appendRowAsText(sheet, [
     stamp(now), code, data.advance, data.total || '',
     data.name, data.city || '', data.mobile, data.checkin, data.checkout, data.nights,
     data.adults, data.children || 0, data.roomType || '', data.rooms || 1,
     data.aadhaar4 || '', data.consent ? 'Yes' : 'No', link, 'N', '',
     stamp(addYears(now, 3)).split(' ')[0]
-  ]);
+  ], [8, 9]);
   sendAlert(code, data, link);
   return reply({ ok: true, code: code });
 }
@@ -76,6 +76,14 @@ function validateAdvance(d) {
 
 // ---------- enquiries (every type) ----------
 
+// Dates arrive as dd-mm-yyyy text. Sheets would turn them into dates in its own
+// locale, so the date columns are set to plain-text format before the row is written.
+function appendRowAsText(sheet, values, textCols) {
+  var row = sheet.getLastRow() + 1;
+  textCols.forEach(function (c) { sheet.getRange(row, c).setNumberFormat('@'); });
+  sheet.getRange(row, 1, 1, values.length).setValues([values]);
+}
+
 function handleEnquiry(ss, d) {
   if (!ENQUIRY_TYPES[d.type]) return reply({ ok: false, error: 'Unknown enquiry type.' });
   if (d.mobile && !/^[0-9]{10}$/.test(String(d.mobile).replace(/\s+/g, ''))) {
@@ -86,12 +94,12 @@ function handleEnquiry(ss, d) {
   // The website makes the reference (so the WhatsApp message and the sheet match). Use it if it is well formed.
   var code = /^(GRP|ENQ|WEB)-[A-Za-z0-9-]{4,20}$/.test(String(d.ref || '')) ? String(d.ref) : newCode(sheet, 3, d.name || 'GUEST', prefix, '');
   var now = new Date();
-  sheet.appendRow([
+  appendRowAsText(sheet, [
     stamp(now), ENQUIRY_TYPES[d.type], code,
     d.name || '', d.mobile || '', d.city || '', d.checkin || '', d.nights || '',
     d.adults || '', d.small || 0, d.big || 0, d.rooms || '',
     d.source || '', 'New', '', d.notes || ''
-  ]);
+  ], [7]);
   if (d.type === 'group') sendGroupAlert(code, d);
   return reply({ ok: true, code: code });
 }
