@@ -857,7 +857,7 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
     rooms=parseInt(f.rn.value,10);
     var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
     // Every night of the stay must be on or before 31-01-2027 (our prices end that day); otherwise WhatsApp
-    var late=false;
+    var late=false, nofit=false;
     if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,1,1);}
     var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
     var LATE_MSG='Our current prices end on 31-01-2027, so we cannot quote this stay online. Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
@@ -950,6 +950,10 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
         if(sug.length){
           est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
           lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
+        } else {
+          nofit=true;
+          est=(N>1?'These '+N+' rooms':'This room')+' cannot hold '+adults+' adult'+(adults>1?'s':'')+(kids?' and '+kids+' child'+(kids>1?'ren':''):'')+'. Please increase Rooms, or click Ask on WhatsApp and our Reservations staff will help.';
+          lines.push('Capacity: no room combination for '+N+' room(s)');
         }
       }
       if(bigK)est+=(est?' ':'')+'Children above 5 years are charged Rs 250 per night.';
@@ -959,7 +963,7 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
     f.go.href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(lines.join('\n'));
-    var wa=over||late; f.go.setAttribute('data-mode', wa?'wa':'check'); f.lc.hidden=wa; f.lw.hidden=!wa;
+    var wa=over||late||nofit; f.go.setAttribute('data-mode', wa?'wa':'check'); f.lc.hidden=wa; f.lw.hidden=!wa;
   }
   ['name','city','d','n','a','cs','cb','rn','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
   upd();
