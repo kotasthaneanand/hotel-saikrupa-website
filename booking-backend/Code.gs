@@ -84,13 +84,13 @@ function handleEnquiry(ss, d) {
   var sheet = getOrCreate(ss, ENQ_SHEET_NAME, ENQ_HEADERS);
   var prefix = d.type === 'group' ? 'GRP' : 'ENQ';
   // The website makes the reference (so the WhatsApp message and the sheet match). Use it if it is well formed.
-  var code = /^(GRP|ENQ)-[0-9]{6}-[0-9]{4}$/.test(String(d.ref || '')) ? String(d.ref) : newCode(sheet, 3, d.name || 'GUEST', prefix, '');
+  var code = /^(GRP|ENQ|WEB)-[A-Za-z0-9-]{4,20}$/.test(String(d.ref || '')) ? String(d.ref) : newCode(sheet, 3, d.name || 'GUEST', prefix, '');
   var now = new Date();
   sheet.appendRow([
     stamp(now), ENQUIRY_TYPES[d.type], code,
     d.name || '', d.mobile || '', d.city || '', d.checkin || '', d.nights || '',
     d.adults || '', d.small || 0, d.big || 0, d.rooms || '',
-    d.source || '', 'New', '', ''
+    d.source || '', 'New', '', d.notes || ''
   ]);
   if (d.type === 'group') sendGroupAlert(code, d);
   return reply({ ok: true, code: code });
