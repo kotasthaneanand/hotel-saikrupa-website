@@ -302,7 +302,7 @@ function waText(){
   var d=cur.d,q=cur.q,L=['Namaste! Online booking request from the website'+(ref?' (ref '+ref+')':''),''];
   L.push('Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,'Check-in: '+dmyDay(cur.ci)+', Nights: '+d.nights,
     'Guests: '+d.adults+' adult(s), '+d.small+' child(ren) up to 5, '+d.big+' child(ren) above 5',
-    'Rooms: '+roomNames(),'Total incl. GST: '+rs(q.total)+'  Advance: '+rs(tier(q.total)));
+    'Rooms: '+roomNames(),'Total incl. GST: '+rs(q.total)+'  Advance to be taken: '+rs(tier(q.total)));
   if(d.aadhaar)L.push('Aadhaar last 4: '+d.aadhaar);
   L.push('','Please confirm availability and the booking.');
   return L.join('\n');
