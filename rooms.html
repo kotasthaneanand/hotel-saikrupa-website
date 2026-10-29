@@ -262,6 +262,27 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 
 /* tap-to-call links look like the surrounding text, underlined so they read as tappable */
 a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:inherit}
+
+[hidden]{display:none!important}
+.online{padding-block:48px}
+.online-box{gap:16px}
+.ob-step{display:grid;gap:14px}
+.ob-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ob-grid .wide{grid-column:span 2}
+.ob-title{font-weight:700;font-size:1.05rem}
+.ob-small,.online-note{font-size:.88rem;opacity:.92}
+.ob-actions{display:flex;flex-wrap:wrap;gap:10px}
+.ob-summary dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0}
+.ob-summary dt{opacity:.85}
+.ob-summary dd{margin:0;font-weight:600}
+.ob-amount{font-size:1.2rem;font-weight:700}
+.ob-error{color:#ffd6d6;font-weight:600}
+.ob-file,.ob-check{display:grid;gap:6px;font-size:.9rem}
+.ob-check{grid-template-columns:auto 1fr;align-items:start}
+.book-room{margin-top:8px;width:100%;justify-content:center}
+@media (max-width:760px){.ob-grid{grid-template-columns:1fr}.ob-grid .wide{grid-column:auto}}
+.online-box .btn-line{border-color:var(--on-accent);color:var(--on-accent)}
+.online-box .btn-line:hover{background:var(--on-accent);color:var(--blue)}
 </style></head>
 <body><header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>

@@ -15,6 +15,7 @@ FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="p
 WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>'
 WA_BASE = f"https://wa.me/{PHONE_INTL}?text="
 import urllib.parse
+from online_booking import online_booking_section
 def wa(msg): return WA_BASE + urllib.parse.quote(msg)
 WA_HELLO = wa("Namaste, I would like to know room availability and the best price at Hotel Saikrupa, Shirdi.")
 
@@ -41,7 +42,7 @@ def room_card(r):
     return f'''<article class="{cls}"><a class="photo-wa" href="{msg}" target="_blank" rel="noopener" aria-label="Book {E(name)} ({ac}) on WhatsApp"><img src="img/{photo}" alt="{E(name)}, {ac}" loading="lazy"><span class="photo-wa-tag">{WA_ICON}Book</span></a>
 <div class="body"><span class="tag">{ac}</span>{NEW if name.startswith("Premium") else ""}<h3>{E(name)}</h3><p class="muted">{E(text)}</p>
 <div class="facts"><span>{E(beds)}</span><span>Up to {E(mx)}</span></div>
-<div class="price">{price}<a href="{msg}" target="_blank" rel="noopener">Book on WhatsApp</a></div></div></article>'''
+<div class="price">{price}<a href="{msg}" target="_blank" rel="noopener">Book on WhatsApp</a></div><a class="btn btn-line book-room" href="index.html?room={rid}#book-online">Book this room</a></div></article>'''
 
 FEATURED = ["deluxe-family", "premium-triple", "deluxe-double", "deluxe-triple", "suite-ac", "standard-double"]
 NEW = '<span class="new-badge">New · renovated 2026</span>'
@@ -65,9 +66,12 @@ def booking_box():
 <p class="est" id="f-est" aria-live="polite"></p>
 <a class="btn btn-wa" id="f-go" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}Ask on WhatsApp</a>
 </form>
-<div class="advance"><p><b>Pay your advance online</b> (it is part of your total bill, which includes GST):</p><div class="ctas">{adv_buttons()}</div></div>
+<div class="advance"><p><b>Pay your advance online</b> (it is part of your total bill, which includes GST):</p><div class="ctas"><a class="btn btn-wa" href="#book-online">Book online and pay your advance</a></div></div>
 <p class="note">Best price guaranteed: our direct prices are always below booking sites. We reply on WhatsApp with availability for your dates. Or call <a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.<br><b>Pay your advance online, then send the payment confirmation on WhatsApp so we can confirm your room.</b></p>
 </div>"""
+
+def room_options():
+    return "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
 
 def room_js():
     d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
@@ -179,7 +183,9 @@ def index_body():
 <div class="route">{route}<div><strong>350 m · 5 min walk</strong><span class="lbl">to Samadhi Mandir, Gate 5/6</span></div></div></div>
 </div></section>
 
-<div class="wrap">{booking_box()}
+<div class="wrap">{booking_box()}</div>
+{online_booking_section(room_options(), ADVANCE_LINKS, BOOKING_SCRIPT_URL, PHONE_INTL, room_js(), periods_js())}
+<div class="wrap">
 <div class="proof">
 <div><b>4.6 ★</b><span>on Google, from 1,160+ guest reviews</span><a class="proof-link" href="reviews.html">Read reviews →</a></div>
 <div><b>97%</b><span>of 2025–26 guests rated us 4 or 5 stars</span><a class="proof-link" href="reviews.html">See reviews →</a></div>
