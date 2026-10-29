@@ -89,6 +89,8 @@ JS = """<script>
   var $=function(i){return document.getElementById(i)};
   var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),cs:$('f-cs'),cb:$('f-cb'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est'),lc:$('f-lbl-check'),lw:$('f-lbl-wa')};
   if(!f.go)return;
+  // Mobile: digits only, up to 10 (typing or pasting)
+  $('f-mob').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,10)});
   var pad=function(x){return (x<10?'0':'')+x};
   var iso=function(x){return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate())};
   var t=new Date(); t.setDate(t.getDate()+1);
