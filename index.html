@@ -423,8 +423,17 @@ function logEnquiry(payload){
   return Promise.race([call,wait]);
 }
 var busyRefs={};
+// If the enquiry updated an earlier one (same mobile and check-in), the WhatsApp text says so first.
+function modificationHref(href,firstRef){
+  var i=href.indexOf('?text='); if(i<0||!firstRef)return href;
+  var txt=decodeURIComponent(href.slice(i+6));
+  return href.slice(0,i+6)+encodeURIComponent('Modification of earlier enquiry: '+firstRef+'\n'+txt);
+}
 function goWa(href,payload){ var k=payload.ref||href; if(busyRefs[k])return; busyRefs[k]=1; setTimeout(function(){delete busyRefs[k]},4500);
-  logEnquiry(payload).then(function(){window.location.href=href}); }
+  logEnquiry(payload).then(function(res){
+    var target=(res&&res.updated&&res.firstRef&&res.firstRef!==payload.ref)?modificationHref(href,res.firstRef):href;
+    window.location.href=target;
+  }); }
 function appendRef(href,ref){return href+encodeURIComponent('\nRef: '+ref)}
 
 // ---- guests and rooms ----
