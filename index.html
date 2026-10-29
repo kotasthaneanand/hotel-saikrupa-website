@@ -506,7 +506,13 @@ function renderSuggestions(d){
   $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
   var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
   if(!sug.length){
-    box2.innerHTML='<p class="ob-error">We cannot fit this group in up to '+MAXR+' rooms online. Please WhatsApp us on '+PHONE+' and we will arrange it.</p>';
+    var now=new Date(), gref='GRP-'+pad(now.getDate())+pad(now.getMonth()+1)+String(now.getFullYear()).slice(2)+'-'+('000'+Math.floor(Math.random()*10000)).slice(-4);
+    var gl=['Group Booking Enquiry + Ref ID: '+gref,'',
+      'Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,
+      'Check-in: '+parse(d.checkin).toDateString()+', Nights: '+d.nights,
+      'Guests: '+d.adults+' adult(s), '+d.small+' child(ren) up to 5, '+d.big+' child(ren) above 5',
+      'Rooms: more than '+MAXR+' rooms needed','','Please share the best offers and group discount.'];
+    box2.innerHTML='<div class="ob-option group"><p><b>Connect with our Reservation Team for best offers and group discount.</b><br>Your group needs more than '+MAXR+' rooms, so we will arrange it for you on WhatsApp.</p><p class="ob-small">Reference: <b>'+gref+'</b></p><a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/'+PHONE+'?text='+encodeURIComponent(gl.join('\n'))+'">Send group enquiry on WhatsApp</a></div>';
     return;
   }
   sug.forEach(function(x,i){
