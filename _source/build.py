@@ -92,7 +92,7 @@ JS = """<script>
   f.d.min=iso(new Date()); if(!f.d.value)f.d.value=iso(t);
   var ref='WEB-'+Math.random().toString(36).slice(2,6).toUpperCase();
   function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
-  function nice(d){return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+  function nice(d){var W=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],p=function(x){return (x<10?'0':'')+x};return W[d.getDay()]+' '+p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear();}
   function inr(x){return 'Rs '+x.toLocaleString('en-IN');}
   function upd(){
     var nights=+f.n.value, adults=+f.a.value, kids=+f.c.value, rooms=parseInt(f.rn.value,10);
