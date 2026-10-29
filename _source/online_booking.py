@@ -1,9 +1,9 @@
-"""Online advance booking: Steps 1 to 4 of the website payment workflow (Anand, 29 Oct 2026).
+"""Online advance booking (Anand, 29 Oct 2026).
 
-Step 1: choose a room type and how to continue (pay online, or send details on WhatsApp).
-Step 2: guest details. Add more room types if the family needs them (mixing is allowed).
-Step 3: price summary per room, GST, cancellation policy, Modify or Proceed.
-Step 4: pay the advance (Paytm link for the tier), upload the screenshot, get the reference code.
+The guest details and room type are entered once, in the availability form on the home page
+(build.py). Its single button opens the steps below. Steps: 1 choose rooms (suggestions, add more
+room types if needed), 2 price summary per room with GST, cancellation policy, Proceed to pay or
+send details on WhatsApp, 3 pay the advance (Paytm link for the tier), upload the screenshot.
 
 Occupancy rules: the first 2 children up to 5 are free and not counted. Every other person
 (adults, children above 5, and children up to 5 beyond the first 2) counts. Each room has a
@@ -23,9 +23,6 @@ ROOM_MAX = {
     "deluxe-family": (6, 6), "suite-ac": (6, 6), "standard-family": (6, 6), "suite-nonac": (6, 6),
 }
 
-def _select(name, values, default=None):
-    return "".join(f'<option{" selected" if v == default else ""}>{v}</option>' for v in values)
-
 def _section(room_options, links, script_url, phone, room_json, periods_json):
     rooms = json.loads(room_json)
     for rid, r in rooms.items():
@@ -42,67 +39,39 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
         "__FREE__": str(FREE_CHILDREN_UP_TO_5),
     }.items():
         js = js.replace(k, v)
-    nights = _select("n", range(1, 11))
-    adults = _select("a", range(1, 25), 2)
-    small = _select("s", range(0, 6))
-    big = _select("b", range(0, 6))
-    return f"""<section id="book-online" class="online"><div class="wrap">
+    return f"""<section id="book-online" class="online" hidden><div class="wrap">
 <div class="enquire online-box">
-<h2>Book online and pay your advance</h2>
+<h2>Choose your rooms and pay your advance</h2>
 <p class="online-note">Your advance is part of your total bill, which includes GST. Stays must end by 31-01-2027, when our current prices end.</p>
 <div id="ob-steps" class="ob-steps" aria-live="polite">
 
-<div class="ob-step" data-step="1">
-<p class="ob-title">Step 1 of 4: choose your room</p>
-<div class="form ob-grid">
-<label class="wide">Room type<select id="ob-room"><option value="">Choose a room</option>{room_options}</select></label>
-<label>How do you want to continue?<select id="ob-path"><option value="pay">Pay the advance online now</option><option value="wa">Send my details on WhatsApp</option></select></label>
-</div>
-<div class="ob-actions"><button type="button" class="btn btn-line ob-next" data-go="2">Next</button></div>
-</div>
-
-<div class="ob-step" data-step="2" hidden>
-<p class="ob-title">Step 2 of 4: your details</p>
-<div class="form ob-grid">
-<label>Name<input id="ob-name" type="text" autocomplete="name" placeholder="Full name" required></label>
-<label>Mobile<input id="ob-mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digits" required></label>
-<label>Coming from<input id="ob-city" type="text" placeholder="City"></label>
-<label>Check-in<input id="ob-in" type="date" required></label>
-<label>Nights<select id="ob-nights">{nights}</select></label>
-<label>Adults<select id="ob-adults">{adults}</select></label>
-<label>Children up to 5 (first 2 free)<select id="ob-kids-small">{small}</select></label>
-<label>Children above 5 (Rs 250 a night)<select id="ob-kids-big">{big}</select></label>
-<label>Aadhaar, last 4 digits (optional)<input id="ob-aadhaar" type="text" inputmode="numeric" maxlength="4" placeholder="1234"></label>
-</div>
-<p class="ob-small">We use these details only to confirm your booking. The Aadhaar digits are optional and are kept only for our records.</p>
-<p class="ob-error" id="ob-err2" hidden></p>
-<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="1">Back</button><button type="button" class="btn btn-line ob-next" data-go="2.5">Next</button></div>
-</div>
+<select id="ob-room" hidden>{room_options}</select>
 
 <div class="ob-step" data-step="2.5" hidden>
-<p class="ob-title">Step 2 of 4: choose your rooms</p>
+<p class="ob-title">Step 1 of 3: choose your rooms</p>
+<p class="ob-small">We use these details only to confirm your booking. The Aadhaar digits are optional and are kept only for our records.</p>
 <p id="ob-people" class="ob-small"></p>
 <div id="ob-suggest" class="ob-suggest"></div>
 <p class="ob-title">Or choose your rooms (up to 4)</p>
 <div id="ob-rooms-pick" class="ob-pick"></div>
 <div class="ob-actions"><button type="button" class="btn btn-line" id="ob-add-room">Add a room</button><button type="button" class="btn btn-line" id="ob-del-room">Remove last room</button></div>
 <p class="ob-error" id="ob-err25" hidden></p>
-<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="2">Back</button><button type="button" class="btn btn-line ob-next" id="ob-rooms-next">Next</button></div>
+<div class="ob-actions"><button type="button" class="btn btn-line ob-back" data-go="0">Back</button><button type="button" class="btn btn-line ob-next" id="ob-rooms-next">Next</button></div>
 </div>
 
 <div class="ob-step" data-step="3" hidden>
-<p class="ob-title">Step 3 of 4: check your booking</p>
+<p class="ob-title">Step 2 of 3: check your booking</p>
 <div id="ob-summary" class="ob-summary"></div>
 <p class="ob-small">Cancellation: free until 12 noon, one day before check-in, with a full refund of your advance or 6 months' credit. On festival dates, free until 7 days before check-in. After that, the first night is charged.</p>
 <div class="ob-actions">
-<button type="button" class="btn btn-line ob-back" data-go="2">Modify details</button>
-<button type="button" class="btn btn-line ob-next" id="ob-proceed">Proceed</button>
+<button type="button" class="btn btn-line ob-back" data-go="0">Modify details</button>
+<button type="button" class="btn btn-line ob-next" id="ob-proceed">Proceed to pay</button>
 <a class="btn btn-wa" id="ob-wa" href="#" target="_blank" rel="noopener" hidden>Send details on WhatsApp</a>
 </div>
 </div>
 
 <div class="ob-step" data-step="4" hidden>
-<p class="ob-title">Step 4 of 4: pay your advance</p>
+<p class="ob-title">Step 3 of 3: pay your advance</p>
 <p id="ob-amount" class="ob-amount"></p>
 <p class="ob-small">Pay by UPI or card on Paytm, then upload the screenshot of the payment here.</p>
 <div class="ob-actions"><a class="btn btn-line" id="ob-paylink" href="#" target="_blank" rel="noopener">Open the Paytm payment link</a></div>
@@ -129,6 +98,7 @@ JS_TEMPLATE = r"""(function(){
 var R=__ROOMS__, PER=__PERIODS__, LINKS=__LINKS__, SCRIPT_URL='__SCRIPT_URL__', PHONE='__PHONE__', LAST='__LAST_STAY__', MAXR=__MAX_ROOMS__, FREE=__FREE__;
 var $=function(i){return document.getElementById(i)};
 var box=$('ob-steps'); if(!box)return;
+var sec=$('book-online');
 var steps=box.querySelectorAll('.ob-step');
 var ROOM_OPTS=$('ob-room').innerHTML;
 var IDS=Object.keys(R);
@@ -144,8 +114,13 @@ function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return t
 function nightRate(room,d){var s=iso(d),dy=d.getDay();if(inP(s,PER.card))return room.p[4];if(inP(s,PER.fest))return room.p[3];if(dy===6||inP(s,PER.sat))return room.p[2];return room.p[0]}
 function rs(x){return 'Rs '+Math.round(x).toLocaleString('en-IN')}
 function tier(total){return total<=1500?500:(total<=3000?1000:1500)}
-function show(n){for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getAttribute('data-step')!==n)}
-  if(n>1){var top=box.getBoundingClientRect().top+window.pageYOffset-80; window.scrollTo({top:top,behavior:'smooth'});}}
+// n=0: back to the availability form (booking section hidden). Otherwise show that step.
+function show(n){
+  sec.hidden=(n===0);
+  for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getAttribute('data-step')!==n)}
+  var el=(n===0)?$('book'):box;
+  var top=el.getBoundingClientRect().top+window.pageYOffset-80; window.scrollTo({top:top,behavior:'smooth'});
+}
 function err(id,msg){var e=$(id);e.textContent=msg;e.hidden=!msg}
 // ---- enquiry logging: every WhatsApp hand-off is logged first (within 4 seconds), then WhatsApp opens ----
 var ENQ_TIMEOUT=4000;
@@ -281,11 +256,12 @@ function renderSuggestions(d){
     div.appendChild(btn); box2.appendChild(div);
   });
 }
+// Guest details come from the availability form. Only called when the guests are within the online limit.
 function details(){
-  return {name:$('ob-name').value.trim(),mobile:$('ob-mobile').value.replace(/\s+/g,''),
-    city:$('ob-city').value.trim(),checkin:$('ob-in').value,nights:+$('ob-nights').value,
-    adults:+$('ob-adults').value,small:+$('ob-kids-small').value,big:+$('ob-kids-big').value,
-    aadhaar:$('ob-aadhaar').value.trim()};
+  return {name:$('f-name').value.trim(),mobile:$('f-mob').value.replace(/\s+/g,''),
+    city:$('f-city').value.trim(),checkin:$('f-in').value,nights:+$('f-n').value,
+    adults:+$('f-a').value,small:+$('f-cs').value,big:+$('f-cb').value,
+    aadhaar:$('f-aad').value.trim()};
 }
 function checkDetails(d){
   if(d.name.length<2)return 'Please enter your name.';
@@ -322,28 +298,35 @@ function fillSummary(){
   cur={d:d,q:q,ci:ci,co:co};
   $('ob-summary').innerHTML=summaryHtml(d,q,ci,co);
   $('ob-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(waText());
-  var pathWa=$('ob-path').value==='wa';
-  $('ob-proceed').hidden=pathWa; $('ob-wa').hidden=!pathWa;
+  $('ob-proceed').hidden=false; $('ob-wa').hidden=false;
 }
 function payLink(){
   var t=tier(cur.q.total);
   $('ob-amount').textContent='Advance to pay: '+rs(t)+' (part of your total bill of '+rs(cur.q.total)+' incl. GST).';
   $('ob-paylink').href=LINKS[String(t)]||'#';
 }
+// Entry from the availability form (within the online limit): validate, then suggest rooms.
+// Room type and Rooms count only pre-fill the picker; the suggestions always show the best options.
+function goRooms(){
+  var d=details(), mm=checkDetails(d);
+  if(mm){err('f-msg',mm);return}
+  err('f-msg','');
+  $('ob-room').value=$('f-r').value;
+  renderSuggestions(d);
+  var first=$('ob-room').value, n=Math.min(MAXR,Math.max(1,parseInt($('f-rn').value,10)||1)), copies=[], i;
+  for(i=0;i<n;i++)copies.push(first);
+  var sugList=suggestions(d), start;
+  if(first&&withinCaps(copies)&&priceList(copies,d))start=copies;
+  else if(first&&priceList([first],d))start=[first];
+  else if(sugList.length)start=sugList[0].list;
+  else start=first?[first]:[];
+  setPick(start);
+  err('ob-err25','');
+  show(2.5);
+}
 document.addEventListener('click',function(e){
   var b=e.target.closest?e.target.closest('[data-go]'):null; if(!b)return;
-  var n=+b.getAttribute('data-go');
-  if(n===2.5){
-    var d=details(), mm=checkDetails(d);
-    if(mm){err('ob-err2',mm);show(2);return}
-    err('ob-err2','');
-    renderSuggestions(d);
-    var first=$('ob-room').value, sugList=suggestions(d);
-    var start=(first&&priceList([first],d))?[first]:(sugList.length?sugList[0].list:(first?[first]:[]));
-    setPick(start);
-    err('ob-err25','');
-  }
-  show(n);
+  show(+b.getAttribute('data-go'));
 });
 $('ob-rooms-next').addEventListener('click',function(){
   var d=details(); var list=pickedIds();
@@ -362,11 +345,12 @@ $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
 // Check availability form (on the home page): log, then open WhatsApp
 var fgo=$('f-go');
 if(fgo){ fgo.addEventListener('click',function(e){ e.preventDefault();
+  if(this.getAttribute('data-mode')!=='wa'){goRooms();return}
   var m=decodeURIComponent(this.href).match(/Ref: (WEB-[A-Z0-9]+)/), ref=m?m[1]:genRef('ENQ');
-  var kids=$('f-c').value, rt=$('f-r').options[$('f-r').selectedIndex].text;
-  goWa(this.href,{type:'availability',ref:ref,name:$('f-name').value.trim(),mobile:'',city:$('f-city').value.trim(),
+  var rt=$('f-r').options[$('f-r').selectedIndex].text;
+  goWa(this.href,{type:'availability',ref:ref,name:$('f-name').value.trim(),mobile:$('f-mob').value.replace(/\s+/g,''),city:$('f-city').value.trim(),
     checkin:dmyStr($('f-in').value),nights:$('f-n').value,adults:$('f-a').value,small:0,big:0,rooms:$('f-rn').value+' room(s), '+rt,
-    source:'Check availability form',notes:'Children: '+kids+' (ages not asked)'});
+    source:'Check availability form (over the online limit)',notes:'Children up to 5: '+$('f-cs').value+', above 5: '+$('f-cb').value});
 }); }
 $('ob-submit').addEventListener('click',function(){
   err('ob-err4','');
@@ -398,7 +382,7 @@ $('ob-submit').addEventListener('click',function(){
   reader.readAsDataURL(f);
 });
 var qs=(location.search||'').match(/room=([a-z\-]+)/);
-if(qs&&R[qs[1]]){$('ob-room').value=qs[1]}
+if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'))}
 })();"""
 
 def online_booking_section(room_options, links, script_url, phone, room_json, periods_json):

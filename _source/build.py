@@ -53,20 +53,23 @@ def adv_buttons():
 def booking_box():
     opts = "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
     return f"""<div class="enquire" id="book">
-<h2>Check availability</h2>
+<h2>Check availability and book</h2>
 <form class="form" id="enq" onsubmit="return false">
-<label for="f-name">Your name<input id="f-name" type="text" autocomplete="name" placeholder="Name"></label>
+<label for="f-name">Your name<input id="f-name" type="text" autocomplete="name" placeholder="Full name"></label>
+<label for="f-mob">Mobile<input id="f-mob" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digits"></label>
 <label for="f-city">Coming from<input id="f-city" type="text" placeholder="City"></label>
 <label for="f-in">Check-in<input id="f-in" type="date" required></label>
 <label for="f-n">Nights<select id="f-n"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
 <label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option value="9+">9 or above</option></select></label>
-<label for="f-c">Children<select id="f-c"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option value="6+">6 or above</option></select></label>
+<label for="f-cs">Children up to 5 years (first 2 free)<select id="f-cs"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option value="6+">6 or above</option></select></label>
+<label for="f-cb">Children above 5 years (Rs 250 a night)<select id="f-cb"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option value="6+">6 or above</option></select></label>
 <label for="f-rn">Rooms<select id="f-rn"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></label>
 <label for="f-r" class="wide">Room type<select id="f-r"><option value="">Any suitable room</option>{opts}</select></label>
+<label for="f-aad">Aadhaar, last 4 digits (optional)<input id="f-aad" type="text" inputmode="numeric" maxlength="4" placeholder="1234"></label>
 <p class="est" id="f-est" aria-live="polite"></p>
-<a class="btn btn-wa" id="f-go" href="{WA_HELLO}" target="_blank" rel="noopener">{WA_ICON}Ask on WhatsApp</a>
+<p class="ob-error" id="f-msg" hidden></p>
+<a class="btn btn-wa" id="f-go" href="{WA_HELLO}" target="_blank" rel="noopener" data-mode="check"><span id="f-lbl-check">Check availability</span><span id="f-lbl-wa" hidden>{WA_ICON}Ask on WhatsApp</span></a>
 </form>
-<div class="advance"><p><b>Pay your advance online</b> (it is part of your total bill, which includes GST):</p><div class="ctas"><a class="btn btn-wa" href="#book-online">Book online and pay your advance</a></div></div>
 <p class="note">Best price guaranteed: our direct prices are always below booking sites. We reply on WhatsApp with availability for your dates. Or call <a class="tel" href="tel:+{PHONE_INTL}">{PHONE_DISPLAY}</a>.<br><b>Pay your advance online, then send the payment confirmation on WhatsApp so we can confirm your room.</b></p>
 </div>"""
 
@@ -84,7 +87,7 @@ JS = """<script>
 (function(){
   var R=__ROOMS__, PER=__PERIODS__, PHONE='__PHONE__';
   var $=function(i){return document.getElementById(i)};
-  var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),c:$('f-c'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est')};
+  var f={name:$('f-name'),city:$('f-city'),d:$('f-in'),n:$('f-n'),a:$('f-a'),cs:$('f-cs'),cb:$('f-cb'),rn:$('f-rn'),r:$('f-r'),go:$('f-go'),est:$('f-est'),lc:$('f-lbl-check'),lw:$('f-lbl-wa')};
   if(!f.go)return;
   var pad=function(x){return (x<10?'0':'')+x};
   var iso=function(x){return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate())};
@@ -95,9 +98,11 @@ JS = """<script>
   function nice(d){var W=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],p=function(x){return (x<10?'0':'')+x};return W[d.getDay()]+' '+p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear();}
   function inr(x){return 'Rs '+x.toLocaleString('en-IN');}
   function upd(){
-    var nights=+f.n.value, aV=f.a.value, kV=f.c.value, rooms=parseInt(f.rn.value,10);
-    var adults=aV==='9+'?9:+aV, kids=kV==='6+'?6:+kV;
-    var big=(aV==='9+'||kV==='6+'||adults+kids>13);
+    var nights=+f.n.value, aV=f.a.value, kS=f.cs.value, kB=f.cb.value, rooms=parseInt(f.rn.value,10);
+    var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
+    var kids=small+bigK;
+    var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>13);
+    var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
     var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
     if(f.name.value.trim())lines.push('Name: '+f.name.value.trim());
@@ -108,7 +113,7 @@ JS = """<script>
       lines.push('Check-in: '+nice(ci)+', 12 noon');
       lines.push('Check-out: '+nice(co)+', 11 am');
       lines.push('Nights: '+nights);
-      lines.push('Guests: '+(aV==='9+'?'9 or above':adults)+' adult'+(adults>1?'s':'')+(kids?', '+(kV==='6+'?'6 or above':kids)+' child'+(kids>1?'ren':''):''));
+      lines.push('Guests: '+(aV==='9+'?'9 or above':adults)+' adult'+(adults>1?'s':'')+(kids?', '+kidsShown+' child'+(kids>1?'ren':''):''));
       lines.push('Rooms: '+f.rn.value);
       function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return true;}return false;}
       function nightRate(room,d){var s=iso(d),dy=d.getDay();if(inP(s,PER.card))return room.p[4];if(inP(s,PER.fest))return room.p[3];if(dy===6||inP(s,PER.sat))return room.p[2];if(dy===4||dy===5||dy===0)return room.p[1];return room.p[0];}
@@ -141,7 +146,7 @@ JS = """<script>
         var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
         return {sub:sub, ex:ex, label:label, ac:ac0};
       };
-      if(big){est=OVER_MSG;}else{
+      if(over){est=OVER_MSG;}else{
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
@@ -189,15 +194,16 @@ JS = """<script>
           lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
         }
       }
-      if(kids)est+=(est?' ':'')+'Children above 5 years are charged Rs 250 per night.';
+      if(bigK)est+=(est?' ':'')+'Children above 5 years are charged Rs 250 per night.';
       if(est)est+=' Each night is priced by its day: Saturday and festival nights are higher. We confirm on WhatsApp.';
       }
     }
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
     f.go.href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(lines.join('\\n'));
+    f.go.setAttribute('data-mode', over?'wa':'check'); f.lc.hidden=over; f.lw.hidden=!over;
   }
-  ['name','city','d','n','a','c','rn','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
+  ['name','city','d','n','a','cs','cb','rn','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
   upd();
 })();
 </script>"""
