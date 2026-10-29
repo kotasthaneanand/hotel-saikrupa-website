@@ -94,14 +94,46 @@ function handleEnquiry(ss, d) {
   // The website makes the reference (so the WhatsApp message and the sheet match). Use it if it is well formed.
   var code = /^(GRP|ENQ|WEB)-[A-Za-z0-9-]{4,20}$/.test(String(d.ref || '')) ? String(d.ref) : newCode(sheet, 3, d.name || 'GUEST', prefix, '');
   var now = new Date();
-  appendRowAsText(sheet, [
-    stamp(now), ENQUIRY_TYPES[d.type], code,
-    d.name || '', d.mobile || '', d.city || '', d.checkin || '', d.nights || '',
-    d.adults || '', d.small || 0, d.big || 0, d.rooms || '',
-    d.source || '', 'New', '', d.notes || ''
-  ], [7]);
+  // Same mobile and check-in date = the same booking. Update its row (a change of guests or rooms), do not add a second one.
+  var existing = findEnquiryRow(sheet, d.mobile, d.checkin);
+  if (existing) {
+    updateEnquiryRow(sheet, existing, code, d, now);
+  } else {
+    appendRowAsText(sheet, [
+      stamp(now), ENQUIRY_TYPES[d.type], code,
+      d.name || '', d.mobile || '', d.city || '', d.checkin || '', d.nights || '',
+      d.adults || '', d.small || 0, d.big || 0, d.rooms || '',
+      d.source || '', 'New', '', d.notes || ''
+    ], [7]);
+  }
   if (d.type === 'group') sendGroupAlert(code, d);
-  return reply({ ok: true, code: code });
+  return reply({ ok: true, code: code, updated: !!existing });
+}
+
+/** Row number (2 or more) of the latest Enquiries row with this mobile and check-in date, or 0. */
+function findEnquiryRow(sheet, mobile, checkin) {
+  var last = sheet.getLastRow();
+  if (last < 2 || !mobile || !checkin) return 0;
+  var mob = String(mobile).replace(/\s+/g, '');
+  var rows = sheet.getRange(2, 1, last - 1, ENQ_HEADERS.length).getValues();
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i][4]).replace(/\s+/g, '') === mob && String(rows[i][6]) === String(checkin)) return i + 2;
+  }
+  return 0;
+}
+
+/** Update an existing enquiry with the new guests, rooms and type. Keeps the first reference, date and Handled by. */
+function updateEnquiryRow(sheet, row, code, d, now) {
+  var old = sheet.getRange(row, 1, 1, ENQ_HEADERS.length).getValues()[0];
+  var change = 'Changed ' + stamp(now) + ' (new ref ' + code + '): ' + (d.adults || '') + ' adults, ' +
+    (d.small || 0) + ' children up to 5, ' + (d.big || 0) + ' above 5, ' + (d.rooms || '') +
+    (d.notes ? '; ' + d.notes : '') + '. Before: ' + old[11] + ', ' + old[8] + ' adults, ' + old[9] + ' up to 5, ' + old[10] + ' above 5.';
+  var notes = old[15] ? old[15] + '\n' + change : change;
+  sheet.getRange(row, 2).setValue(ENQUIRY_TYPES[d.type]);
+  sheet.getRange(row, 4, 1, 4).setValues([[d.name || old[3], d.mobile || old[4], d.city || old[5], old[6]]]);
+  sheet.getRange(row, 8, 1, 6).setValues([[d.nights || '', d.adults || '', d.small || 0, d.big || 0, d.rooms || '', d.source || '']]);
+  sheet.getRange(row, 14).setValue('Updated');
+  sheet.getRange(row, 16).setValue(notes);
 }
 
 function sendGroupAlert(code, d) {
