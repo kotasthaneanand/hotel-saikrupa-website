@@ -103,6 +103,11 @@ JS = """<script>
     var nights=+f.n.value, aV=f.a.value, kS=f.cs.value, kB=f.cb.value, rooms=parseInt(f.rn.value,10);
     var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
     var kids=small+bigK;
+    // Each room needs at least one adult: Rooms cannot be more than Adults (6+ only from 6 adults)
+    var rnOpts=f.rn.options, q;
+    for(q=0;q<rnOpts.length;q++){rnOpts[q].disabled=parseInt(rnOpts[q].text,10)>adults;}
+    if(rnOpts[f.rn.selectedIndex].disabled){for(q=rnOpts.length-1;q>=0;q--){if(!rnOpts[q].disabled){f.rn.selectedIndex=q;break}}}
+    rooms=parseInt(f.rn.value,10);
     var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
     // Every night of the stay must be on or before 31-01-2027 (our prices end that day); otherwise WhatsApp
     var late=false;
