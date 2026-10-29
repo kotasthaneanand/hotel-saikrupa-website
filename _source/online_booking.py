@@ -336,7 +336,7 @@ $('ob-rooms-next').addEventListener('click',function(){
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
 $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
   var d=cur.d, ref=genRef('ENQ');
-  goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:cur.ci.toDateString(),
+  goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:iso(cur.ci),
     nights:d.nights,adults:d.adults,small:d.small,big:d.big,rooms:roomNames(),source:'Online booking: details sent on WhatsApp',notes:'Total incl. GST '+rs(cur.q.total)});
 });
 // Check availability form (on the home page): log, then open WhatsApp
