@@ -63,7 +63,7 @@ ROOMS = [
     ("deluxe-family", "Premium Deluxe Family Room", "AC", "about 230 sq ft", "2 double beds", 4,
      "6 adults, or 4 adults + 2 children", "r-premium-family.jpg",
      "Newly renovated in 2026: two double beds with storage drawers, wall shelves and a large mirror. Our largest air-conditioned room, for families travelling together."),
-    ("suite-ac", "Family Suite, 2 rooms", "AC", "240–325 sq ft", "Double bed in one room, 2 single beds in the other", 4,
+    ("suite-ac", "Family Suite", "AC", "240–325 sq ft", "Double bed in one room, 2 single beds in the other", 4,
      "6 adults, or 4 adults + 2 children", "r-suite-double.jpg",
      "Two air-conditioned rooms behind one private entrance, sharing a bathroom. The family stays together with a little more privacy."),
     ("standard-double", "Standard Double Room", "Non-AC", "about 120 sq ft", "1 double bed", 2,
@@ -75,7 +75,7 @@ ROOMS = [
     ("standard-family", "Standard Family Room", "Non-AC", "about 230 sq ft", "2 double beds", 4,
      "6 adults, or 4 adults + 2 children", "room-family.jpg",
      "A large non-AC room for families and groups."),
-    ("suite-nonac", "Family Suite, 2 rooms", "Non-AC", "about 325 sq ft", "Double + single bed in one room, 2 single beds in the other", 4,
+    ("suite-nonac", "Family Suite", "Non-AC", "about 325 sq ft", "Double + single bed in one room, 2 single beds in the other", 4,
      "6 adults, or 4 adults + 2 children", "r-suite-nonac-double.jpg",
      "Two non-AC rooms behind one private entrance, sharing a bathroom."),
 ]
