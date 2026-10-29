@@ -140,8 +140,10 @@ JS = """<script>
       var placeAll=function(list){
         var rs=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
         var ad=nAd, kd=nKid, i,a,k;
-        for(i=0;i<rs.length;i++){var r=rs[i]; a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a; k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
-        for(i=0;i<rs.length;i++){var q=rs[i]; a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a; k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+        // With children under 5 in the group, each room takes at most one child above 5
+        var kc=small>0?1:99;
+        for(i=0;i<rs.length;i++){var r=rs[i]; a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a; k=Math.min(kd,r.b-r.p,kc-r.kd); kd-=k; r.kd+=k; r.p+=k;}
+        for(i=0;i<rs.length;i++){var q=rs[i]; a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a; k=Math.min(kd,q.mt-q.p,kc-q.kd); kd-=k; q.kd+=k; q.p+=k;}
         return ad===0&&kd===0?rs:null;
       };
       var priceAll=function(list){

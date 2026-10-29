@@ -144,15 +144,16 @@ function people(d){ // counted persons: adults, children above 5, children up to
   return {adults:d.adults, kids:Math.max(0,d.small-FREE)+d.big};
 }
 // Place people in the given rooms: base occupancy first, then extra up to each room's maximum.
-function allocate(list,adults,kids){
+// smallPresent: children up to 5 (beyond the free two) are in the group, so each room takes at most one child above 5.
+function allocate(list,adults,kids,smallPresent){
   var rooms=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
-  var ad=adults,kd=kids,i,a,k;
+  var ad=adults,kd=kids,i,a,k, kc=smallPresent?1:99;
   for(i=0;i<rooms.length;i++){var r=rooms[i];
     a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a;
-    k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
+    k=Math.min(kd,r.b-r.p,kc-r.kd); kd-=k; r.kd+=k; r.p+=k;}
   for(i=0;i<rooms.length;i++){var q=rooms[i];
     a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a;
-    k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+    k=Math.min(kd,q.mt-q.p,kc-q.kd); kd-=k; q.kd+=k; q.p+=k;}
   return ad===0&&kd===0?rooms:null;
 }
 // Price a list of rooms for the stay. Returns null if the guests do not fit.
@@ -160,7 +161,7 @@ function allocate(list,adults,kids){
 function withinCaps(list){var c={};for(var i=0;i<list.length;i++){c[list[i]]=(c[list[i]]||0)+1;if(c[list[i]]>R[list[i]].cap)return false}return true}
 function sameType(list){for(var i=1;i<list.length;i++){if(R[list[i]].ac!==R[list[0]].ac)return false}return true}
 function priceList(list,d){
-  var g=people(d), placed=allocate(list,g.adults,g.kids);
+  var g=people(d), placed=allocate(list,g.adults,g.kids,d.small>0);
   if(!placed)return null;
   var ci=parse(d.checkin), nights=d.nights, lines=[], sub=0;
   for(var m=0;m<list.length;m++){
