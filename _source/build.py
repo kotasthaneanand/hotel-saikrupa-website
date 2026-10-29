@@ -59,7 +59,7 @@ def booking_box():
 <label for="f-city">Coming from<input id="f-city" type="text" placeholder="City"></label>
 <label for="f-in">Check-in<input id="f-in" type="date" required></label>
 <label for="f-n">Nights<select id="f-n"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
-<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option><option>15</option><option>20</option></select></label>
+<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option></select></label>
 <label for="f-c">Children<select id="f-c"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
 <label for="f-rn">Rooms<select id="f-rn"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></label>
 <label for="f-r" class="wide">Room type<select id="f-r"><option value="">Any suitable room</option>{opts}</select></label>
