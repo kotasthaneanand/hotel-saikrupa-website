@@ -74,7 +74,7 @@ def room_options():
     return "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
 
 def room_js():
-    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "mt": ROOM_MAX[r[0]][0], "ma": ROOM_MAX[r[0]][1], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
+    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "mt": ROOM_MAX[r[0]][0], "ma": ROOM_MAX[r[0]][1], "cap": ROOM_LIMIT[r[0]], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
     return json.dumps(d, ensure_ascii=False)
 
 def periods_js():
@@ -144,7 +144,10 @@ JS = """<script>
         var sameRoom=[], z;
         for(z=0;z<rooms;z++)sameRoom.push(f.r.value);
         var q=priceAll(sameRoom);
-        if(!q){
+        if(rooms>room.cap){
+          est='We have only '+room.cap+' of this room type. Please choose another room type, or Any suitable room.';
+          lines.push('Availability: only '+room.cap+' of this room type');
+        } else if(!q){
           est='This room type cannot hold '+adults+' adult'+(adults>1?'s':'')+(kids?' and '+kids+' child'+(kids>1?'ren':''):'')+' in '+rooms+' room'+(rooms>1?'s':'')+'. Please choose more rooms, or Any suitable room. For a larger group, please WhatsApp us.';
           lines.push('Capacity: this room type cannot hold the group in '+rooms+' room(s)');
         } else {
@@ -158,7 +161,11 @@ JS = """<script>
         var combos=[];
         (function rec(start,acc){
           if(acc.length===N){var q=priceAll(acc); if(q)combos.push(q); return;}
-          for(var i=start;i<IDS.length;i++){acc.push(IDS[i]);rec(i,acc);acc.pop();}
+          for(var i=start;i<IDS.length;i++){
+            var id=IDS[i], used=acc.filter(function(x){return x===id}).length;
+            if(used>=R[id].cap)continue;
+            acc.push(id);rec(i,acc);acc.pop();
+          }
         })(0,[]);
         combos.sort(function(x,y){return x.sub-y.sub});
         // Keep one type per option: the cheapest all-Non-AC and the cheapest all-AC first, then the next cheapest.

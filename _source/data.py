@@ -46,6 +46,12 @@ SAT_PERIODS = [("Diwali holidays", "2026-11-12", "2026-11-15"), ("Makar Sankrant
 CARD_PERIODS = [("Christmas and New Year", "2026-12-23", "2027-01-04")]
 VALID_TILL = "31-01-2027"
 
+# Rooms the hotel has of each type (Master Room List for MMR, 08-10-2026; Premium Triple = room 215, Premium Family = room 210).
+# Suites count as one room each. Total 38.
+ROOM_LIMIT = {"deluxe-double": 9, "deluxe-triple": 9, "premium-triple": 1, "compact-triple": 5, "deluxe-family": 1,
+              "suite-ac": 3, "standard-double": 2, "standard-triple": 6, "standard-family": 1, "suite-nonac": 1}
+assert sum(ROOM_LIMIT.values()) == 38
+
 ROOMS = [
     # id, name, ac, size, beds, guests, max, photo, text
     ("deluxe-double", "Deluxe Double Room", "AC", "120–130 sq ft", "1 double bed", 2,
