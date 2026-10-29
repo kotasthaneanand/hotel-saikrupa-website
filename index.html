@@ -457,7 +457,9 @@ function allocate(list,adults,kids){
   return ad===0&&kd===0?rooms:null;
 }
 // Price a list of rooms for the stay. Returns null if the guests do not fit.
+function sameType(list){for(var i=1;i<list.length;i++){if(R[list[i]].ac!==R[list[0]].ac)return false}return true}
 function priceList(list,d){
+  if(!sameType(list))return null;
   var g=people(d), placed=allocate(list,g.adults,g.kids);
   if(!placed)return null;
   var ci=parse(d.checkin), nights=d.nights, lines=[], sub=0;
@@ -486,11 +488,21 @@ function suggestions(d){
     }
   }
   found.sort(function(x,y){return x.q.total-y.q.total});
-  var out=[], seen={};
-  for(var i=0;i<found.length&&out.length<3;i++){
+  var uniq=[], seen={};
+  for(var i=0;i<found.length;i++){
     var key=found[i].list.slice().sort().join('|');
-    if(seen[key])continue; seen[key]=1; out.push(found[i]);
+    if(seen[key])continue; seen[key]=1; uniq.push(found[i]);
   }
+  // Keep the cheapest all-Non-AC and the cheapest all-AC option first, then the next cheapest.
+  var out=[], gotNon=false, gotAc=false, rest=[];
+  for(var j=0;j<uniq.length;j++){
+    var isAc=R[uniq[j].list[0]].ac;
+    if(!isAc&&!gotNon){out.push(uniq[j]);gotNon=true}
+    else if(isAc&&!gotAc){out.push(uniq[j]);gotAc=true}
+    else rest.push(uniq[j]);
+  }
+  out=out.concat(rest).slice(0,3);
+  out.sort(function(x,y){return x.q.total-y.q.total});
   return out;
 }
 function setPick(list){
@@ -614,6 +626,7 @@ $('ob-rooms-next').addEventListener('click',function(){
   var d=details(); var list=pickedIds();
   if(!list.length){err('ob-err25','Please choose at least one room.');return}
   if(list.length>MAXR){err('ob-err25','You can book up to '+MAXR+' rooms online.');return}
+  if(!sameType(list)){err('ob-err25','All rooms in one booking must be AC, or all Non-AC. Please choose the same type for every room.');return}
   if(!priceList(list,d)){err('ob-err25','These rooms do not fit these guests. Choose one of the options above, or add a room.');return}
   err('ob-err25',''); picked=list; fillSummary(); show(3);
 });
