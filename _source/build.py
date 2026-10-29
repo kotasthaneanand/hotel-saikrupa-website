@@ -102,7 +102,11 @@ JS = """<script>
     var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
     var kids=small+bigK;
     var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
+    // Stays that end after 31-01-2027 are not priced online (same rule as the booking steps)
+    var late=false;
+    if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,0,31);}
     var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
+    var LATE_MSG='Our current prices end on 31-01-2027, so we cannot quote this stay online. Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
     if(f.name.value.trim())lines.push('Name: '+f.name.value.trim());
@@ -146,7 +150,7 @@ JS = """<script>
         var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
         return {sub:sub, ex:ex, label:label, ac:ac0};
       };
-      if(over){est=OVER_MSG;}else{
+      if(late){est=LATE_MSG;}else if(over){est=OVER_MSG;}else{
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
@@ -201,7 +205,7 @@ JS = """<script>
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
     f.go.href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(lines.join('\\n'));
-    f.go.setAttribute('data-mode', over?'wa':'check'); f.lc.hidden=over; f.lw.hidden=!over;
+    var wa=over||late; f.go.setAttribute('data-mode', wa?'wa':'check'); f.lc.hidden=wa; f.lw.hidden=!wa;
   }
   ['name','city','d','n','a','cs','cb','rn','r'].forEach(function(k){f[k].addEventListener('change',upd);f[k].addEventListener('input',upd)});
   upd();
