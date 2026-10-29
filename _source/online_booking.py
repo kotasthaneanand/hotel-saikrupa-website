@@ -257,7 +257,7 @@ function renderSuggestions(d){
     var div=document.createElement('div'); div.className='ob-option';
     div.innerHTML='<p><b>Option '+(i+1)+': '+x.list.length+' room'+(x.list.length>1?'s':'')+'</b> ('+names+')<br>'+rs(x.q.total)+' in total including GST, for '+d.nights+' night'+(d.nights>1?'s':'')+'</p>';
     var btn=document.createElement('button'); btn.type='button'; btn.className='btn btn-line'; btn.textContent='Use this option';
-    btn.addEventListener('click',function(){setPick(x.list)});
+    btn.addEventListener('click',function(){setPick(x.list); goSummary();});
     div.appendChild(btn); box2.appendChild(div);
   });
 }
@@ -338,14 +338,16 @@ document.addEventListener('click',function(e){
   var b=e.target.closest?e.target.closest('[data-go]'):null; if(!b)return;
   show(+b.getAttribute('data-go'));
 });
-$('ob-rooms-next').addEventListener('click',function(){
+// Next (and Use this option) go to the summary, after checking the chosen rooms
+function goSummary(){
   var d=details(); var list=pickedIds();
   if(!list.length){err('ob-err25','Please choose at least one room.');return}
   if(list.length>MAXR){err('ob-err25','You can book up to '+MAXR+' rooms online.');return}
   if(!withinCaps(list)){err('ob-err25','We do not have that many rooms of one type. Please choose another room type.');return}
   if(!priceList(list,d)){err('ob-err25','These rooms do not fit these guests. Choose one of the options above, or add a room.');return}
   err('ob-err25',''); picked=list; fillSummary(); show(3);
-});
+}
+$('ob-rooms-next').addEventListener('click',goSummary);
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
 $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
   var d=cur.d, ref=genRef('ENQ');
