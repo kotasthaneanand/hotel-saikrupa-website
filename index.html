@@ -858,38 +858,46 @@ if(qs&&R[qs[1]]){$('ob-room').value=qs[1]}
       function sugTxt(r,c){return (rooms>1?rooms+' x ':'')+r.n+' '+inr(c.t)+(rooms>1?' in total for '+rooms+' rooms':'')+exTxt(c.ex);}
       var nn=nights+' night'+(nights>1?'s':'');
       var nAd=adults, nKid=kids;
+      // Place adults, then children, in the chosen rooms: base occupancy first, then extra up to each room's maximum.
+      var placeAll=function(list){
+        var rs=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
+        var ad=nAd, kd=nKid, i,a,k;
+        for(i=0;i<rs.length;i++){var r=rs[i]; a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a; k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
+        for(i=0;i<rs.length;i++){var q=rs[i]; a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a; k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+        return ad===0&&kd===0?rs:null;
+      };
+      var priceAll=function(list){
+        var ac0=R[list[0]].ac;
+        for(var u=1;u<list.length;u++){if(R[list[u]].ac!==ac0)return null;}
+        var placed=placeAll(list); if(!placed)return null;
+        var sub=0, ex=0, cnt={}, order=[];
+        for(var m=0;m<list.length;m++){
+          var room=R[list[m]], dt=new Date(ci), t=0;
+          for(var i2=0;i2<nights;i2++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1);}
+          var extra=Math.max(0,placed[m].ad-room.b);
+          sub+=t+extra*250*nights; ex+=extra;
+          if(!cnt[list[m]]){cnt[list[m]]=0;order.push(list[m]);} cnt[list[m]]++;
+        }
+        var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
+        return {sub:sub, ex:ex, label:label, ac:ac0};
+      };
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
-        var c=cost(room), gst=Math.round(c.t*0.05);
-        est='Estimated: '+inr(c.t)+' + '+inr(gst)+' GST for '+nn+exTxt(c.ex)+'.';
-        lines.push('Website estimate: '+inr(c.t)+' + GST for '+nn+exTxt(c.ex));
+        var sameRoom=[], z;
+        for(z=0;z<rooms;z++)sameRoom.push(f.r.value);
+        var q=priceAll(sameRoom);
+        if(!q){
+          est='This room type cannot hold '+adults+' adult'+(adults>1?'s':'')+(kids?' and '+kids+' child'+(kids>1?'ren':''):'')+' in '+rooms+' room'+(rooms>1?'s':'')+'. Please choose more rooms, or Any suitable room. For a larger group, please WhatsApp us.';
+          lines.push('Capacity: this room type cannot hold the group in '+rooms+' room(s)');
+        } else {
+          var exT=q.ex?' (incl. '+q.ex+' extra adult'+(q.ex>1?'s':'')+')':'';
+          est='Estimated: '+inr(q.sub)+' + '+inr(Math.round(q.sub*0.05))+' GST for '+nn+exT+'.';
+          lines.push('Website estimate: '+inr(q.sub)+' + GST for '+nn+exT);
+        }
       } else {
         lines.push('Room type: Any suitable room');
         var IDS=Object.keys(R), N=rooms;
-        // Place adults, then children, in the chosen rooms: base occupancy first, then extra up to each room's maximum.
-        var placeAll=function(list){
-          var rs=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
-          var ad=nAd, kd=nKid, i,a,k;
-          for(i=0;i<rs.length;i++){var r=rs[i]; a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a; k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
-          for(i=0;i<rs.length;i++){var q=rs[i]; a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a; k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
-          return ad===0&&kd===0?rs:null;
-        };
-        var priceAll=function(list){
-          var ac0=R[list[0]].ac;
-          for(var u=1;u<list.length;u++){if(R[list[u]].ac!==ac0)return null;}
-          var placed=placeAll(list); if(!placed)return null;
-          var sub=0, ex=0, cnt={}, order=[];
-          for(var m=0;m<list.length;m++){
-            var room=R[list[m]], dt=new Date(ci), t=0;
-            for(var i2=0;i2<nights;i2++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1);}
-            var extra=Math.max(0,placed[m].ad-room.b);
-            sub+=t+extra*250*nights; ex+=extra;
-            if(!cnt[list[m]]){cnt[list[m]]=0;order.push(list[m]);} cnt[list[m]]++;
-          }
-          var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
-          return {sub:sub, ex:ex, label:label, ac:ac0};
-        };
         var combos=[];
         (function rec(start,acc){
           if(acc.length===N){var q=priceAll(acc); if(q)combos.push(q); return;}
