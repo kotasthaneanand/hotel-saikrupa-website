@@ -11,10 +11,20 @@ import html, json
 
 LAST_STAY = "2027-01-31"
 
+# Maximum people per room, from the rooms page: total (adults + children) and adults only.
+ROOM_MAX = {
+    "deluxe-double": (3, 3), "standard-double": (3, 3),
+    "deluxe-triple": (5, 4), "premium-triple": (5, 4), "compact-triple": (5, 4), "standard-triple": (5, 4),
+    "deluxe-family": (6, 6), "suite-ac": (6, 6), "standard-family": (6, 6), "suite-nonac": (6, 6),
+}
+
 def _section(room_options, links, script_url, phone, room_json, periods_json):
+    rooms = json.loads(room_json)
+    for rid, r in rooms.items():
+        r["mt"], r["ma"] = ROOM_MAX[rid]
     js = JS_TEMPLATE
     for k, v in {
-        "__ROOMS__": room_json,
+        "__ROOMS__": json.dumps(rooms, ensure_ascii=False),
         "__PERIODS__": periods_json,
         "__LINKS__": json.dumps({str(a): u for a, u in links}),
         "__SCRIPT_URL__": script_url,
@@ -126,6 +136,9 @@ function read(){
 }
 function checkDetails(d){
   if(!d.room)return 'Please choose a room on Step 1.';
+  var people=d.adults+d.small+d.big, adultsAll=d.adults;
+  if(people>d.rooms*d.room.mt)return 'Too many guests for '+d.rooms+' × '+d.room.n+': up to '+d.room.mt+' people per room (adults and children). Choose more rooms or a larger room.';
+  if(adultsAll>d.rooms*d.room.ma)return 'Too many adults for '+d.rooms+' × '+d.room.n+': up to '+d.room.ma+' adults per room.';
   if(d.name.length<2)return 'Please enter your name.';
   if(!/^[0-9]{10}$/.test(d.mobile))return 'Please enter a 10-digit mobile number.';
   if(!d.checkin)return 'Please choose a check-in date.';
