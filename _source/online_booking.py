@@ -181,7 +181,6 @@ function allocate(list,adults,kids){
 // Price a list of rooms for the stay. Returns null if the guests do not fit.
 function sameType(list){for(var i=1;i<list.length;i++){if(R[list[i]].ac!==R[list[0]].ac)return false}return true}
 function priceList(list,d){
-  if(!sameType(list))return null;
   var g=people(d), placed=allocate(list,g.adults,g.kids);
   if(!placed)return null;
   var ci=parse(d.checkin), nights=d.nights, lines=[], sub=0;
@@ -198,7 +197,7 @@ function priceList(list,d){
 // Cheapest room combinations of 1 to 4 rooms that fit the guests
 function suggestions(d){
   var found=[], n, a, b, c, e;
-  function consider(list){var q=priceList(list,d); if(q)found.push({list:list,q:q});}
+  function consider(list){if(!sameType(list))return; var q=priceList(list,d); if(q)found.push({list:list,q:q});}
   for(a=0;a<IDS.length;a++){
     consider([IDS[a]]);
     for(b=a;b<IDS.length;b++){
@@ -348,7 +347,6 @@ $('ob-rooms-next').addEventListener('click',function(){
   var d=details(); var list=pickedIds();
   if(!list.length){err('ob-err25','Please choose at least one room.');return}
   if(list.length>MAXR){err('ob-err25','You can book up to '+MAXR+' rooms online.');return}
-  if(!sameType(list)){err('ob-err25','All rooms in one booking must be AC, or all Non-AC. Please choose the same type for every room.');return}
   if(!priceList(list,d)){err('ob-err25','These rooms do not fit these guests. Choose one of the options above, or add a room.');return}
   err('ob-err25',''); picked=list; fillSummary(); show(3);
 });
