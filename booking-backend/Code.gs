@@ -96,8 +96,9 @@ function handleEnquiry(ss, d) {
   var now = new Date();
   // Same mobile and check-in date = the same booking. Update its row (a change of guests or rooms), do not add a second one.
   var existing = findEnquiryRow(sheet, d.mobile, d.checkin);
+  var firstRef = '';
   if (existing) {
-    updateEnquiryRow(sheet, existing, code, d, now);
+    firstRef = updateEnquiryRow(sheet, existing, code, d, now);
   } else {
     appendRowAsText(sheet, [
       stamp(now), ENQUIRY_TYPES[d.type], code,
@@ -107,7 +108,7 @@ function handleEnquiry(ss, d) {
     ], [7]);
   }
   if (d.type === 'group') sendGroupAlert(code, d);
-  return reply({ ok: true, code: code, updated: !!existing });
+  return reply({ ok: true, code: code, updated: !!existing, firstRef: firstRef });
 }
 
 /** Row number (2 or more) of the latest Enquiries row with this mobile and check-in date, or 0. */
@@ -122,7 +123,7 @@ function findEnquiryRow(sheet, mobile, checkin) {
   return 0;
 }
 
-/** Update an existing enquiry with the new guests, rooms and type. Keeps the first reference, date and Handled by. */
+/** Update an existing enquiry with the new guests, rooms and type. Keeps the first reference, date and Handled by. Returns the first reference. */
 function updateEnquiryRow(sheet, row, code, d, now) {
   var old = sheet.getRange(row, 1, 1, ENQ_HEADERS.length).getValues()[0];
   var change = 'Changed ' + stamp(now) + ' (new ref ' + code + '): ' + (d.adults || '') + ' adults, ' +
@@ -134,6 +135,7 @@ function updateEnquiryRow(sheet, row, code, d, now) {
   sheet.getRange(row, 8, 1, 6).setValues([[d.nights || '', d.adults || '', d.small || 0, d.big || 0, d.rooms || '', d.source || '']]);
   sheet.getRange(row, 14).setValue('Updated');
   sheet.getRange(row, 16).setValue(notes);
+  return String(old[2]);
 }
 
 function sendGroupAlert(code, d) {
