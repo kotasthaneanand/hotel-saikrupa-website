@@ -101,7 +101,7 @@ JS = """<script>
     var nights=+f.n.value, aV=f.a.value, kS=f.cs.value, kB=f.cb.value, rooms=parseInt(f.rn.value,10);
     var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
     var kids=small+bigK;
-    var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>13);
+    var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
     var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
     var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
