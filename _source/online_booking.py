@@ -8,7 +8,7 @@ send details on WhatsApp, 3 pay the advance (Paytm link for the tier), upload th
 Occupancy rules: the first 2 children up to 5 are free and not counted. Every other person
 (adults, children above 5, and children up to 5 beyond the first 2) counts. Each room has a
 maximum total and a maximum of adults. Extra persons beyond a room's base cost Rs 250 a night.
-Bookings are accepted only for stays that end on or before LAST_STAY.
+Bookings are accepted only when every night of the stay is on or before LAST_STAY.
 """
 import json
 
@@ -42,7 +42,7 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
     return f"""<section id="book-online" class="online" hidden><div class="wrap">
 <div class="enquire online-box">
 <h2>Choose your rooms and pay your advance</h2>
-<p class="online-note">Your advance is part of your total bill, which includes GST. Stays must end by 31-01-2027, when our current prices end.</p>
+<p class="online-note">Your advance is part of your total bill, which includes GST. Every night of your stay must be on or before 31-01-2027, when our current prices end.</p>
 <div id="ob-steps" class="ob-steps" aria-live="polite">
 
 <select id="ob-room" hidden>{room_options}</select>
@@ -273,7 +273,8 @@ function checkDetails(d){
   var ci=parse(d.checkin), today=new Date(); today.setHours(0,0,0,0);
   if(ci<today)return 'Check-in cannot be in the past.';
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
-  if(iso(co)>LAST)return 'Online booking is open for stays ending by 31-01-2027. Please WhatsApp us for later dates.';
+  var lastNight=new Date(co); lastNight.setDate(lastNight.getDate()-1);
+  if(iso(lastNight)>LAST)return 'Online booking is open for stays with every night on or before 31-01-2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
   return '';
 }

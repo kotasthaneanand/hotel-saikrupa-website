@@ -333,7 +333,7 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 <section id="book-online" class="online" hidden><div class="wrap">
 <div class="enquire online-box">
 <h2>Choose your rooms and pay your advance</h2>
-<p class="online-note">Your advance is part of your total bill, which includes GST. Stays must end by 31-01-2027, when our current prices end.</p>
+<p class="online-note">Your advance is part of your total bill, which includes GST. Every night of your stay must be on or before 31-01-2027, when our current prices end.</p>
 <div id="ob-steps" class="ob-steps" aria-live="polite">
 
 <select id="ob-room" hidden><option value="deluxe-double">Deluxe Double Room (AC)</option><option value="deluxe-triple">Deluxe Triple Room (AC)</option><option value="premium-triple">Premium Deluxe Triple Room (AC)</option><option value="compact-triple">Compact Triple Room (AC)</option><option value="deluxe-family">Premium Deluxe Family Room (AC)</option><option value="suite-ac">Family Suite (AC)</option><option value="standard-double">Standard Double Room (Non-AC)</option><option value="standard-triple">Standard Triple Room (Non-AC)</option><option value="standard-family">Standard Family Room (Non-AC)</option><option value="suite-nonac">Family Suite (Non-AC)</option></select>
@@ -561,7 +561,8 @@ function checkDetails(d){
   var ci=parse(d.checkin), today=new Date(); today.setHours(0,0,0,0);
   if(ci<today)return 'Check-in cannot be in the past.';
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
-  if(iso(co)>LAST)return 'Online booking is open for stays ending by 31-01-2027. Please WhatsApp us for later dates.';
+  var lastNight=new Date(co); lastNight.setDate(lastNight.getDate()-1);
+  if(iso(lastNight)>LAST)return 'Online booking is open for stays with every night on or before 31-01-2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
   return '';
 }
@@ -846,9 +847,9 @@ if(qs&&R[qs[1]]){$('f-r').value=qs[1]; $('f-r').dispatchEvent(new Event('change'
     var adults=aV==='9+'?9:+aV, small=kS==='6+'?6:+kS, bigK=kB==='6+'?6:+kB;
     var kids=small+bigK;
     var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
-    // Stays that end after 31-01-2027 are not priced online (same rule as the booking steps)
+    // Every night of the stay must be on or before 31-01-2027 (our prices end that day); otherwise WhatsApp
     var late=false;
-    if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,0,31);}
+    if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,1,1);}
     var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
     var LATE_MSG='Our current prices end on 31-01-2027, so we cannot quote this stay online. Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
