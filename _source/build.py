@@ -59,8 +59,8 @@ def booking_box():
 <label for="f-city">Coming from<input id="f-city" type="text" placeholder="City"></label>
 <label for="f-in">Check-in<input id="f-in" type="date" required></label>
 <label for="f-n">Nights<select id="f-n"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
-<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option></select></label>
-<label for="f-c">Children<select id="f-c"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+<label for="f-a">Adults<select id="f-a"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option value="9+">9 or above</option></select></label>
+<label for="f-c">Children<select id="f-c"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option value="6+">6 or above</option></select></label>
 <label for="f-rn">Rooms<select id="f-rn"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></label>
 <label for="f-r" class="wide">Room type<select id="f-r"><option value="">Any suitable room</option>{opts}</select></label>
 <p class="est" id="f-est" aria-live="polite"></p>
@@ -95,7 +95,10 @@ JS = """<script>
   function nice(d){var W=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],p=function(x){return (x<10?'0':'')+x};return W[d.getDay()]+' '+p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear();}
   function inr(x){return 'Rs '+x.toLocaleString('en-IN');}
   function upd(){
-    var nights=+f.n.value, adults=+f.a.value, kids=+f.c.value, rooms=parseInt(f.rn.value,10);
+    var nights=+f.n.value, aV=f.a.value, kV=f.c.value, rooms=parseInt(f.rn.value,10);
+    var adults=aV==='9+'?9:+aV, kids=kV==='6+'?6:+kV;
+    var big=(aV==='9+'||kV==='6+'||adults+kids>13);
+    var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
     if(f.name.value.trim())lines.push('Name: '+f.name.value.trim());
     if(f.city.value.trim())lines.push('Coming from: '+f.city.value.trim());
@@ -105,7 +108,7 @@ JS = """<script>
       lines.push('Check-in: '+nice(ci)+', 12 noon');
       lines.push('Check-out: '+nice(co)+', 11 am');
       lines.push('Nights: '+nights);
-      lines.push('Guests: '+adults+' adult'+(adults>1?'s':'')+(kids?', '+kids+' child'+(kids>1?'ren':''):''));
+      lines.push('Guests: '+(aV==='9+'?'9 or above':adults)+' adult'+(adults>1?'s':'')+(kids?', '+(kV==='6+'?'6 or above':kids)+' child'+(kids>1?'ren':''):''));
       lines.push('Rooms: '+f.rn.value);
       function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return true;}return false;}
       function nightRate(room,d){var s=iso(d),dy=d.getDay();if(inP(s,PER.card))return room.p[4];if(inP(s,PER.fest))return room.p[3];if(dy===6||inP(s,PER.sat))return room.p[2];if(dy===4||dy===5||dy===0)return room.p[1];return room.p[0];}
@@ -138,6 +141,7 @@ JS = """<script>
         var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
         return {sub:sub, ex:ex, label:label, ac:ac0};
       };
+      if(big){est=OVER_MSG;}else{
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
@@ -187,6 +191,7 @@ JS = """<script>
       }
       if(kids)est+=(est?' ':'')+'Children above 5 years are charged Rs 250 per night.';
       if(est)est+=' Each night is priced by its day: Saturday and festival nights are higher. We confirm on WhatsApp.';
+      }
     }
     lines.push('','Please confirm availability and the best price.');
     f.est.textContent=est; f.est.hidden=!est;
