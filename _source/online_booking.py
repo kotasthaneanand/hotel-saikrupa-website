@@ -353,9 +353,21 @@ $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
     nights:d.nights,adults:d.adults,small:d.small,big:d.big,rooms:roomNames(),source:'Online booking: details sent on WhatsApp',notes:'Total incl. GST '+rs(cur.q.total)});
 });
 // Check availability form (on the home page): log, then open WhatsApp
+// Name, mobile and check-in are needed for any enquiry, including the WhatsApp one.
+function enquiryCheck(){
+  var name=$('f-name').value.trim(), mob=$('f-mob').value.replace(/\s+/g,'');
+  if(name.length<2)return 'Please enter your name.';
+  if(!/^[0-9]{10}$/.test(mob))return 'Please enter a 10-digit mobile number.';
+  if(!$('f-in').value)return 'Please choose a check-in date.';
+  var ci=parse($('f-in').value), today=new Date(); today.setHours(0,0,0,0);
+  if(ci<today)return 'Check-in cannot be in the past.';
+  return '';
+}
 var fgo=$('f-go');
 if(fgo){ fgo.addEventListener('click',function(e){ e.preventDefault();
   if(this.getAttribute('data-mode')!=='wa'){goRooms();return}
+  var em=enquiryCheck(); if(em){err('f-msg',em);return}
+  err('f-msg','');
   var m=decodeURIComponent(this.href).match(/Ref: (WEB-[A-Z0-9]+)/), ref=m?m[1]:genRef('ENQ');
   var rt=$('f-r').options[$('f-r').selectedIndex].text;
   goWa(this.href,{type:'availability',ref:ref,name:$('f-name').value.trim(),mobile:$('f-mob').value.replace(/\s+/g,''),city:$('f-city').value.trim(),
