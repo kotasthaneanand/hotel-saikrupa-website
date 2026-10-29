@@ -262,6 +262,34 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 
 /* tap-to-call links look like the surrounding text, underlined so they read as tappable */
 a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:inherit}
+
+[hidden]{display:none!important}
+.online{padding-block:48px}
+.online-box{gap:16px}
+.ob-step{display:grid;gap:14px}
+.ob-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ob-grid .wide{grid-column:span 2}
+.ob-title{font-weight:700;font-size:1.05rem}
+.ob-small,.online-note{font-size:.88rem;opacity:.92}
+.ob-actions{display:flex;flex-wrap:wrap;gap:10px}
+.ob-summary dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0}
+.ob-summary dt{opacity:.85}
+.ob-summary dd{margin:0;font-weight:600}
+.ob-amount{font-size:1.2rem;font-weight:700}
+.ob-error{color:#ffd6d6;font-weight:600}
+.ob-file,.ob-check{display:grid;gap:6px;font-size:.9rem}
+.ob-check{grid-template-columns:auto 1fr;align-items:start}
+.book-room{margin-top:8px;width:100%;justify-content:center}
+@media (max-width:760px){.ob-grid{grid-template-columns:1fr}.ob-grid .wide{grid-column:auto}}
+.online-box .btn-line{border-color:var(--on-accent);color:var(--on-accent)}
+.online-box .btn-line:hover{background:var(--on-accent);color:var(--blue)}
+.ob-suggest{display:grid;gap:10px}
+.ob-option{background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ob-option p{margin:0;flex:1 1 220px}
+.ob-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ob-pick label{display:grid;gap:4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
+.ob-pick select{height:46px;text-transform:none;letter-spacing:0;font-size:1rem}
+@media (max-width:760px){.ob-pick{grid-template-columns:1fr}}
 </style></head>
 <body><header class="top"><div class="wrap">
 <a class="brand" href="index.html" aria-label="Hotel Saikrupa home"><img src="img/emblem.png" alt="" width="44" height="44"><span><span class="word"><span class="h">Hotel</span> <span class="s">Saikrupa</span></span><small>Shirdi · since 1988</small></span></a>
@@ -271,7 +299,7 @@ a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px;font-wei
 <main><section style="padding-top:20px"><div class="wrap" style="max-width:760px">
 <a class="back" href="index.html">← Back to home</a>
 <div class="section-head" style="margin-top:18px"><span class="eyebrow">Privacy</span><h1 style="font-size:clamp(2rem,4.5vw,3rem)">Privacy policy</h1>
-<p class="muted">Hotel Saikrupa, Shirdi. Last updated 14 October 2026.</p></div>
+<p class="muted">Hotel Saikrupa, Shirdi. Last updated 14-10-2026.</p></div>
 <h2>What we collect</h2>
 <ul><li>When you contact us on WhatsApp or by phone, we receive your name, phone number and the trip details you share with us, so that we can answer and confirm your booking.</li>
 <li>When you stay with us, we record your name, contact number, address and identity proof in our guest register, as required by law for hotels in India.</li>

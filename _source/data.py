@@ -44,7 +44,7 @@ FESTIVALS = [("Shri Saibaba Punyatithi (Dasara)", "2026-10-18", "2026-10-21"), (
 SAT_PERIODS = [("Diwali holidays", "2026-11-12", "2026-11-15"), ("Makar Sankranti", "2027-01-13", "2027-01-15")]
 # Nights priced at the published tariff card (no discount)
 CARD_PERIODS = [("Christmas and New Year", "2026-12-23", "2027-01-04")]
-VALID_TILL = "31 Jan 2027"
+VALID_TILL = "31-01-2027"
 
 ROOMS = [
     # id, name, ac, size, beds, guests, max, photo, text

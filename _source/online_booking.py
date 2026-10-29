@@ -49,7 +49,7 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
     return f"""<section id="book-online" class="online"><div class="wrap">
 <div class="enquire online-box">
 <h2>Book online and pay your advance</h2>
-<p class="online-note">Your advance is part of your total bill, which includes GST. Stays must end by 31 Jan 2027, when our current prices end.</p>
+<p class="online-note">Your advance is part of your total bill, which includes GST. Stays must end by 31-01-2027, when our current prices end.</p>
 <div id="ob-steps" class="ob-steps" aria-live="polite">
 
 <div class="ob-step" data-step="1">
@@ -134,6 +134,10 @@ var ROOM_OPTS=$('ob-room').innerHTML;
 var IDS=Object.keys(R);
 var ref='', cur=null, picked=[];
 function pad(x){return (x<10?'0':'')+x}
+var WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function dmy(d){return pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear()}
+function dmyDay(d){return WD[d.getDay()]+' '+dmy(d)}
+function dmyStr(s){var p=s.split('-');return p[2]+'-'+p[1]+'-'+p[0]}
 function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function parse(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
 function inP(s,L){for(var j=0;j<L.length;j++){if(s>=L[j][0]&&s<=L[j][1])return true}return false}
@@ -145,7 +149,7 @@ function show(n){for(var i=0;i<steps.length;i++){steps[i].hidden=(+steps[i].getA
 function err(id,msg){var e=$(id);e.textContent=msg;e.hidden=!msg}
 // ---- enquiry logging: every WhatsApp hand-off is logged first (within 4 seconds), then WhatsApp opens ----
 var ENQ_TIMEOUT=4000;
-function genRef(prefix){var now=new Date();return prefix+'-'+pad(now.getDate())+pad(now.getMonth()+1)+String(now.getFullYear()).slice(2)+'-'+('000'+Math.floor(Math.random()*10000)).slice(-4)}
+function genRef(prefix){var now=new Date();return prefix+'-'+dmy(now)+'-'+('000'+Math.floor(Math.random()*10000)).slice(-4)}
 function logEnquiry(payload){
   if(SCRIPT_URL.indexOf('PASTE_')===0)return Promise.resolve(null);
   var call=fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
@@ -240,16 +244,16 @@ function renderSuggestions(d){
   $('ob-people').textContent='For '+d.adults+' adult'+(d.adults>1?'s':'')+(d.big?' and '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+(d.small>FREE?' and '+(d.small-FREE)+' child'+((d.small-FREE)>1?'ren':'')+' up to 5 (the first '+FREE+' are free)':'')+' we suggest these rooms:';
   var sug=suggestions(d), box2=$('ob-suggest'); box2.innerHTML='';
   if(!sug.length){
-    var now=new Date(), gref='GRP-'+pad(now.getDate())+pad(now.getMonth()+1)+String(now.getFullYear()).slice(2)+'-'+('000'+Math.floor(Math.random()*10000)).slice(-4);
+    var now=new Date(), gref=genRef('GRP');
     var gl=['Group Booking Enquiry + Ref ID: '+gref,'',
       'Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,
-      'Check-in: '+parse(d.checkin).toDateString()+', Nights: '+d.nights,
+      'Check-in: '+dmyDay(parse(d.checkin))+', Nights: '+d.nights,
       'Guests: '+d.adults+' adult(s), '+d.small+' child(ren) up to 5, '+d.big+' child(ren) above 5',
       'Rooms: more than '+MAXR+' rooms needed','','Please share the best offers and group discount.'];
     box2.innerHTML='<div class="ob-option group"><p><b>Connect with our Reservation Team for best offers and group discount.</b><br>Your group needs more than '+MAXR+' rooms, so we will arrange it for you on WhatsApp.</p><p class="ob-small">Reference: <b>'+gref+'</b></p><a class="btn btn-wa ob-group-wa" target="_blank" rel="noopener" href="https://wa.me/'+PHONE+'?text='+encodeURIComponent(gl.join('\n'))+'">Send group enquiry on WhatsApp</a></div>';
     var gb=box2.querySelector('.ob-group-wa');
     gb.addEventListener('click',function(e){e.preventDefault();
-      goWa(this.href,{type:'group',ref:gref,name:d.name,mobile:d.mobile,city:d.city,checkin:d.checkin,nights:d.nights,
+      goWa(this.href,{type:'group',ref:gref,name:d.name,mobile:d.mobile,city:d.city,checkin:dmyStr(d.checkin),nights:d.nights,
         adults:d.adults,small:d.small,big:d.big,rooms:'More than '+MAXR+' rooms',source:'Group enquiry (above '+MAXR+' rooms)',notes:''});});
     return;
   }
@@ -275,12 +279,12 @@ function checkDetails(d){
   var ci=parse(d.checkin), today=new Date(); today.setHours(0,0,0,0);
   if(ci<today)return 'Check-in cannot be in the past.';
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
-  if(iso(co)>LAST)return 'Online booking is open for stays ending by 31 Jan 2027. Please WhatsApp us for later dates.';
+  if(iso(co)>LAST)return 'Online booking is open for stays ending by 31-01-2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
   return '';
 }
 function summaryHtml(d,q,ci,co){
-  var s='<dl><dt>Check-in</dt><dd>'+ci.toDateString()+', 12 noon</dd><dt>Check-out</dt><dd>'+co.toDateString()+', 11 am</dd><dt>Nights</dt><dd>'+d.nights+'</dd>';
+  var s='<dl><dt>Check-in</dt><dd>'+dmyDay(ci)+', 12 noon</dd><dt>Check-out</dt><dd>'+dmyDay(co)+', 11 am</dd><dt>Nights</dt><dd>'+d.nights+'</dd>';
   s+='<dt>Guests</dt><dd>'+d.adults+' adult'+(d.adults>1?'s':'')+(d.small?', '+d.small+' child'+(d.small>1?'ren':'')+' up to 5'+(d.small>FREE?' ('+FREE+' free)':' (free)'):'')+(d.big?', '+d.big+' child'+(d.big>1?'ren':'')+' above 5':'')+'</dd>';
   for(var i=0;i<q.lines.length;i++){var L=q.lines[i];
     s+='<dt>Room '+(i+1)+'</dt><dd>'+L.n+': '+L.persons+' people'+(L.extra?', '+L.extra+' extra × Rs 250 a night':'')+'<br>'+rs(L.sum)+' before GST, for the stay</dd>';}
@@ -290,7 +294,7 @@ function summaryHtml(d,q,ci,co){
 function roomNames(){return cur.q.lines.map(function(L){return L.n+' ('+L.persons+')'}).join(', ')}
 function waText(){
   var d=cur.d,q=cur.q,L=['Namaste! Online booking request from the website'+(ref?' (ref '+ref+')':''),''];
-  L.push('Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,'Check-in: '+cur.ci.toDateString()+', Nights: '+d.nights,
+  L.push('Name: '+d.name+(d.city?' ('+d.city+')':''),'Mobile: '+d.mobile,'Check-in: '+dmyDay(cur.ci)+', Nights: '+d.nights,
     'Guests: '+d.adults+' adult(s), '+d.small+' child(ren) up to 5, '+d.big+' child(ren) above 5',
     'Rooms: '+roomNames(),'Total incl. GST: '+rs(q.total)+'  Advance: '+rs(tier(q.total)));
   if(d.aadhaar)L.push('Aadhaar last 4: '+d.aadhaar);
@@ -336,7 +340,7 @@ $('ob-rooms-next').addEventListener('click',function(){
 $('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
 $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
   var d=cur.d, ref=genRef('ENQ');
-  goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:iso(cur.ci),
+  goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:dmy(cur.ci),
     nights:d.nights,adults:d.adults,small:d.small,big:d.big,rooms:roomNames(),source:'Online booking: details sent on WhatsApp',notes:'Total incl. GST '+rs(cur.q.total)});
 });
 // Check availability form (on the home page): log, then open WhatsApp
@@ -345,7 +349,7 @@ if(fgo){ fgo.addEventListener('click',function(e){ e.preventDefault();
   var m=decodeURIComponent(this.href).match(/Ref: (WEB-[A-Z0-9]+)/), ref=m?m[1]:genRef('ENQ');
   var kids=$('f-c').value, rt=$('f-r').options[$('f-r').selectedIndex].text;
   goWa(this.href,{type:'availability',ref:ref,name:$('f-name').value.trim(),mobile:'',city:$('f-city').value.trim(),
-    checkin:$('f-in').value,nights:$('f-n').value,adults:$('f-a').value,small:0,big:0,rooms:$('f-rn').value+' room(s), '+rt,
+    checkin:dmyStr($('f-in').value),nights:$('f-n').value,adults:$('f-a').value,small:0,big:0,rooms:$('f-rn').value+' room(s), '+rt,
     source:'Check availability form',notes:'Children: '+kids+' (ages not asked)'});
 }); }
 $('ob-submit').addEventListener('click',function(){
@@ -360,7 +364,7 @@ $('ob-submit').addEventListener('click',function(){
   reader.onload=function(){
     var b64=String(reader.result).split(',')[1];
     var d=cur.d,q=cur.q;
-    var payload={website:'',name:d.name,city:d.city,mobile:d.mobile,checkin:d.checkin,checkout:iso(cur.co),nights:d.nights,
+    var payload={website:'',name:d.name,city:d.city,mobile:d.mobile,checkin:dmyStr(d.checkin),checkout:dmy(cur.co),nights:d.nights,
       adults:d.adults,children:d.small+d.big,roomType:roomNames(),rooms:q.lines.length,advance:tier(q.total),total:q.total,
       aadhaar4:d.aadhaar,consent:true,screenshot:b64,screenshotType:f.type};
     $('ob-submit').disabled=true;
