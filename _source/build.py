@@ -112,6 +112,7 @@ JS = """<script>
       function cost(room){var t=0,d=new Date(ci);for(var i=0;i<nights;i++){t+=nightRate(room,d);d.setDate(d.getDate()+1);}t*=rooms;var ex=Math.max(0,adults-room.b*rooms);return {t:t+ex*250*nights,ex:ex};}
       function fits(room){var a=Math.ceil(adults/rooms),k=Math.ceil(kids/rooms);if(room.b===2)return a+k<=3;if(room.b===3)return a<=4&&a+k<=5;return a<=6&&a+k<=6;}
       function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
+      function sugTxt(r,c){return (rooms>1?rooms+' x ':'')+r.n+' '+inr(c.t)+(rooms>1?' in total for '+rooms+' rooms':'')+exTxt(c.ex);}
       var nn=nights+' night'+(nights>1?'s':'');
       var room=R[f.r.value];
       if(room){
@@ -124,8 +125,8 @@ JS = """<script>
         var best={}, k;
         for(k in R){var r=R[k];if(!fits(r))continue;var key=r.ac?'ac':'non';var c2=cost(r);if(!best[key]||c2.t<best[key].c.t)best[key]={r:r,c:c2};}
         var sug=[];
-        if(best.non)sug.push(best.non.r.n+' '+inr(best.non.c.t)+exTxt(best.non.c.ex));
-        if(best.ac)sug.push(best.ac.r.n+' '+inr(best.ac.c.t)+exTxt(best.ac.c.ex));
+        if(best.non)sug.push(sugTxt(best.non.r,best.non.c));
+        if(best.ac)sug.push(sugTxt(best.ac.r,best.ac.c));
         if(sug.length){
           est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
           lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
