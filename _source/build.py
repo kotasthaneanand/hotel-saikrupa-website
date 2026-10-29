@@ -15,7 +15,7 @@ FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="p
 WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>'
 WA_BASE = f"https://wa.me/{PHONE_INTL}?text="
 import urllib.parse
-from online_booking import online_booking_section
+from online_booking import online_booking_section, ROOM_MAX
 def wa(msg): return WA_BASE + urllib.parse.quote(msg)
 WA_HELLO = wa("Namaste, I would like to know room availability and the best price at Hotel Saikrupa, Shirdi.")
 
@@ -74,7 +74,7 @@ def room_options():
     return "".join(f'<option value="{r[0]}">{E(r[1])} ({r[2]})</option>' for r in ROOMS)
 
 def room_js():
-    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
+    d = {r[0]: {"n": f"{r[1]} ({r[2]})", "b": r[5], "mt": ROOM_MAX[r[0]][0], "ma": ROOM_MAX[r[0]][1], "ac": r[2] == "AC", "p": list(RATES[r[0]])} for r in ROOMS}
     return json.dumps(d, ensure_ascii=False)
 
 def periods_js():
@@ -114,6 +114,7 @@ JS = """<script>
       function exTxt(ex){return ex?' (incl. '+ex+' extra adult'+(ex>1?'s':'')+')':'';}
       function sugTxt(r,c){return (rooms>1?rooms+' x ':'')+r.n+' '+inr(c.t)+(rooms>1?' in total for '+rooms+' rooms':'')+exTxt(c.ex);}
       var nn=nights+' night'+(nights>1?'s':'');
+      var nAd=adults, nKid=kids;
       var room=R[f.r.value];
       if(room){
         lines.push('Room type: '+room.n);
@@ -122,11 +123,37 @@ JS = """<script>
         lines.push('Website estimate: '+inr(c.t)+' + GST for '+nn+exTxt(c.ex));
       } else {
         lines.push('Room type: Any suitable room');
-        var best={}, k;
-        for(k in R){var r=R[k];if(!fits(r))continue;var key=r.ac?'ac':'non';var c2=cost(r);if(!best[key]||c2.t<best[key].c.t)best[key]={r:r,c:c2};}
-        var sug=[];
-        if(best.non)sug.push(sugTxt(best.non.r,best.non.c));
-        if(best.ac)sug.push(sugTxt(best.ac.r,best.ac.c));
+        var IDS=Object.keys(R), N=rooms;
+        // Place adults, then children, in the chosen rooms: base occupancy first, then extra up to each room's maximum.
+        var placeAll=function(list){
+          var rs=list.map(function(id){var r=R[id];return {b:r.b,mt:r.mt,ma:r.ma,ad:0,kd:0,p:0}});
+          var ad=nAd, kd=nKid, i,a,k;
+          for(i=0;i<rs.length;i++){var r=rs[i]; a=Math.min(ad,r.b,r.ma); ad-=a; r.ad+=a; r.p+=a; k=Math.min(kd,r.b-r.p); kd-=k; r.kd+=k; r.p+=k;}
+          for(i=0;i<rs.length;i++){var q=rs[i]; a=Math.min(ad,q.ma-q.ad,q.mt-q.p); ad-=a; q.ad+=a; q.p+=a; k=Math.min(kd,q.mt-q.p); kd-=k; q.kd+=k; q.p+=k;}
+          return ad===0&&kd===0?rs:null;
+        };
+        var priceAll=function(list){
+          var placed=placeAll(list); if(!placed)return null;
+          var sub=0, ex=0, cnt={}, order=[];
+          for(var m=0;m<list.length;m++){
+            var room=R[list[m]], dt=new Date(ci), t=0;
+            for(var i2=0;i2<nights;i2++){t+=nightRate(room,dt);dt.setDate(dt.getDate()+1);}
+            var extra=Math.max(0,placed[m].ad-room.b);
+            sub+=t+extra*250*nights; ex+=extra;
+            if(!cnt[list[m]]){cnt[list[m]]=0;order.push(list[m]);} cnt[list[m]]++;
+          }
+          var label=order.map(function(id){return cnt[id]+' x '+R[id].n}).join(' + ');
+          return {sub:sub, ex:ex, label:label};
+        };
+        var combos=[];
+        (function rec(start,acc){
+          if(acc.length===N){var q=priceAll(acc); if(q)combos.push(q); return;}
+          for(var i=start;i<IDS.length;i++){acc.push(IDS[i]);rec(i,acc);acc.pop();}
+        })(0,[]);
+        combos.sort(function(x,y){return x.sub-y.sub});
+        var sug=combos.slice(0,3).map(function(c){
+          return c.label+' '+inr(c.sub)+(N>1?' for all '+N+' rooms':'')+(c.ex?' (incl. '+c.ex+' extra adult'+(c.ex>1?'s':'')+')':'');
+        });
         if(sug.length){
           est='Suggested for your group, '+nn+': '+sug.join(' or ')+', plus 5% GST.';
           lines.push('Suggested: '+sug.join(' / ')+' + GST for '+nn);
