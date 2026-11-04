@@ -475,6 +475,7 @@ def feed_items():
         credit = str(it.get("credit", "")).strip()
         text = str(it.get("text", "")).strip()
         date = str(it.get("date", "")).strip()
+        group = str(it.get("group", "")).strip()
         if not rid or rid in seen or stars not in (4, 5) or not text or credit in FEED_EXCLUDE:
             print("feed: skipped", rid or "(no id)", file=sys.stderr)
             continue
@@ -482,11 +483,17 @@ def feed_items():
             print("feed: skipped credit format", rid, credit, file=sys.stderr)
             continue
         seen.add(rid)
-        out.append((text, credit, date, stars))
+        out.append((text, credit, date, stars, group))
     return out
 
+def feed_for_group(gid):
+    """Approved reviews filed under this review group, in the same shape as the group's own quotes."""
+    return [(t, n, d, "Google", st) for t, n, d, st, g in feed_items() if g == gid]
+
 def feed_section():
-    items = feed_items()
+    # Approved reviews with no group (or an unknown one) are shown together in this section.
+    known = {gid for gid, *_ in REVIEW_GROUPS}
+    items = [(t, n, d, st) for t, n, d, st, g in feed_items() if g not in known]
     if not items:
         return ""
     cards = "".join(quote_card(t, n, d, "Google", st) for t, n, d, st in items)
@@ -496,7 +503,7 @@ def feed_section():
 def reviews_body():
     chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS) + ('<a href="#ota">MakeMyTrip and Goibibo</a>' if OTA_REVIEWS else "")
     groups = "".join(f'''<section class="rv-group" id="{gid}"><div class="section-head"><h2>{E(t)}</h2><p class="muted">{E(intro)}</p></div>
-{group_photo(gid)}<div class="rv-wall">{"".join(quote_card(*x) for x in qs)}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
+{group_photo(gid)}<div class="rv-wall">{"".join(quote_card(*x) for x in list(qs) + feed_for_group(gid))}</div></section>''' for gid, t, intro, qs in REVIEW_GROUPS)
     msg = wa("Namaste, I read the guest reviews on your website. Please share room availability and the best price at Hotel Saikrupa, Shirdi.")
     return f'''{header()}
 <main><section style="padding-top:20px"><div class="wrap">
