@@ -108,6 +108,7 @@ function handleEnquiry(ss, d) {
     ], [7]);
   }
   if (d.type === 'group') sendGroupAlert(code, d);
+  else sendEnquiryAlert(code, d, !!existing);
   return reply({ ok: true, code: code, updated: !!existing, firstRef: firstRef });
 }
 
@@ -136,6 +137,20 @@ function updateEnquiryRow(sheet, row, code, d, now) {
   sheet.getRange(row, 14).setValue('Updated');
   sheet.getRange(row, 16).setValue(notes);
   return String(old[2]);
+}
+
+/** Email to both booking addresses for every ordinary enquiry (availability, details sent on WhatsApp). */
+function sendEnquiryAlert(code, d, updated) {
+  MailApp.sendEmail({
+    to: ALERT_EMAILS.join(','),
+    subject: (updated ? 'Enquiry updated ' : 'New enquiry ') + code + ' (' + (d.name || 'guest') + ')',
+    body: (updated ? 'An existing enquiry was updated (same mobile and check-in date).\n\n' : 'New enquiry logged in the Enquiries sheet.\n\n') +
+      'Reference: ' + code + '\nType: ' + ENQUIRY_TYPES[d.type] + '\nName: ' + (d.name || '-') +
+      '\nMobile: ' + (d.mobile || '-') + '\nCity: ' + (d.city || '-') + '\nCheck-in: ' + (d.checkin || '-') +
+      '  Nights: ' + (d.nights || '-') + '\nAdults: ' + (d.adults || '-') + '  Children up to 5: ' + (d.small || 0) +
+      '  Children above 5: ' + (d.big || 0) + '\nRooms: ' + (d.rooms || '-') + '\nSource: ' + (d.source || '-') +
+      (d.notes ? '\nNotes: ' + d.notes : '') + '\n\nSee the Enquiries sheet for the full record.'
+  });
 }
 
 function sendGroupAlert(code, d) {
