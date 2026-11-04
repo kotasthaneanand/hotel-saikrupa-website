@@ -3,7 +3,7 @@
 site/      full pages for hosting (index.html, rooms.html, img/)
 preview/   the same pages shaped for a claude.ai preview (index has no <html>/<head>)
 """
-import html, json, os, shutil, sys
+import html, json, os, re, shutil, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from data import *
 
@@ -457,6 +457,42 @@ def group_photo(gid):
     f, alt, cap = GROUP_PHOTOS[gid]
     return f'<figure class="rv-photo"><img src="img/{f}" alt="{E(alt)}" width="1200" height="900" loading="lazy"><figcaption>{E(cap)}</figcaption></figure>'
 
+
+# Approved new Google reviews, published from the Reels dashboard (see _source/reviews_feed.json).
+# Only 4 and 5 star reviews, word for word; names as first name and last initial.
+FEED_PATH = os.path.join(HERE, "reviews_feed.json")
+FEED_EXCLUDE = {"Anjali K."}  # not to be used (Anand's instruction)
+
+def feed_items():
+    try:
+        items = json.load(open(FEED_PATH, encoding="utf-8"))
+    except FileNotFoundError:
+        return []
+    out, seen = [], set()
+    for it in items:
+        rid = str(it.get("review_id", "")).strip()
+        stars = it.get("stars")
+        credit = str(it.get("credit", "")).strip()
+        text = str(it.get("text", "")).strip()
+        date = str(it.get("date", "")).strip()
+        if not rid or rid in seen or stars not in (4, 5) or not text or credit in FEED_EXCLUDE:
+            print("feed: skipped", rid or "(no id)", file=sys.stderr)
+            continue
+        if not re.match(r"^[A-Za-z][A-Za-z .'-]* [A-Z]\.$", credit):
+            print("feed: skipped credit format", rid, credit, file=sys.stderr)
+            continue
+        seen.add(rid)
+        out.append((text, credit, date, stars))
+    return out
+
+def feed_section():
+    items = feed_items()
+    if not items:
+        return ""
+    cards = "".join(quote_card(t, n, d, "Google", st) for t, n, d, st in items)
+    return f'''<section class="rv-group" id="new"><div class="section-head"><h2>New on Google</h2><p class="muted">The latest five-star and four-star reviews, word for word.</p></div>
+<div class="rv-wall">{cards}</div></section>'''
+
 def reviews_body():
     chips = "".join(f'<a href="#{gid}">{E(t)}</a>' for gid, t, _, _ in REVIEW_GROUPS) + ('<a href="#ota">MakeMyTrip and Goibibo</a>' if OTA_REVIEWS else "")
     groups = "".join(f'''<section class="rv-group" id="{gid}"><div class="section-head"><h2>{E(t)}</h2><p class="muted">{E(intro)}</p></div>
@@ -475,6 +511,7 @@ def reviews_body():
 </div>
 {featured_story()}
 <nav class="rv-chips" aria-label="Review topics">{chips}</nav>
+{feed_section()}
 {groups}
 {ota_section()}
 <div class="rv-end"><div><h2>Stayed with us?</h2><p class="muted">Your review helps other devotees choose. It takes a minute on Google.</p></div>
