@@ -637,6 +637,7 @@ DESC = "Family-run pure-veg hotel in Shirdi since 1988, 5 minutes' walk from Shr
 def main():
     site = os.path.join(ROOT, "site"); prev = os.path.join(ROOT, "preview")
     os.makedirs(prev, exist_ok=True)
+    os.makedirs(site, exist_ok=True)
     open(os.path.join(site, "index.html"), "w", encoding="utf-8").write(full(TITLE, DESC, index_body(), "https://www.shirdihotelsaikrupa.com/", True))
     open(os.path.join(site, "rooms.html"), "w", encoding="utf-8").write(full("Rooms and Prices | Hotel Saikrupa Shirdi", "AC and non-AC rooms in Shirdi near Shri Saibaba Samadhi Mandir: doubles, triples, family rooms and suites for up to 6, with weekday, weekend and festival prices.", rooms_body(), "https://www.shirdihotelsaikrupa.com/rooms.html"))
     open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(full("Privacy Policy | Hotel Saikrupa Shirdi", "How Hotel Saikrupa, Shirdi collects and uses guest information.", privacy_body(), "https://www.shirdihotelsaikrupa.com/privacy.html"))
