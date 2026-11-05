@@ -12,7 +12,7 @@ Bookings are accepted only when every night of the stay is on or before LAST_STA
 """
 import json
 
-LAST_STAY = "2027-01-31"
+LAST_STAY = "2027-03-31"
 MAX_ROOMS = 4
 FREE_CHILDREN_UP_TO_5 = 2
 
@@ -42,7 +42,7 @@ def _section(room_options, links, script_url, phone, room_json, periods_json):
     return f"""<section id="book-online" class="online" hidden><div class="wrap">
 <div class="enquire online-box">
 <h2>Choose your rooms and pay your advance</h2>
-<p class="online-note">Your advance is part of your total bill, which includes GST. Every night of your stay must be on or before 31-01-2027, when our current prices end.</p>
+<p class="online-note">Your advance is part of your total bill, which includes GST. Every night of your stay must be on or before 31-03-2027, when our current prices end.</p>
 <div id="ob-steps" class="ob-steps" aria-live="polite">
 
 <select id="ob-room" hidden>{room_options}</select>
@@ -285,7 +285,7 @@ function checkDetails(d){
   if(ci<today)return 'Check-in cannot be in the past.';
   var co=new Date(ci); co.setDate(co.getDate()+d.nights);
   var lastNight=new Date(co); lastNight.setDate(lastNight.getDate()-1);
-  if(iso(lastNight)>LAST)return 'Online booking is open for stays with every night on or before 31-01-2027. Please WhatsApp us for later dates.';
+  if(iso(lastNight)>LAST)return 'Online booking is open for stays with every night on or before 31-03-2027. Please WhatsApp us for later dates.';
   if(d.aadhaar&&!/^[0-9]{4}$/.test(d.aadhaar))return 'Aadhaar: enter the last 4 digits, or leave it blank.';
   return '';
 }

@@ -111,11 +111,11 @@ JS = """<script>
     if(rnOpts[f.rn.selectedIndex].disabled){for(q=rnOpts.length-1;q>=0;q--){if(!rnOpts[q].disabled){f.rn.selectedIndex=q;break}}}
     rooms=parseInt(f.rn.value,10);
     var over=(aV==='9+'||kS==='6+'||kB==='6+'||adults+kids>=13);
-    // Every night of the stay must be on or before 31-01-2027 (our prices end that day); otherwise WhatsApp
+    // Every night of the stay must be on or before 31-03-2027 (our prices end that day); otherwise WhatsApp
     var late=false, nofit=false;
-    if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,1,1);}
+    if(f.d.value){var lp=f.d.value.split('-'), lco=new Date(+lp[0],+lp[1]-1,+lp[2]+nights); late=lco>new Date(2027,3,1);}
     var kidsShown=(kS==='6+'||kB==='6+')?'6 or above':String(kids);
-    var LATE_MSG='Our current prices end on 31-01-2027, so we cannot quote this stay online. Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
+    var LATE_MSG='Our current prices end on 31-03-2027, so we cannot quote this stay online. Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var OVER_MSG='Click on Ask on WhatsApp button to send your enquiry and our Reservations staff will respond to your query immediately.';
     var lines=['\\ud83d\\ude4f Namaste! Booking enquiry from the website','Ref: '+ref,''];
     if(f.name.value.trim())lines.push('Name: '+f.name.value.trim());

@@ -13,7 +13,7 @@ INSTAGRAM = "https://www.instagram.com/hotel_saikrupa_shirdi/"
 BOOKING_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvmqu7QxcSSai28ZZ9d7zu7JBzpLuwzivgeDwSV5VfnbCuERw-MpQjSAyTz3PiTI1N/exec"
 TAGLINE = "🙏 Seva of Shri Saibaba's devotees is our dharma. Since 1988. 🙏"
 
-# Prices valid till 31 Jan 2027 (staff guide V5, Anand, 12 Oct 2026). Rs per room per night, plus 5% GST.
+# Prices valid till 31 Mar 2027 (staff guide V5, Anand, 12 Oct 2026). Rs per room per night, plus 5% GST.
 # Direct price = tariff card minus 10%. Weekday = Sun to Fri nights; only Saturday night is the weekend.
 # Per room: (Weekday, Weekday, Saturday, Festival, Published tariff card); the first two are equal since V5.
 # The tariff card is the ceiling: since 1988 the hotel never charges above it.
@@ -44,7 +44,7 @@ FESTIVALS = [("Shri Saibaba Punyatithi (Dasara)", "2026-10-18", "2026-10-21"), (
 SAT_PERIODS = [("Diwali holidays", "2026-11-12", "2026-11-15"), ("Makar Sankranti", "2027-01-13", "2027-01-15")]
 # Nights priced at the published tariff card (no discount)
 CARD_PERIODS = [("Christmas and New Year", "2026-12-23", "2027-01-04")]
-VALID_TILL = "31-01-2027"
+VALID_TILL = "31-03-2027"
 
 # Rooms the hotel has of each type (Master Room List for MMR, 08-10-2026; Premium Triple = room 215, Premium Family = room 210).
 # Suites count as one room each. Total 38.
