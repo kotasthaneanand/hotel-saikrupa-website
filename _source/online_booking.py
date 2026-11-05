@@ -134,6 +134,23 @@ function logEnquiry(payload){
   var wait=new Promise(function(res){setTimeout(function(){res(null)},ENQ_TIMEOUT)});
   return Promise.race([call,wait]);
 }
+// ---- partial enquiries: once name, mobile, city and check-in are filled in, the details go to the sheet (no WhatsApp, no email) ----
+var leadTimer=null, leadSent='';
+function leadCheck(){
+  var name=$('f-name').value.trim(), mob=$('f-mob').value.replace(/\s+/g,''), city=$('f-city').value.trim(), ci=$('f-in').value;
+  if(name.length<2||!/^[0-9]{10}$/.test(mob)||!city||!ci)return;
+  var key=[name,mob,city,ci,$('f-n').value,$('f-a').value,$('f-cs').value,$('f-cb').value,$('f-rn').value,$('f-r').value].join('|');
+  if(key===leadSent)return;
+  leadSent=key;
+  logEnquiry({type:'lead',name:name,mobile:mob,city:city,checkin:dmyStr(ci),nights:$('f-n').value,adults:$('f-a').value,
+    small:+$('f-cs').value,big:+$('f-cb').value,rooms:$('f-rn').value+' room(s), '+$('f-r').options[$('f-r').selectedIndex].text,
+    source:'Form started on website (not sent)'});
+}
+['f-name','f-mob','f-city','f-in','f-n','f-a','f-cs','f-cb','f-rn','f-r'].forEach(function(id){
+  var el=$(id); if(!el)return;
+  var later=function(){clearTimeout(leadTimer); leadTimer=setTimeout(leadCheck,1500)};
+  el.addEventListener('input',later); el.addEventListener('change',later);
+});
 var busyRefs={};
 // If the enquiry updated an earlier one (same mobile and check-in), the WhatsApp text says so first.
 function modificationHref(href,firstRef){
