@@ -98,7 +98,7 @@ function handleEnquiry(ss, d) {
   // Same mobile and check-in date = the same booking. Update its row (a change of guests or rooms), do not add a second one.
   var found = findEnquiryRow(sheet, d.mobile, d.checkin);
   // A row that only holds a partly filled form becomes this enquiry (a new row is not added, and it is reported as new).
-  var leadRow = found && sheet.getRange(found, 14).getValue() === 'Form started' ? found : 0;
+  var leadRow = found ? (sheet.getRange(found, 14).getValue() === 'Form started' ? found : 0) : findLeadRow(sheet, d.mobile);
   var existing = leadRow ? 0 : found;
   var firstRef = '';
   if (leadRow) {
@@ -125,20 +125,19 @@ function handleEnquiry(ss, d) {
   return reply({ ok: true, code: code, updated: !!existing, firstRef: firstRef });
 }
 
-/** A partly filled form: name, mobile, city and check-in are in. Logged to the sheet only: no WhatsApp and no email. */
+/** A partly filled form: name, mobile, city and check-in are in. Logged to the sheet only: no WhatsApp and no email.
+ *  One row per mobile while the form is unfinished: a changed check-in date or guests update that row. */
 function handleLead(ss, d) {
   if (!/^[0-9]{10}$/.test(String(d.mobile || '').replace(/\s+/g, '')) || !d.checkin) {
     return reply({ ok: false, error: 'Mobile and check-in needed.' });
   }
   var sheet = getOrCreate(ss, ENQ_SHEET_NAME, ENQ_HEADERS);
-  var row = findEnquiryRow(sheet, d.mobile, d.checkin);
+  var row = findLeadRow(sheet, d.mobile);
   if (row) {
-    // Only a row that is still a partly filled form is refreshed. Real enquiries are left as they are.
-    if (sheet.getRange(row, 14).getValue() === 'Form started') {
-      sheet.getRange(row, 4).setValue(d.name || '');
-      sheet.getRange(row, 6).setValue(d.city || '');
-      sheet.getRange(row, 8, 1, 5).setValues([[d.nights || '', d.adults || '', d.small || 0, d.big || 0, d.rooms || '']]);
-    }
+    sheet.getRange(row, 4).setValue(d.name || '');
+    sheet.getRange(row, 6).setValue(d.city || '');
+    sheet.getRange(row, 7).setNumberFormat('@').setValue(d.checkin || '');
+    sheet.getRange(row, 8, 1, 5).setValues([[d.nights || '', d.adults || '', d.small || 0, d.big || 0, d.rooms || '']]);
     return reply({ ok: true, lead: true });
   }
   appendRowAsText(sheet, [
@@ -148,6 +147,18 @@ function handleLead(ss, d) {
     d.source || '', 'Form started', '', ''
   ], [7]);
   return reply({ ok: true, lead: true });
+}
+
+/** Latest row for this mobile that is still an unfinished form (any check-in date), or 0. */
+function findLeadRow(sheet, mobile) {
+  var last = sheet.getLastRow();
+  if (last < 2) return 0;
+  var mob = String(mobile).replace(/\s+/g, '');
+  var rows = sheet.getRange(2, 1, last - 1, ENQ_HEADERS.length).getValues();
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i][4]).replace(/\s+/g, '') === mob && rows[i][13] === 'Form started') return i + 2;
+  }
+  return 0;
 }
 
 /** Row number (2 or more) of the latest Enquiries row with this mobile and check-in date, or 0. */
