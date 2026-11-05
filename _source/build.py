@@ -251,7 +251,13 @@ def aarti():
 def index_body():
     byid = {r[0]: r for r in ROOMS}
     cards = "".join(room_card(byid[k]) for k in FEATURED)
-    revs = "".join(f'<blockquote><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{E(q)}”</p><cite>{E(n)} · Google review, {E(d)}</cite></blockquote>' for q, n, d in REVIEWS)
+    # The latest review from each category (feed reviews and curated quotes together), with the category name.
+    latest = []
+    for gid, title, _intro, qs in REVIEW_GROUPS:
+        best = newest_first(feed_for_group(gid) + list(qs))[0]
+        q, n, d, src, st = best if len(best) == 5 else (*best, "Google", 5)
+        latest.append((title, q, n, d, src, st))
+    revs = "".join(f'<blockquote><span class="eyebrow">{E(title)}</span><span class="stars" aria-label="{st} out of 5 stars">{"★" * st}</span><p>“{E(q)}”</p><cite>{E(n)} · {E(src)} review, {E(d)}</cite></blockquote>' for title, q, n, d, src, st in latest)
     route = '''<svg viewBox="0 0 220 40" role="img" aria-label="Walking route from Hotel Saikrupa to Gate 5/6, 350 metres">
 <path d="M10 28 C 60 28, 70 12, 110 14 S 170 26, 210 12" fill="none" stroke="var(--marigold)" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
 <circle cx="10" cy="28" r="6" fill="var(--blue)"/><circle cx="210" cy="12" r="6" fill="var(--red)"/></svg>'''
