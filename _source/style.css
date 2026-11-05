@@ -168,6 +168,7 @@ section{padding-block:56px}
 .rv-chips a{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-size:.92rem;font-weight:500}
 .rv-chips a:hover{border-color:var(--red);color:var(--red)}
 .rv-group{padding-block:34px 6px;scroll-margin-top:84px}
+#book{scroll-margin-top:100px}
 .rv-group .section-head{margin-bottom:18px}
 .rv-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;align-items:start}
 .rv-wall blockquote{margin:0;padding:20px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);display:grid;gap:10px}
