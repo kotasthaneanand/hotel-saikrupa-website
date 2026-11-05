@@ -20,6 +20,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install build tools
+        run: pip install pillow
+
       - name: Build pages
         run: python _source/build.py
 
