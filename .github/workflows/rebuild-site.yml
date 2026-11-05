@@ -1,0 +1,42 @@
+name: Rebuild site pages
+
+# Runs when a change to the site source is merged to main (for example, an approved
+# review in _source/reviews_feed.json). Rebuilds the pages and commits them to main.
+on:
+  push:
+    branches: [main]
+    paths: ["_source/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build pages
+        run: python _source/build.py
+
+      - name: Copy pages to the site root
+        run: |
+          for f in index rooms privacy reviews gallery; do
+            cp "site/$f.html" "$f.html"
+          done
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html rooms.html privacy.html reviews.html gallery.html
+          if git diff --cached --quiet; then
+            echo "No page changes."
+          else
+            git commit -m "Rebuild site pages from _source"
+            git push
+          fi
