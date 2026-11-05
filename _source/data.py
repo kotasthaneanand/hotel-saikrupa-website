@@ -39,7 +39,8 @@ ADVANCE_LINKS = [
 ]
 # Nights (first and last night, inclusive) priced at the Festival rate
 FESTIVALS = [("Shri Saibaba Punyatithi (Dasara)", "2026-10-18", "2026-10-21"), ("Diwali", "2026-11-05", "2026-11-11"),
-             ("Republic Day", "2027-01-23", "2027-01-25")]
+             ("Republic Day", "2027-01-23", "2027-01-25"), ("Holi", "2027-03-22", "2027-03-22"),
+             ("Good Friday", "2027-03-26", "2027-03-26")]
 # Nights priced at the Saturday rate whatever the day
 SAT_PERIODS = [("Diwali holidays", "2026-11-12", "2026-11-15"), ("Makar Sankranti", "2027-01-13", "2027-01-15")]
 # Nights priced at the published tariff card (no discount)
