@@ -632,7 +632,7 @@ def full(title, desc, body, canonical, jsonld=False):
 <body>{body}</body></html>'''
 
 TITLE = "Hotel Saikrupa Shirdi | Family Hotel 5 Minutes from Shri Saibaba Samadhi Mandir"
-DESC = "Family-run pure-veg hotel in Shirdi since 1988, 5 minutes' walk from Shri Saibaba Samadhi Mandir. AC and non-AC rooms, family suites for 6, parking. Book direct on WhatsApp 8262 800 200 for the best price."
+DESC = "Family-run pure-veg hotel in Shirdi since 1988, 5 minutes' walk from Shri Saibaba Samadhi Mandir. AC and non-AC rooms, family suites for 6, parking. Book direct online for best rates."
 
 def main():
     site = os.path.join(ROOT, "site"); prev = os.path.join(ROOT, "preview")
