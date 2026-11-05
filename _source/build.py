@@ -257,6 +257,10 @@ def index_body():
         best = newest_first(feed_for_group(gid) + list(qs))[0]
         q, n, d, src, st = best if len(best) == 5 else (*best, "Google", 5)
         latest.append((title, q, n, d, src, st))
+    # The latest review from each booking site (MakeMyTrip and Goibibo), labelled with the site name.
+    for plat in ("MakeMyTrip", "Goibibo"):
+        q, n, d, src, st = newest_first([(x[0], x[1], x[3], x[2], x[4]) for x in OTA_REVIEWS if x[2] == plat])[0]
+        latest.append((plat, q, n, d, src, st))
     revs = "".join(f'<blockquote><span class="eyebrow">{E(title)}</span><span class="stars" aria-label="{st} out of 5 stars">{"★" * st}</span><p>“{E(q)}”</p><cite>{E(n)} · {E(src)} review, {E(d)}</cite></blockquote>' for title, q, n, d, src, st in latest)
     route = '''<svg viewBox="0 0 220 40" role="img" aria-label="Walking route from Hotel Saikrupa to Gate 5/6, 350 metres">
 <path d="M10 28 C 60 28, 70 12, 110 14 S 170 26, 210 12" fill="none" stroke="var(--marigold)" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
