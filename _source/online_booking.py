@@ -423,6 +423,7 @@ $('ob-submit').addEventListener('click',function(){
       .then(function(j){
         if(!j.ok){throw new Error(j.error||'Could not send')}
         ref=j.code;
+        if(typeof trackBookingConversion==='function'){trackBookingConversion(ref,payload.total);}
         $('ob-done').innerHTML='Reference code: <b>'+ref+'</b><br>Please save this code. We will check your payment and send the official advance receipt on WhatsApp.';
         $('ob-done-wa').href='https://wa.me/'+PHONE+'?text='+encodeURIComponent('Payment screenshot for reference '+ref+'. '+cur.d.name);
         show(5);
