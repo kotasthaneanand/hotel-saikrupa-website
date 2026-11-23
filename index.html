@@ -2,7 +2,7 @@
 <html lang="en"><head><script>if(/(^|\.)shirdihotelsaikrupa\.com$/.test(location.hostname)){var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-56FJB5HJES';document.head.appendChild(s);}
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-56FJB5HJES');gtag('config','AW-18516178237');
 // Google Ads booking conversion: fired only after the booking form's send succeeds (see online_booking.py). Stays off until the label is pasted in.
-var BOOKING_CONVERSION_SEND_TO='AW-18516178237/PASTE_LABEL_HERE';
+var BOOKING_CONVERSION_SEND_TO='AW-18516178237/DM7TCICK6r0dEL3qmf1E';
 function trackBookingConversion(ref,total){if(BOOKING_CONVERSION_SEND_TO.indexOf('PASTE_')>=0)return;gtag('event','conversion',{send_to:BOOKING_CONVERSION_SEND_TO,value:total,currency:'INR',transaction_id:ref});}
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
 if(h.indexOf('https://wa.me/')===0)gtag('event','whatsapp_click',{where:a.closest('form')?'booking_form':'other',page:location.pathname});
