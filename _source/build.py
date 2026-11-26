@@ -612,11 +612,15 @@ FAQLD = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"
 # Also records WhatsApp and phone taps as events: whatsapp_click (where: booking_form or other) and call_click.
 GA_ID = "G-56FJB5HJES"
 ADS_ID = "AW-18516178237"  # Google Ads account (Hotel Sai Krupa, created 16 Oct 2026); same tag, so ad clicks can be measured
-BOOKING_CONVERSION_LABEL = "DM7TCICK6r0dEL3qmf1E"  # Conversion label for "Booking form submitted" in Google Ads (Goals > Conversions > Tag setup).
+BOOKING_CONVERSION_LABEL = "DM7TCICK6r0dEL3qmf1E"
+WHATSAPP_CONVERSION_LABEL = "PASTE_WHATSAPP_LABEL"  # "WhatsApp details sent" action; fires when Send details on WhatsApp is clicked
+PAY_CONVERSION_LABEL = "PASTE_PAY_LABEL"  # "Proceed to pay clicked" action; fires when Proceed to pay is clicked  # Conversion label for "Booking form submitted" in Google Ads (Goals > Conversions > Tag setup).
 GA = f'''<script>if(/(^|\\.)shirdihotelsaikrupa\\.com$/.test(location.hostname)){{var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id={GA_ID}';document.head.appendChild(s);}}
 window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');gtag('config','{ADS_ID}');
 // Google Ads booking conversion: fired only after the booking form's send succeeds (see online_booking.py). Stays off until the label is pasted in.
 var BOOKING_CONVERSION_SEND_TO='{ADS_ID}/{BOOKING_CONVERSION_LABEL}';
+var WA_CONVERSION_LABEL='{WHATSAPP_CONVERSION_LABEL}',PAY_CONVERSION_LABEL='{PAY_CONVERSION_LABEL}';
+function trackSiteConversion(label,value){{if(!label||label.indexOf('PASTE_')===0)return;gtag('event','conversion',{{send_to:'{ADS_ID}/'+label,value:value,currency:'INR'}});}}
 function trackBookingConversion(ref,total){{if(BOOKING_CONVERSION_SEND_TO.indexOf('PASTE_')>=0)return;gtag('event','conversion',{{send_to:BOOKING_CONVERSION_SEND_TO,value:total,currency:'INR',transaction_id:ref}});}}
 document.addEventListener('click',function(e){{var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
 if(h.indexOf('https://wa.me/')===0)gtag('event','whatsapp_click',{{where:a.closest('form')?'booking_form':'other',page:location.pathname}});

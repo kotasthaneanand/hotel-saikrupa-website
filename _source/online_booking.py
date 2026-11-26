@@ -374,9 +374,10 @@ function goSummary(){
   err('ob-err25',''); picked=list; fillSummary(); show(3);
 }
 $('ob-rooms-next').addEventListener('click',goSummary);
-$('ob-proceed').addEventListener('click',function(){ payLink(); show(4); });
+$('ob-proceed').addEventListener('click',function(){ if(typeof trackSiteConversion==='function'){trackSiteConversion(PAY_CONVERSION_LABEL,cur.q.total);} payLink(); show(4); });
 $('ob-wa').addEventListener('click',function(e){ e.preventDefault();
   var d=cur.d, ref=genRef('ENQ');
+  if(typeof trackSiteConversion==='function'){trackSiteConversion(WA_CONVERSION_LABEL,cur.q.total);}
   goWa(appendRef(this.href,ref),{type:'details',ref:ref,name:d.name,mobile:d.mobile,city:d.city,checkin:dmy(cur.ci),
     nights:d.nights,adults:d.adults,small:d.small,big:d.big,rooms:roomNames(),source:'Online booking: details sent on WhatsApp',notes:'Total incl. GST '+rs(cur.q.total)});
 });
