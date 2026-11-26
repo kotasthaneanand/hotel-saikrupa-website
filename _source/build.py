@@ -613,7 +613,7 @@ FAQLD = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"
 GA_ID = "G-56FJB5HJES"
 ADS_ID = "AW-18516178237"  # Google Ads account (Hotel Sai Krupa, created 16 Oct 2026); same tag, so ad clicks can be measured
 BOOKING_CONVERSION_LABEL = "DM7TCICK6r0dEL3qmf1E"
-WHATSAPP_CONVERSION_LABEL = "PASTE_WHATSAPP_LABEL"  # "WhatsApp details sent" action; fires when Send details on WhatsApp is clicked
+WHATSAPP_CONVERSION_LABEL = "SgUhCOPW2r8dEL3qmf1E"  # "WhatsApp details sent" action; fires when Send details on WhatsApp is clicked
 PAY_CONVERSION_LABEL = "PASTE_PAY_LABEL"  # "Proceed to pay clicked" action; fires when Proceed to pay is clicked  # Conversion label for "Booking form submitted" in Google Ads (Goals > Conversions > Tag setup).
 GA = f'''<script>if(/(^|\\.)shirdihotelsaikrupa\\.com$/.test(location.hostname)){{var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id={GA_ID}';document.head.appendChild(s);}}
 window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');gtag('config','{ADS_ID}');
